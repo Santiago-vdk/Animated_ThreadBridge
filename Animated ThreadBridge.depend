@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1505882696 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
+	<stdio.h>
+	<stdlib.h>
+	<pthread.h>
+
+1505762547 source:/home/santiago/Desktop/Animated_ThreadBridge/test.c
+
