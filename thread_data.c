@@ -3,7 +3,7 @@
 #include "thread_data.h"
 
 /* Adds a new thread to the thread list */
-void add_node(TCB node, ThreadList list)
+void add_node(Thread_Carro_Puente node, ThreadList list)
 {
 	if (list->head == NULL)
 	{
@@ -11,7 +11,7 @@ void add_node(TCB node, ThreadList list)
 	}
 	else
 	{
-		TCB tmp = list->head;
+		Thread_Carro_Puente tmp = list->head;
 		while (tmp->next != NULL)
 		{
 			tmp = tmp->next;
@@ -31,12 +31,12 @@ void print_list(ThreadList list)
 	}
 	else
 	{
-		TCB tmp = list->head;
+		Thread_Carro_Puente tmp = list->head;
 		while (tmp != NULL)
 		{
 			printf("ID: %ld\n", tmp->thread_id);
-			printf("Scheduler: %d\n", tmp->scheduler);
-			printf("Type: %d\n", tmp->type);
+			printf("Scheduler: %d\n", tmp->calendarizador);
+			printf("Type: %d\n", tmp->tipo);
 			tmp = tmp->next;
 		}
 	}
@@ -51,7 +51,7 @@ void remove_node(int id, ThreadList list)
 	}
 	else
 	{
-		TCB tmp = list->head;
+		Thread_Carro_Puente tmp = list->head;
 		if (tmp->thread_id == id)
 		{
 			if (tmp->next == NULL)
@@ -96,10 +96,10 @@ void free_mem(ThreadList list)
 	}
 	else
 	{
-		TCB tmp = list->head;
+		Thread_Carro_Puente tmp = list->head;
 		while (tmp != NULL)
 		{
-			TCB tmp2 = tmp;
+			Thread_Carro_Puente tmp2 = tmp;
 			tmp = tmp->next;
 			free(tmp2);
 		}
@@ -108,11 +108,11 @@ void free_mem(ThreadList list)
 }
 
 /* Copies a node to a new node */
-void copy_node(TCB src, TCB dst)
+void copy_node(Thread_Carro_Puente src, Thread_Carro_Puente dst)
 {
 	dst->thread_id = src->thread_id;
-	dst->scheduler = src->scheduler;
-	dst->type = src->type;
-	dst->bridge = src->bridge;
+	dst->calendarizador = src->calendarizador;
+	dst->tipo = src->tipo;
+	dst->puente = src->puente;
 	dst->next = NULL;
 }

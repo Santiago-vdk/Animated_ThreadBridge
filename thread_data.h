@@ -15,25 +15,28 @@
 #define K		    10
 #define NUM_THREADS 100
 // Estructura general para cada objeto sea de tipo carro o un lado del puente
-// Cada nodo de la lista representa un nodo TCB con estos atributos
+// Cada nodo de la lista representa un nodo Thread_Carro_Puente con estos atributos
 typedef struct thread_data
 {
 	long thread_id;             // Id para mantener referencia a los hilos
-	int scheduler;              // Tipo de calendarizador en uso
-	int type;                   // Tipo de carro
-	int bridge;                 // Puente al que pertenece
+	int calendarizador;              // Tipo de calendarizador en uso
+	int tipo;                   // Tipo de carro
+	int puente;                 // Puente al que pertenece
+	int limite_tiempo;
 	struct thread_data *next;
 
-} *TCB;
+} *Thread_Carro_Puente;
 
 typedef struct thread_list
 {
-	TCB head;
+	Thread_Carro_Puente head;
 } *ThreadList;
+
+
 
 // Estructura para cada uno de los puentes, el puente en general no el lado
 // Deben existir 4, 1 por puente
-typedef struct bridges
+typedef struct puentes
 {
 	int bridge_id;                  // Identificador del puente
 	ThreadList current_cars;        // Lista de carros en el puente
@@ -42,13 +45,12 @@ typedef struct bridges
 	int control;                    // Algoritmo de control, semaforo, oficial o JL
 	int k;                          // Cantidad de carros que pueden pasar cuando el algoritmo es de oficial
 	int tiempo_semaforo;            // Tiempo que se mantiene el semaforo en verde o en rojo
-	int coming_out;
-} *Bridge;
+} *Puente;
 
-void add_node(TCB node, ThreadList list);
+void add_node(Thread_Carro_Puente node, ThreadList list);
 void print_list(ThreadList list);
 void remove_node(int id, ThreadList list);
 void free_mem(ThreadList list);
-void copy_node(TCB src, TCB dst);
+void copy_node(Thread_Carro_Puente src, Thread_Carro_Puente dst);
 
 #endif

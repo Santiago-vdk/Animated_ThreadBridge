@@ -39,9 +39,14 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="test.c">
+		<Unit filename="mythreads/mythread.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="mythreads/mythread.h" />
+		<Unit filename="thread_data.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="thread_data.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
