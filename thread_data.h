@@ -24,12 +24,14 @@ typedef struct thread_data
 	int puente;                 // Puente al que pertenece
 	int limite_tiempo;
 	struct thread_data *next;
+	pthread_t thread;
 
 } *Thread_Carro_Puente;
 
 typedef struct thread_list
 {
 	Thread_Carro_Puente head;
+	int length;
 } *ThreadList;
 
 
@@ -48,6 +50,7 @@ typedef struct puentes
 } *Puente;
 
 void add_node(Thread_Carro_Puente node, ThreadList list);
+Thread_Carro_Puente get_node(ThreadList list, int id);
 void print_list(ThreadList list);
 void remove_node(int id, ThreadList list);
 void free_mem(ThreadList list);

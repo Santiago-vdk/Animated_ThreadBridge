@@ -36,6 +36,11 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="fcfs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="fcfs.h" />
+		<Unit filename="globales.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -43,6 +48,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="mythreads/mythread.h" />
+		<Unit filename="round_robin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="round_robin.h" />
 		<Unit filename="thread_data.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -5,10 +5,10 @@
 
 #include <time.h>
 
+
 ThreadList carros;              // Lista global de carros
 ThreadList puente_1_izq;        // Instancia para carros del lado izquierdo del puente 1
 ThreadList puente_1_der;        // Instancia para carros del lado derecho del puente 1
-
 
 pthread_t controlador;                 // Instancia del Thread principal para la generacion de vehiculos
 pthread_t generador;
