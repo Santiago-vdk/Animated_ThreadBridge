@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1505970400 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
+1506123885 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
 	<stdio.h>
 	<stdlib.h>
 	"mythreads/mythread.h"
@@ -8,9 +8,10 @@
 
 1505762547 source:/home/santiago/Desktop/Animated_ThreadBridge/test.c
 
-1505970125 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
+1506123926 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
+	<pthread.h>
 
-1505970444 source:/home/santiago/Desktop/Animated_ThreadBridge/thread_data.c
+1506122812 source:/home/santiago/Desktop/Animated_ThreadBridge/thread_data.c
 	<stdlib.h>
 	<stdio.h>
 	"thread_data.h"
@@ -20,4 +21,19 @@
 1505965479 source:/home/santiago/Desktop/Animated_ThreadBridge/mythreads/mythread.c
 	<pthread.h>
 	"mythread.h"
+
+1506056025 source:/home/santiago/Desktop/Animated_ThreadBridge/fcfs.c
+	"round_robin.h"
+	"thread_data.h"
+	"globales.h"
+
+1506056260 /home/santiago/Desktop/Animated_ThreadBridge/round_robin.h
+	"thread_data.h"
+
+1506056266 /home/santiago/Desktop/Animated_ThreadBridge/globales.h
+
+1506056138 source:/home/santiago/Desktop/Animated_ThreadBridge/round_robin.c
+	"round_robin.h"
+	"thread_data.h"
+	"globales.h"
 

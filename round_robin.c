@@ -1,7 +1,7 @@
 #include "round_robin.h"
 #include "thread_data.h"
 #include "globales.h"
-
+/*
 void ejecutar(ThreadList list, int quantum)
 {
     if(list->length != 0)
@@ -16,3 +16,4 @@ void ejecutar(ThreadList list, int quantum)
         printf("No hay nada que calendarizar por RR \n");
     }
 }
+*/

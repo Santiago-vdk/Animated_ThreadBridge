@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include "thread_data.h"
 
-/* Adds a new thread to the thread list */
-void add_node(Thread_Carro_Puente node, ThreadList list)
+
+void agregar_puente(Thread_Puente node, ThreadListPuente list)
 {
     if (list->head == NULL)
     {
@@ -11,26 +11,66 @@ void add_node(Thread_Carro_Puente node, ThreadList list)
     }
     else
     {
-        Thread_Carro_Puente tmp = list->head;
+        Thread_Puente tmp = list->head;
         while (tmp->next != NULL)
         {
             tmp = tmp->next;
         }
         tmp->next = node;
     }
+    list->tamanio = list->tamanio + 1;
 }
 
-Thread_Carro_Puente get_node(ThreadList list, int thread_id)
+void agregar_carro(Thread_Carro node, ThreadListCarro list)
+{
+    if (list->head == NULL)
+    {
+        list->head = node;
+    }
+    else
+    {
+        Thread_Carro tmp = list->head;
+        while (tmp->next != NULL)
+        {
+            tmp = tmp->next;
+        }
+        tmp->next = node;
+    }
+    list->tamanio = list->tamanio + 1;
+}
+
+
+void agregar_thread(Thread node, ThreadList list)
 {
 
-    if (list->head->thread_id == thread_id)
+    if (list->head == NULL)
+    {
+        list->head = node;
+    }
+    else
+    {
+        Thread tmp = list->head;
+        while (tmp->next != NULL)
+        {
+            tmp = tmp->next;
+        }
+        tmp->next = node;
+    }
+    list->tamanio = list->tamanio + 1;
+
+}
+
+
+Thread buscar_nodo_thread_carro(ThreadList list, long thread_identificador)
+{
+    if (list->head->carro->thread_identificador == thread_identificador)
     {
         return list-> head;
     }
     else
     {
-        Thread_Carro_Puente tmp = list->head;
-        while (tmp->thread_id != thread_id)
+        Thread tmp = list->head;
+        while (tmp->carro->thread_identificador != thread_identificador)
         {
 
             tmp = tmp->next;
@@ -41,100 +81,99 @@ Thread_Carro_Puente get_node(ThreadList list, int thread_id)
         }
         return tmp;
     }
-
 }
 
-/* Prints the list */
-void print_list(ThreadList list)
+
+
+Thread buscar_nodo_thread_puente(ThreadList list, long thread_identificador)
 {
-    if (list->head == NULL)
+    if (list->head->puente->thread_identificador == thread_identificador)
     {
-        printf("Thread list is empty\n");
+        return list-> head;
     }
     else
     {
-        Thread_Carro_Puente tmp = list->head;
-        while (tmp != NULL)
+        Thread tmp = list->head;
+        while (tmp->puente->thread_identificador != thread_identificador)
         {
-            printf("ID: %ld\n", tmp->thread_id);
-            printf("Scheduler: %d\n", tmp->calendarizador);
-            printf("Type: %d\n", tmp->tipo);
+
             tmp = tmp->next;
+            if (!tmp)
+            {
+                return NULL;
+            }
         }
+        return tmp;
     }
 }
+
+
+
+Thread_Carro buscar_nodo_carro(ThreadListCarro list, long thread_identificador)
+{
+    if (list->head->thread_identificador == thread_identificador)
+    {
+        return list-> head;
+    }
+    else
+    {
+        Thread_Carro tmp = list->head;
+        while (tmp->thread_identificador != thread_identificador)
+        {
+
+            tmp = tmp->next;
+            if (!tmp)
+            {
+                return NULL;
+            }
+        }
+        return tmp;
+    }
+}
+
+
 
 /* Removes a thread node from the list */
-void remove_node(int id, ThreadList list)
+void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador)
 {
-    if (list->head == NULL)
-    {
-        printf("Thread list is empty\n");
-    }
-    else
-    {
-        Thread_Carro_Puente tmp = list->head;
-        if (tmp->thread_id == id)
-        {
-            if (tmp->next == NULL)
-            {
-                list->head = NULL;
-            }
-            else
-            {
-                list->head = tmp->next;
-            }
-        }
-        else if (tmp->next != NULL)
-        {
-            while (tmp->next != NULL)
-            {
-                if (tmp->next->thread_id == id)
-                {
-                    if (tmp->next->next != NULL)
-                    {
-                        tmp->next = tmp->next->next;
-                        break;
-                    }
-                    else
-                    {
-                        tmp->next = NULL;
-                        break;
-                    }
-                }
-                tmp = tmp->next;
-            }
-            //printf("Thread not in list\n");
-        }
-    }
+	if (list->head == NULL)
+	{
+		printf("Thread list carro is empty\n");
+	}
+	else
+	{
+		Thread_Carro tmp = list->head;
+		if (tmp->thread_identificador == thread_identificador)
+		{
+			if (tmp->next == NULL)
+			{
+				list->head = NULL;
+			}
+			else
+			{
+				list->head = tmp->next;
+			}
+		}
+		else if (tmp->next != NULL)
+		{
+			while (tmp->next != NULL)
+			{
+				if (tmp->next->thread_identificador == thread_identificador)
+				{
+					if (tmp->next->next != NULL)
+					{
+						tmp->next = tmp->next->next;
+						break;
+					}
+					else
+					{
+						tmp->next = NULL;
+						break;
+					}
+				}
+				tmp = tmp->next;
+			}
+		}
+	}
 }
 
-/* Free the memory allocated for each node of the list */
-void free_mem(ThreadList list)
-{
-    if (list->head == NULL)
-    {
-        printf("List is empty\n");
-    }
-    else
-    {
-        Thread_Carro_Puente tmp = list->head;
-        while (tmp != NULL)
-        {
-            Thread_Carro_Puente tmp2 = tmp;
-            tmp = tmp->next;
-            free(tmp2);
-        }
-        free(tmp);
-    }
-}
-
-/* Copies a node to a new node */
-void copy_node(Thread_Carro_Puente src, Thread_Carro_Puente dst)
-{
-    dst->thread_id = src->thread_id;
-    dst->calendarizador = src->calendarizador;
-    dst->tipo = src->tipo;
-    dst->puente = src->puente;
-    dst->next = NULL;
-}

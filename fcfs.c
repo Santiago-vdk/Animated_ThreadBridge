@@ -3,7 +3,7 @@
 #include "thread_data.h"
 #include "globales.h"
 
-void ejecutar(Puente puente, ThreadList lado_izq, ThreadList lado_der, int control, int k)
+/*void ejecutar(Puente puente, ThreadList lado_izq, ThreadList lado_der, int control, int k)
 {
 
     ThreadList lado_izq;
@@ -176,3 +176,4 @@ void ejecutar(Puente puente, ThreadList lado_izq, ThreadList lado_der, int contr
 
     }
 }
+*/

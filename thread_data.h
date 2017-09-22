@@ -15,51 +15,103 @@
 #define SEMAFORO	1
 #define JUNGLA		2
 #define K		    10
-#define NUM_THREADS 100
-// Estructura general para cada objeto sea de tipo carro o un lado del puente
-// Cada nodo de la lista representa un nodo Thread_Carro_Puente con estos atributos
-typedef struct thread_data
+
+
+typedef struct thread_carro
 {
-	long thread_id;             // Id para mantener referencia a los hilos
-	int calendarizador;              // Tipo de calendarizador en uso
-	int tipo;                   // Tipo de carro
-	int puente;                 // Puente al que pertenece
+    long thread_identificador;             // Id para mantener referencia a los hilos
+    long calendarizador;              // Tipo de calendarizador en uso
+
+	// Para los carros
+	int tipo_carro;                   // Tipo de carro
 	int limite_tiempo;
 	int corriendo;
-	struct thread_data *next;
-	pthread_t thread;
+	int vida_carro;
+	int puente;
+	int velocidad;
+
+	struct thread_carro *next;
+
+	pthread_t hilo;
+} *Thread_Carro;
 
 
-} *Thread_Carro_Puente;
+
+typedef struct thread_list_carro
+{
+	Thread_Carro head;
+	int tamanio;
+} *ThreadListCarro;
+
+
+typedef struct thread_puente
+{
+	long thread_identificador;             // Id para mantener referencia a los hilos
+	long calendarizador;              // Tipo de calendarizador en uso
+
+	// Para el metodo del trafico
+    int k;                      // Valor k de cantidad de carros que puede dejar pasar el transito
+
+    // Para el metodo del semaforo
+    int semaforo_izquierda;     // Semaforo del lado izquierdo
+    int semaforo_derecha;       // Semaforo del lado derecho
+    int tiempo_semaforo_izquierda;         // Tiempo que pasara el tsemaforo en cada estado
+    int tiempo_semaforo_derecha; // Tiempo que pasara el semaforo en cada estado
+
+    // Para todos los metodos
+    int puente_id;              //identificador del puente
+    int ocupancia;              // Cantidad de carros en el puente
+    int capacidad;              // Capacidad del puente
+    int control;                // Metodo de control, deberia ser redundante
+    ThreadListCarro carros_circulando;          // Lista de carros que estan circulando, se utiliza para que los carros sepan quien esta adelante y atras
+    ThreadListCarro carros_izquierda;    // Lista de carros en el lado izquierdo
+	ThreadListCarro carros_derecha;      // Lista de carros en el lado derecho
+
+	struct thread_puente *next;
+
+    pthread_t hilo;
+} *Thread_Puente;
+
+
+typedef struct thread_list_puente
+{
+	Thread_Puente head;
+	int tamanio;
+} *ThreadListPuente;
+
+
+
+typedef struct thread
+{
+    Thread_Carro carro;
+    Thread_Puente puente;
+
+    struct thread *next;
+} *Thread;
 
 typedef struct thread_list
 {
-	Thread_Carro_Puente head;
-	int length;
+	Thread head;
+	int tamanio;
 } *ThreadList;
 
 
 
-// Estructura para cada uno de los puentes, el puente en general no el lado
-// Deben existir 4, 1 por puente
-typedef struct puentes
-{
-	int bridge_id;                  // Identificador del puente
-	ThreadList current_cars;        // Lista de carros en el puente
-	int occupancy;                  // Cantidad de carros en el puente
-	int capacity;                   // Capacidad del puente
-	int control;                    // Algoritmo de control, semaforo, oficial o JL
-	int k;                          // Cantidad de carros que pueden pasar cuando el algoritmo es de oficial
-	int tiempo_semaforo;            // Tiempo que se mantiene el semaforo en verde o en rojo
-	ThreadList carros_izq;
-	ThreadList carros_der;
-} *Puente;
+void agregar_puente(Thread_Puente node, ThreadListPuente list);
+void agregar_carro(Thread_Carro node, ThreadListCarro list);
+void agregar_thread(Thread node, ThreadList list);
 
-void add_node(Thread_Carro_Puente node, ThreadList list);
-Thread_Carro_Puente get_node(ThreadList list, int id);
-void print_list(ThreadList list);
-void remove_node(int id, ThreadList list);
-void free_mem(ThreadList list);
-void copy_node(Thread_Carro_Puente src, Thread_Carro_Puente dst);
+Thread buscar_nodo_thread_carro(ThreadList list, long thread_identificador);
+Thread buscar_nodo_thread_puente(ThreadList list, long thread_identificador);
+
+Thread_Carro buscar_nodo_carro(ThreadListCarro list, long thread_identificador);
+
+
+void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador);
+
+//void print_list(ThreadList list);
+//void remove_node(int id, ThreadList list);
+//void free_mem(ThreadList list);
+//void copy_node(Thread_Carro_Puente src, Thread_Carro_Puente dst);
 
 #endif

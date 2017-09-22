@@ -1,0 +1,4 @@
+ocupancia=0
+capacidad=4
+control=0
+k=5
