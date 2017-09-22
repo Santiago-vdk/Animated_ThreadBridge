@@ -1,8 +1,10 @@
+#include <pthread.h>
+
 #ifndef _THREAD_DATA_H
 #define _THREAD_DATA_H
 
 #define RR		    0
-#define FIFO	    1
+#define FCFS	    1
 #define SJF		    2
 #define PQ          3   // Priority Queue
 #define RT          4
@@ -23,8 +25,10 @@ typedef struct thread_data
 	int tipo;                   // Tipo de carro
 	int puente;                 // Puente al que pertenece
 	int limite_tiempo;
+	int corriendo;
 	struct thread_data *next;
 	pthread_t thread;
+
 
 } *Thread_Carro_Puente;
 
@@ -47,6 +51,8 @@ typedef struct puentes
 	int control;                    // Algoritmo de control, semaforo, oficial o JL
 	int k;                          // Cantidad de carros que pueden pasar cuando el algoritmo es de oficial
 	int tiempo_semaforo;            // Tiempo que se mantiene el semaforo en verde o en rojo
+	ThreadList carros_izq;
+	ThreadList carros_der;
 } *Puente;
 
 void add_node(Thread_Carro_Puente node, ThreadList list);

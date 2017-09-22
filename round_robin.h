@@ -1,3 +1,5 @@
+#include "thread_data.h"
+
 #ifndef ROUND_ROBIN_H_INCLUDED
 #define ROUND_ROBIN_H_INCLUDED
 
