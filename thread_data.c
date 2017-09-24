@@ -146,8 +146,6 @@ void eliminar_nodo_thread(ThreadList list, long thread_identificador)
         Thread tmp = list->head;
         if (tmp->thread_identificador == thread_identificador)
         {
-            printf("Elimino cabeza \n");
-
             list->head = tmp->next;     // La cabeza va a ser el siguiente
             if(list->head != NULL)
             {
@@ -203,8 +201,6 @@ void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador)
         Thread_Carro tmp = list->head;
         if (tmp->thread_identificador == thread_identificador)
         {
-            printf("Elimino cabeza \n");
-
             list->head = tmp->next;     // La cabeza va a ser el siguiente
             if(list->head != NULL)
             {

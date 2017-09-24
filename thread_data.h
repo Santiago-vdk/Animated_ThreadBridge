@@ -17,6 +17,8 @@
 #define K		    10
 
 
+
+
 typedef struct thread_carro
 {
     long thread_identificador;             // Id para mantener referencia a los hilos
