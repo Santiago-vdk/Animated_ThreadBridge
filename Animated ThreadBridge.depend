@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1506123885 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
+1506218793 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
 	<stdio.h>
 	<stdlib.h>
 	"mythreads/mythread.h"
@@ -8,10 +8,10 @@
 
 1505762547 source:/home/santiago/Desktop/Animated_ThreadBridge/test.c
 
-1506123926 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
+1506214009 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
 	<pthread.h>
 
-1506122812 source:/home/santiago/Desktop/Animated_ThreadBridge/thread_data.c
+1506217758 source:/home/santiago/Desktop/Animated_ThreadBridge/thread_data.c
 	<stdlib.h>
 	<stdio.h>
 	"thread_data.h"

@@ -20,7 +20,6 @@
 typedef struct thread_carro
 {
     long thread_identificador;             // Id para mantener referencia a los hilos
-    long calendarizador;              // Tipo de calendarizador en uso
 
 	// Para los carros
 	int tipo_carro;                   // Tipo de carro
@@ -31,6 +30,7 @@ typedef struct thread_carro
 	int velocidad;
 
 	struct thread_carro *next;
+	struct thread_carro *prev;
 
 	pthread_t hilo;
 } *Thread_Carro;
@@ -40,14 +40,14 @@ typedef struct thread_carro
 typedef struct thread_list_carro
 {
 	Thread_Carro head;
+	Thread_Carro tail;
 	int tamanio;
 } *ThreadListCarro;
 
 
 typedef struct thread_puente
 {
-	long thread_identificador;             // Id para mantener referencia a los hilos
-	long calendarizador;              // Tipo de calendarizador en uso
+    long thread_identificador;             // Id para mantener referencia a los hilos
 
 	// Para el metodo del trafico
     int k;                      // Valor k de cantidad de carros que puede dejar pasar el transito
@@ -76,6 +76,7 @@ typedef struct thread_puente
 typedef struct thread_list_puente
 {
 	Thread_Puente head;
+	Thread_Puente tail;
 	int tamanio;
 } *ThreadListPuente;
 
@@ -85,13 +86,18 @@ typedef struct thread
 {
     Thread_Carro carro;
     Thread_Puente puente;
+	long thread_identificador;             // Id para mantener referencia a los hilos
+    long calendarizador;              // Tipo de calendarizador en uso
+
 
     struct thread *next;
+    struct thread *prev;
 } *Thread;
 
 typedef struct thread_list
 {
 	Thread head;
+	Thread tail;
 	int tamanio;
 } *ThreadList;
 
@@ -101,13 +107,16 @@ void agregar_puente(Thread_Puente node, ThreadListPuente list);
 void agregar_carro(Thread_Carro node, ThreadListCarro list);
 void agregar_thread(Thread node, ThreadList list);
 
-Thread buscar_nodo_thread_carro(ThreadList list, long thread_identificador);
-Thread buscar_nodo_thread_puente(ThreadList list, long thread_identificador);
+Thread_Carro pop_primer_thread_carro(ThreadListCarro list);
+
+Thread buscar_nodo_thread(ThreadList list, long thread_identificador);
 
 Thread_Carro buscar_nodo_carro(ThreadListCarro list, long thread_identificador);
 
 
 void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador);
+void eliminar_nodo_thread(ThreadList list, long thread_identificador);
+
 
 //void print_list(ThreadList list);
 //void remove_node(int id, ThreadList list);

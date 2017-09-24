@@ -6,7 +6,7 @@
 #include <time.h>
 
 int thread_actual = -1;
-int thread_terminado = 0;
+int thread_terminado = 1;
 
 pthread_t thread_calendarizador;
 pthread_t thread_generador_carros;
@@ -15,56 +15,86 @@ ThreadList threads;     // Todos los threads
 
 void *calendarizador_fcfs(void *t)
 {
+   // Thread thread_corriendo;
+    Thread temporal = threads->head;
     while(1)
     {
-        printf("Calendarizando FCFS \n");
 
         if(threads->head != NULL)
         {
-            if(thread_terminado == 0)
+
+            //thread_corriendo = temporal;
+            thread_actual = temporal->thread_identificador;
+            //printf("Thread actual %d \n", thread_actual);
+            //printf("id carro %d \n", threads->head->puente->ocupancia);
+            thread_terminado = 0;
+
+            while (thread_terminado == 0)
             {
-                for(int i =0; i < threads->tamanio; i++)
-                {
-                    //Thread tmp = buscar_nodo_thread(threads,i);
-                    thread_actual = i;
-                }
-            }
-            else
-            {
-                printf("Esperando que thread actual termine \n");
+                //printf("Thread con id %d corriendo \n", thread_corriendo->thread_identificador);
             }
 
+
+            if(temporal->next != NULL)
+            {
+
+              //  printf("entre\n");
+                temporal = temporal->next;      // Obtengo el siguiente
+               // printf("Termine thread Prev %p\n", temporal->prev);
+               // printf("Termine thread Next %p\n", temporal->next);
+                //printf("Termine thread %p\n", temporal->carro->corriendo);
+            } else {
+               printf("Llegue al final de la cola \n");
+                temporal = threads->head;
+
+            }
 
         }
         else
         {
             printf("No hay hilos para calendarizar \n");
         }
-
         sleep(1);
-
-
-
     }
-
 }
+
+
 
 void *controlador_carros(void *carro)
 {
-
-
     Thread_Carro data = (Thread_Carro) carro;
+    int distancia_tmp = 0;
 
     while(1)
     {
-        if(thread_actual == data->thread_identificador)
-        {
-            printf("Carro %lu moviendose \n", data->thread_identificador);
-            thread_terminado = 1;
-        }
-        sleep(data->velocidad);
-    }
 
+        if(thread_actual == data->thread_identificador && thread_terminado == 0)
+        {
+            if(data->corriendo == 1)
+            {
+
+                ThreadListCarro lista_carros_tmp = buscar_nodo_thread(threads,data->puente)->puente->carros_circulando;  // Obtengo la lista de los carros circulando
+                Thread_Puente puente_tmp = buscar_nodo_thread(threads, data->puente)->puente;  // Obtengo de los hilos el puente del carro
+
+
+                if(buscar_nodo_carro(lista_carros_tmp,data->thread_identificador)->prev == NULL )    // Si no hay carros al frente
+                {
+                    if(distancia_tmp == puente_tmp->capacidad)          // Ya termino de correrse todos los espacios disponibles
+                    {
+                        printf("Carro %d termino de pasar el puente\n", data->thread_identificador);
+                        eliminar_nodo_thread(threads,data->thread_identificador);
+                        thread_terminado = 1;
+                    }
+                    else
+                    {
+                        printf("Carro %lu moviendose \n", data->thread_identificador);
+                        sleep(data->velocidad);                                             // Simulo la velocidad
+                        distancia_tmp ++;                                                   // Auento la distancia recorrida
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -74,9 +104,9 @@ void *algoritmo_puente_oficial(void *puente)
 
     while(1)
     {
-        if(thread_actual == data->thread_identificador)
+        if(thread_actual == data->thread_identificador && thread_terminado == 0)
         {
-            printf("Ejecutando algoritmo de puente con metodo del oficial\n");
+            // printf("Ejecutando algoritmo de puente con metodo del oficial\n");
 
             // Proceso lado izquierdo
             for (int carros_izq = 0; carros_izq < data->k; carros_izq++)
@@ -85,6 +115,7 @@ void *algoritmo_puente_oficial(void *puente)
                 if (data->ocupancia == data->capacidad)
                 {
                     printf("Esperando que terminen carros del lado derecho \n");
+                    // Marcar procesamiento del puente terminado
                 }
                 // Puente con campo
                 else
@@ -92,15 +123,23 @@ void *algoritmo_puente_oficial(void *puente)
                     if(data->carros_izquierda->tamanio > 0)
                     {
                         printf("Agregando carro a circulacion \n");
-                        Thread_Carro tmp = buscar_nodo_carro(data->carros_izquierda, carros_izq);       // Posible problema
-                        tmp-> corriendo = 1;
-                        eliminar_nodo_carro(data->carros_izquierda, carros_izq);
-                        agregar_carro(data->carros_circulando, tmp);
+
+                        Thread_Carro tmp = pop_primer_thread_carro(data->carros_izquierda); // Extraigo la cabeza de la lista del lado izquierdo y reordeno
+
+                        //eliminar_nodo_carro(data->carros_izquierda, data->thread_identificador);
+
+                        agregar_carro(tmp,data->carros_circulando);     // Paso el thread a los que estan circulando
+                        buscar_nodo_thread(threads,tmp->thread_identificador)->carro->corriendo = 1; // Poner a caminar el carro
+
                         data->ocupancia = data->ocupancia + 1;         // Solo se aumenta la ocupancia, que el carro salga del puente es su responsabilidad
+                        thread_terminado = 1;
+                        break;
                     }
                     else
                     {
                         printf("No hay carros a la izquierda del puente \n");
+                        thread_terminado = 1;
+                        break;
                     }
 
 
@@ -139,7 +178,7 @@ void *algoritmo_puente_leyjungla(void *t)
 // Utiliza la lista global de los hilos para encontrar el puente en el que tiene que insertar carros
 void *generador_carros(void *t)
 {
-    int i = 0;
+    int i = 4;
 
     while(1)
     {
@@ -148,28 +187,36 @@ void *generador_carros(void *t)
         // Se agrega el carro a la lista que le corresponde, sea izquierdo o derecho
         Thread_Carro carro = (Thread_Carro) malloc(sizeof(struct thread_carro));
         carro->thread_identificador = i;
-        carro -> calendarizador=FCFS;
+        //carro -> calendarizador=FCFS;
         carro -> tipo_carro = CARRO;
         carro -> limite_tiempo = NULL;
         carro -> corriendo = 0;
         carro -> vida_carro = NULL;
         carro -> puente = 0;
-        carro -> next = NULL;
+
         carro -> velocidad = 4;
 
         pthread_t carro_thread;
         carro -> hilo = carro_thread;
 
-        //Thread_Puente puente_tmp = buscar_nodo_thread_puente(threads,0);       // Selecciono el primer puente (0) de la lista global
-        // ThreadListCarro lado_izq_tmp = puente_tmp->carros_izquierda;   // Selecciono el lado izquierdo del puente 0
-        agregar_carro(carro, buscar_nodo_thread_puente(threads,0)->puente->carros_izquierda);                                   // Agrego el carro a ese lado
 
+        agregar_carro(carro, buscar_nodo_thread(threads,0)->puente->carros_izquierda);   // Agrego el carro a ese lado
+
+        //ThreadListCarro lista_tmp = buscar_nodo_thread_puente(threads,0)->puente->carros_izquierda;
+
+        Thread thread_nuevo = (Thread) malloc(sizeof(struct thread));
+        thread_nuevo->puente=NULL;
+        thread_nuevo->carro=carro;
+        thread_nuevo->calendarizador=FCFS;
+        thread_nuevo->thread_identificador=i;
+
+        agregar_thread(thread_nuevo,threads);
 
         pthread_create(&carro_thread, NULL, controlador_carros, (void *) carro);
-        pthread_join(carro_thread, NULL);
+        //pthread_join(carro_thread, NULL);
 
 
-        sleep(2);
+        sleep(200);
         i++;
     }
 }
@@ -203,12 +250,13 @@ int main()
     //leer_config_puente_3();         // Lee e instancia cada puente
 
     threads = (ThreadList) malloc(sizeof(struct thread_list));              // Inicializo una lista con todos los threads puentes y carros
+    threads -> tamanio = 0;
 
     pthread_create(&thread_calendarizador, NULL, calendarizador_fcfs, NULL);
 
 
     Thread_Puente oficial_puente_0 = (Thread_Puente) malloc(sizeof(struct thread_puente));
-    oficial_puente_0 ->calendarizador=0;
+    //oficial_puente_0 ->calendarizador=0;
 
     oficial_puente_0 -> thread_identificador = 0;              // El id de los threads en los puentes es fijo
     oficial_puente_0 -> puente_id = 0;             // identificador del puente, para los puentes es el mismo que el id de thread
@@ -216,17 +264,27 @@ int main()
     oficial_puente_0 -> capacidad = 4;              // Capacidad, numero de carros en el puente al mismo tiempo
     oficial_puente_0 -> control = OFICIAL;            // Algoritmo de control del puente
     oficial_puente_0 -> k = 5;
+
     oficial_puente_0 -> carros_circulando = malloc(sizeof(struct thread_list));     // Contiene todos los threads de carros del puente
+    oficial_puente_0 -> carros_circulando->tamanio = 0;
+
     oficial_puente_0 -> carros_izquierda = malloc(sizeof(struct thread_list));
+    oficial_puente_0 -> carros_izquierda -> tamanio = 0;
+
     oficial_puente_0 -> carros_derecha = malloc(sizeof(struct thread_list));
-    oficial_puente_0 -> next = NULL;
+    oficial_puente_0 -> carros_derecha -> tamanio = 0;
+
+    //oficial_puente_0 -> next = NULL;
 
     pthread_t thread_puente_0;           // Creo la instancia del thread del puente
     oficial_puente_0->hilo=thread_puente_0;         // Referencio esa instancia al objeto del puente para poder controlar aspectos del hilo
 
+
     Thread thread_nuevo = (Thread) malloc(sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
     thread_nuevo->puente=oficial_puente_0;
     thread_nuevo->carro=NULL;                   // Solo me interesa en este caso el thread de carro
+    thread_nuevo->calendarizador=FCFS;
+    thread_nuevo->thread_identificador=0;
     agregar_thread(thread_nuevo,threads);           // Agrego el thread puente a la lista de threads
 
 
@@ -236,7 +294,7 @@ int main()
 
     pthread_join(thread_puente_0, NULL);
     pthread_join(thread_calendarizador, NULL);
-    // pthread_join(thread_generador_carros, NULL);
+    pthread_join(thread_generador_carros, NULL);
 
     return 0;
 
