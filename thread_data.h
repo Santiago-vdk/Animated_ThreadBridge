@@ -25,11 +25,12 @@ typedef struct thread_carro
 
 	// Para los carros
 	int tipo_carro;                   // Tipo de carro
-	int limite_tiempo;
-	int corriendo;
-	int vida_carro;
-	int puente;
-	int velocidad;
+	int limite_tiempo;                  // Tiempo de vida
+	int corriendo;                  // Para saber si puede avanzar
+	int vida_carro;             // Vida antes de explotar (radioactivos)
+	int puente;                 // Puente al que pertenece
+	int velocidad;              // Velocidad del carro
+	int lado_izquierdo;         // Para saber de cual lado es si lado_izquierdo = 1, el carro fue insertado del lado izq si es 0 fue del derecho
 
 	struct thread_carro *next;
 	struct thread_carro *prev;
