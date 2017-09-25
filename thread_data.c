@@ -8,25 +8,29 @@ void agregar_puente(Thread_Puente node, ThreadListPuente list)
     {
         list->head = node;
         list->tail = node;
+        list->tamanio += 1;
     }
     else
     {
         Thread tmp = list->tail;
         list->tail = node;
         tmp->next = list->tail;
+        list->tamanio += 1;
     }
-    list->tamanio = list->tamanio + 1;
 }
 
 
 
 void agregar_carro(Thread_Carro node, ThreadListCarro list)
 {
+        node->prev = NULL;
+    node->next = NULL;node->prev = NULL;
+    node->next = NULL;
     if (list->head == NULL)
     {
         list->head = node;
         list->tail = node;
-        list->tamanio = list->tamanio + 1;
+        list->tamanio += 1;
     }
     else
     {
@@ -42,6 +46,8 @@ void agregar_carro(Thread_Carro node, ThreadListCarro list)
 void agregar_thread(Thread node, ThreadList list)
 {
 
+    node->prev = NULL;
+    node->next = NULL;
     if (list->head == NULL)
     {
         list->head = node;
@@ -60,12 +66,26 @@ void agregar_thread(Thread node, ThreadList list)
 
 Thread_Carro pop_primer_thread_carro(ThreadListCarro list)
 {
-
     if (list->head != NULL)
     {
-        Thread tmp = list->head;
+        Thread_Carro tmp = list->head;
 
-        if(list->head->next != NULL)
+        if(tmp->next == NULL) {
+            list->head = NULL;
+            list->tail = NULL;
+            list->tamanio -= 1;
+
+        }else{
+            tmp->next->prev = NULL;
+            list->head = tmp->next;
+            tmp->next = NULL;
+            list->tamanio -= 1;
+
+        }
+ return tmp;
+
+
+      /*if(list->head->next != NULL)
         {
             // Si la lista tiene N elementos, lo saca de la lista y corre puntero de la cabeza
             list->head = list->head->next;
@@ -77,8 +97,10 @@ Thread_Carro pop_primer_thread_carro(ThreadListCarro list)
             // si la lista solo tiene un elemento coloca la cabeza en nulo
             list->head = NULL;
         }
-        list->tamanio = list->tamanio - 1;
-        return tmp;
+        list->tamanio = list->tamanio - 1;*/
+
+
+
     }
     else
     {
@@ -144,47 +166,51 @@ void eliminar_nodo_thread(ThreadList list, long thread_identificador)
     else
     {
         Thread tmp = list->head;
-        if (tmp->thread_identificador == thread_identificador)
-        {
-            list->head = tmp->next;     // La cabeza va a ser el siguiente
-            if(list->head != NULL)
-            {
-                list->head->prev = NULL;
-            }
-            free(tmp);
-            list->tamanio-=1;
 
-        }
-        else
-        {
-            while (tmp->next != NULL)
+        if(list->head == list->tail && tmp->thread_identificador == thread_identificador){
+           list->head = NULL;
+           list->tail = NULL;
+           list->tamanio-=1;
+        } else {
+
+            if (tmp->thread_identificador == thread_identificador)
             {
-                if (tmp->next->thread_identificador == thread_identificador)
+                list->head = tmp->next;     // La cabeza va a ser el siguiente
+                if(list->head != NULL)
                 {
-                    Thread tmp2 = tmp->next;
-                    if (tmp->next->next != NULL)
-                    {
-                        tmp->next = tmp->next->next;
-                        tmp->next->prev = tmp;
-                        list->tamanio-=1;
-                        free(tmp2);
-                        break;
-                    }
-                    else //eliminar tail
-                    {
-
-                        tmp->next = NULL;
-                        list->tail=tmp;
-                        list->tamanio-=1;
-                        free(tmp2);
-                        break;
-                    }
-
+                    list->head->prev = NULL;
                 }
-                tmp = tmp->next;
+                free(tmp);
+                list->tamanio-=1;
             }
+            else
+            {
+                while (tmp->next != NULL)
+                {
+                    if (tmp->next->thread_identificador == thread_identificador)
+                    {
+                        Thread tmp2 = tmp->next;
+                        if (tmp->next->next != NULL)
+                        {
+                            tmp->next = tmp->next->next;
+                            tmp->next->prev = tmp;
+                            list->tamanio-=1;
+                            free(tmp2);
+                            break;
+                        }
+                        else //eliminar tail
+                        {
 
-
+                            tmp->next = NULL;
+                            list->tail=tmp;
+                            list->tamanio-=1;
+                            free(tmp2);
+                            break;
+                        }
+                    }
+                    tmp = tmp->next;
+                }
+            }
         }
     }
 }
@@ -199,46 +225,49 @@ void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador)
     else
     {
         Thread_Carro tmp = list->head;
-        if (tmp->thread_identificador == thread_identificador)
-        {
-            list->head = tmp->next;     // La cabeza va a ser el siguiente
-            if(list->head != NULL)
+
+        if(list->head == list->tail && tmp->thread_identificador == thread_identificador){
+           list->head = NULL;
+           list->tail = NULL;
+           list->tamanio-=1;
+        } else {
+            if (tmp->thread_identificador == thread_identificador)
             {
-                list->head->prev = NULL;
-            }
-            free(tmp);
-            list->tamanio-=1;
-        }
-        else
-        {
-            while (tmp->next != NULL)
-            {
-                if (tmp->next->thread_identificador == thread_identificador)
+                list->head = tmp->next;     // La cabeza va a ser el siguiente
+                if(list->head != NULL)
                 {
-                    Thread_Carro tmp2 = tmp->next;
-                    if (tmp->next->next != NULL)
-                    {
-                        tmp->next = tmp->next->next;
-                        tmp->next->prev = tmp;
-                        list->tamanio-=1;
-                        free(tmp2);
-                        break;
-                    }
-                    else //eliminar tail
-                    {
-
-                        tmp->next = NULL;
-                        list->tail=tmp;
-                        list->tamanio-=1;
-                        free(tmp2);
-                        break;
-                    }
-
+                    list->head->prev = NULL;
                 }
-                tmp = tmp->next;
+                free(tmp);
+                list->tamanio-=1;
             }
-
-
+            else
+            {
+                while (tmp->next != NULL)
+                {
+                    if (tmp->next->thread_identificador == thread_identificador)
+                    {
+                        Thread_Carro tmp2 = tmp->next;
+                        if (tmp->next->next != NULL)
+                        {
+                            tmp->next = tmp->next->next;
+                            tmp->next->prev = tmp;
+                            list->tamanio-=1;
+                            free(tmp2);
+                            break;
+                        }
+                        else //eliminar tail
+                        {
+                            tmp->next = NULL;
+                            list->tail=tmp;
+                            list->tamanio-=1;
+                            free(tmp2);
+                            break;
+                        }
+                    }
+                    tmp = tmp->next;
+                }
+            }
         }
     }
 }

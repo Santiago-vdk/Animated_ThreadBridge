@@ -35,7 +35,7 @@ typedef struct thread_carro
 	struct thread_carro *next;
 	struct thread_carro *prev;
 
-	pthread_t hilo;
+	//pthread_t hilo;
 } *Thread_Carro;
 
 
@@ -72,7 +72,7 @@ typedef struct thread_puente
 
 	struct thread_puente *next;
 
-    pthread_t hilo;
+   // pthread_t hilo;
 } *Thread_Puente;
 
 
