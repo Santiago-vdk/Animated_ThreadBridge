@@ -23,8 +23,9 @@ void agregar_puente(Thread_Puente node, ThreadListPuente list)
 
 void agregar_carro(Thread_Carro node, ThreadListCarro list)
 {
-        node->prev = NULL;
-    node->next = NULL;node->prev = NULL;
+    node->prev = NULL;
+    node->next = NULL;
+    node->prev = NULL;
     node->next = NULL;
     if (list->head == NULL)
     {
@@ -70,36 +71,53 @@ Thread_Carro pop_primer_thread_carro(ThreadListCarro list)
     {
         Thread_Carro tmp = list->head;
 
-        if(tmp->next == NULL) {
+        if(tmp->next == NULL)
+        {
             list->head = NULL;
             list->tail = NULL;
             list->tamanio -= 1;
 
-        }else{
+        }
+        else
+        {
             tmp->next->prev = NULL;
             list->head = tmp->next;
             tmp->next = NULL;
             list->tamanio -= 1;
 
         }
- return tmp;
+        return tmp;
 
+    }
+    else
+    {
+        printf("Lista vacia\n");
+        return NULL;
+    }
 
-      /*if(list->head->next != NULL)
+}
+
+Thread pop_primer_thread(ThreadList list){
+   if (list->head != NULL)
+    {
+        Thread tmp = list->head;
+
+        if(tmp->next == NULL)
         {
-            // Si la lista tiene N elementos, lo saca de la lista y corre puntero de la cabeza
-            list->head = list->head->next;
-            tmp->next  = NULL;
-            list->head->prev = NULL;
+            list->head = NULL;
+            list->tail = NULL;
+            list->tamanio -= 1;
+
         }
         else
         {
-            // si la lista solo tiene un elemento coloca la cabeza en nulo
-            list->head = NULL;
+            tmp->next->prev = NULL;
+            list->head = tmp->next;
+            tmp->next = NULL;
+            list->tamanio -= 1;
+
         }
-        list->tamanio = list->tamanio - 1;*/
-
-
+        return tmp;
 
     }
     else
@@ -167,11 +185,14 @@ void eliminar_nodo_thread(ThreadList list, long thread_identificador)
     {
         Thread tmp = list->head;
 
-        if(list->head == list->tail && tmp->thread_identificador == thread_identificador){
-           list->head = NULL;
-           list->tail = NULL;
-           list->tamanio-=1;
-        } else {
+        if(list->head == list->tail && tmp->thread_identificador == thread_identificador)
+        {
+            list->head = NULL;
+            list->tail = NULL;
+            list->tamanio-=1;
+        }
+        else
+        {
 
             if (tmp->thread_identificador == thread_identificador)
             {
@@ -226,11 +247,14 @@ void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador)
     {
         Thread_Carro tmp = list->head;
 
-        if(list->head == list->tail && tmp->thread_identificador == thread_identificador){
-           list->head = NULL;
-           list->tail = NULL;
-           list->tamanio-=1;
-        } else {
+        if(list->head == list->tail && tmp->thread_identificador == thread_identificador)
+        {
+            list->head = NULL;
+            list->tail = NULL;
+            list->tamanio-=1;
+        }
+        else
+        {
             if (tmp->thread_identificador == thread_identificador)
             {
                 list->head = tmp->next;     // La cabeza va a ser el siguiente

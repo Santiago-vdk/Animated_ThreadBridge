@@ -58,6 +58,12 @@ void *calendarizador_fcfs(void *t)
                 //printf("Thread con id %d corriendo \n", thread_corriendo->thread_identificador);
             }
 
+            if(buscar_nodo_thread(threads,thread_actual) != NULL){
+                printf(ANSI_COLOR_YELLOW "Pop out & push in \n" ANSI_COLOR_RESET);
+
+                agregar_thread(pop_primer_thread(threads),threads);
+
+            }
 
             if(temporal->next != NULL)
             {

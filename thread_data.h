@@ -105,17 +105,15 @@ typedef struct thread_list
 } *ThreadList;
 
 
-
 void agregar_puente(Thread_Puente node, ThreadListPuente list);
 void agregar_carro(Thread_Carro node, ThreadListCarro list);
 void agregar_thread(Thread node, ThreadList list);
 
 Thread_Carro pop_primer_thread_carro(ThreadListCarro list);
+Thread pop_primer_thread(ThreadList list);
 
 Thread buscar_nodo_thread(ThreadList list, long thread_identificador);
-
 Thread_Carro buscar_nodo_carro(ThreadListCarro list, long thread_identificador);
-
 
 void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador);
 void eliminar_nodo_thread(ThreadList list, long thread_identificador);
