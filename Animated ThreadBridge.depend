@@ -1,17 +1,18 @@
 # depslib dependency file v1.0
-1506308951 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
+1506373999 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
 	<stdio.h>
 	<stdlib.h>
 	"mythreads/mythread.h"
 	"thread_data.h"
 	<time.h>
+	"puentes.h"
 
 1505762547 source:/home/santiago/Desktop/Animated_ThreadBridge/test.c
 
-1506358435 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
+1506376123 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
 	<pthread.h>
 
-1506358480 source:/home/santiago/Desktop/Animated_ThreadBridge/thread_data.c
+1506374038 source:/home/santiago/Desktop/Animated_ThreadBridge/thread_data.c
 	<stdlib.h>
 	<stdio.h>
 	"thread_data.h"
@@ -36,4 +37,21 @@
 	"round_robin.h"
 	"thread_data.h"
 	"globales.h"
+
+1506370268 source:/home/santiago/Desktop/Animated_ThreadBridge/lector_archivos.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1506363684 /home/santiago/Desktop/Animated_ThreadBridge/lector_archivos.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1506382494 source:/home/santiago/Desktop/Animated_ThreadBridge/puentes.c
+	"puentes.h"
+	"lector_archivos.h"
+
+1506371019 /home/santiago/Desktop/Animated_ThreadBridge/puentes.h
+	"thread_data.h"
 

@@ -31,6 +31,7 @@ typedef struct thread_carro
 	int puente;                 // Puente al que pertenece
 	int velocidad;              // Velocidad del carro
 	int lado_izquierdo;         // Para saber de cual lado es si lado_izquierdo = 1, el carro fue insertado del lado izq si es 0 fue del derecho
+    int prioridad;
 
 	struct thread_carro *next;
 	struct thread_carro *prev;
@@ -44,6 +45,8 @@ typedef struct thread_list_carro
 {
 	Thread_Carro head;
 	Thread_Carro tail;
+	int cantidad_radioactivos;
+	int cantidad_ambulancias;
 	int tamanio;
 } *ThreadListCarro;
 
@@ -56,10 +59,10 @@ typedef struct thread_puente
     int k;                      // Valor k de cantidad de carros que puede dejar pasar el transito
 
     // Para el metodo del semaforo
-    int semaforo_izquierda;     // Semaforo del lado izquierdo
-    int semaforo_derecha;       // Semaforo del lado derecho
-    int tiempo_semaforo_izquierda;         // Tiempo que pasara el tsemaforo en cada estado
-    int tiempo_semaforo_derecha; // Tiempo que pasara el semaforo en cada estado
+    int semaforo_izquierda;     // Semaforo del lado izquierdo 1 ON, 0 OFF
+    int semaforo_derecha;       // Semaforo del lado derecho 1 ON, 0 OFF
+    int tiempo_semaforo_izquierda;         // Tiempo que pasara el tsemaforo en cada estado 1 ON, 0 OFF
+    int tiempo_semaforo_derecha; // Tiempo que pasara el semaforo en cada estado 1 ON, 0 OFF
 
     // Para todos los metodos
     int puente_id;              //identificador del puente
@@ -108,6 +111,7 @@ typedef struct thread_list
 void agregar_puente(Thread_Puente node, ThreadListPuente list);
 void agregar_carro(Thread_Carro node, ThreadListCarro list);
 void agregar_thread(Thread node, ThreadList list);
+void agregar_thread_priority(Thread_Carro node, ThreadList list);
 
 Thread_Carro pop_primer_thread_carro(ThreadListCarro list);
 Thread pop_primer_thread(ThreadList list);
