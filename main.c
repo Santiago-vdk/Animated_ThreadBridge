@@ -46,30 +46,25 @@ void *calendarizador_fcfs(void *t)
 
             pthread_mutex_lock(&lock_thread_terminado);
             thread_terminado = 0;
+
+
             printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo %d\n" ANSI_COLOR_RESET, thread_actual);
+
+
             pthread_mutex_unlock(&lock_thread_terminado);
 
             while (thread_terminado == 0)
             {
                 //printf("Thread con id %d corriendo \n", thread_corriendo->thread_identificador);
-                //usleep(1000);
-               // printf("HEre\n");
             }
 
 
-
-            //
-
-            //printf("Thread %d terminado\n",thread_actual);
-
             if(temporal->next != NULL)
             {
-                //printf("Habian mas de uno\n");
                 temporal = temporal->next;      // Obtengo el siguiente
             }
             else
             {
-                //printf("Llegue al final de la cola \n");
                 temporal = threads->head;
 
             }
@@ -100,10 +95,6 @@ int *controlador_carros(void *carro)
             if(data->corriendo == 1)
             {
                 Thread_Puente puente_tmp = buscar_nodo_thread(threads,data->puente)->puente;
-
-
-                // printf("tamanio es %d \n", puente_tmp->carros_circulando->tamanio);
-                // printf("Capacidad %d y distancia_tmp %d \n", puente_tmp->capacidad, distancia_tmp);
 
                 if(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev == NULL )    // Si no hay carros al frente
                 {
@@ -185,44 +176,30 @@ void *algoritmo_puente_oficial(void *puente)
 {
     Thread_Puente data = (Thread_Puente) puente;
     int temporal_k_izquierda = 0;
+    int temporal_k_derecha = 0;
     while(1)
     {
 
         if(thread_actual == data->thread_identificador && thread_terminado == 0)
         {
 
-            /*printf("izquierda head %p\n", data->carros_izquierda->head);
-            printf("izquierda tail %p\n", data->carros_izquierda->tail);
-            printf("izquierda tamanio %d\n", data->carros_izquierda->tamanio);
-
-            printf("circulando head %p\n", data->carros_circulando->head);
-            printf("circulando tail %p\n", data->carros_circulando->tail);
-            printf("circulando tamanio %d\n", data->carros_circulando->tamanio);
-
-            printf("threads head %p\n", threads->head);
-            printf("threads tail %p\n", threads->tail);
-            printf("threads tamanio %d\n", threads->tamanio);*/
-
-            // Proceso lado izquierdo
-            //   for (int carros_izq = 0; carros_izq < data->k; carros_izq++)
-            //   {
-            while(temporal_k_izquierda <= data->k)
+            while(temporal_k_izquierda <= data->k) // Proceso lado izquierdo
             {
-
-                if(temporal_k_izquierda == data->k){
+                if(temporal_k_izquierda == data->k)
+                {
 
                     pthread_mutex_lock(&lock_thread_terminado);
-                    printf("Trafico dejo pasar sus %d carros\n", temporal_k_izquierda);
-                                        temporal_k_izquierda = 0;
+                    printf("Trafico dejo pasar sus %d carros izquierda\n", temporal_k_izquierda);
+                    //temporal_k_izquierda = 0;
                     thread_terminado = 1;
                     pthread_mutex_unlock(&lock_thread_terminado);
-                     break;
+                    break;
 
                 }
 
                 if (data->ocupancia == data->capacidad)         // Puente lleno
                 {
-                    printf("Puente lleno, capacidad %d, temporal_k %d \n", data->k, temporal_k_izquierda);
+                    printf(ANSI_COLOR_CYAN "Puente lleno, haciendo esperar a los carros de la izquierda  \n" ANSI_COLOR_RESET);
                     pthread_mutex_lock(&lock_thread_terminado);
                     thread_terminado = 1;
                     pthread_mutex_unlock(&lock_thread_terminado);
@@ -252,21 +229,76 @@ void *algoritmo_puente_oficial(void *puente)
                         pthread_mutex_lock(&lock_thread_terminado);
                         printf("No hay carros a la izquierda del puente \n");
                         thread_terminado = 1;
+                        temporal_k_izquierda = data->k;
                         pthread_mutex_unlock(&lock_thread_terminado);
 
                         break;
                     }
                 }
-
-
-
             }
 
 
 
-            // }
+            if(temporal_k_izquierda == data->k)             // Si ya se proceso el lado izquierdo
+            {
 
-            //usleep(10000);
+                while(temporal_k_derecha <= data->k) // Proceso lado izquierdo
+                {
+                    if(temporal_k_derecha == data->k)
+                    {
+
+                        pthread_mutex_lock(&lock_thread_terminado);
+                        printf("Trafico dejo pasar sus %d carros derecha\n", temporal_k_derecha);
+                        temporal_k_derecha = 0;             // Reinicio temporal
+                        temporal_k_izquierda = 0;           // Reinicio temporal
+                        thread_terminado = 1;
+                        pthread_mutex_unlock(&lock_thread_terminado);
+                        break;
+
+                    }
+
+                    if (data->ocupancia == data->capacidad)         // Puente lleno
+                    {
+                        printf(ANSI_COLOR_CYAN "Puente lleno, haciendo esperar a los carros de la derecha  \n" ANSI_COLOR_RESET);
+                        pthread_mutex_lock(&lock_thread_terminado);
+                        thread_terminado = 1;
+                        pthread_mutex_unlock(&lock_thread_terminado);
+
+                        break;
+                    }
+                    else                                            // Puente con campo
+                    {
+                        if((data->carros_derecha->tamanio > 0) && (data->ocupancia < data->capacidad))
+                        {
+
+                            Thread_Carro tmp = pop_primer_thread_carro(data->carros_derecha); // Extraigo la cabeza de la lista del lado izquierdo y reordeno
+                            agregar_carro(tmp,data->carros_circulando);     // Paso el thread a los que estan circulando
+
+                            pthread_mutex_lock(&lock_contador_tmp);
+                            buscar_nodo_thread(threads,tmp->thread_identificador)->carro->corriendo = 1; // Poner a caminar el carro
+
+
+                            printf(ANSI_COLOR_MAGENTA "Agregando carro %lu a circulacion sobre puente \n" ANSI_COLOR_RESET, tmp->thread_identificador);
+                            data->ocupancia +=  1;         // Solo se aumenta la ocupancia, que el carro salga del puente es su responsabilidad
+                            temporal_k_derecha += 1;
+                            pthread_mutex_unlock(&lock_contador_tmp);
+
+                        }
+                        else
+                        {
+                            pthread_mutex_lock(&lock_thread_terminado);
+                            printf("No hay carros a la derecha del puente \n");
+                            thread_terminado = 1;
+                            temporal_k_derecha = data->k;
+                            temporal_k_izquierda = 0;
+
+                            pthread_mutex_unlock(&lock_thread_terminado);
+
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -299,7 +331,11 @@ void *generador_carros(void *t)
 
     while(1)
     {
+        srand(time(NULL));
         //printf("Generando carro de tipo CARRO al lado izquierdo del puente 0 \n");
+
+        int puente_random = rand() % 4;
+        int lado_random = rand() % 3;
         // Se agrega el carro a la lista que le corresponde, sea izquierdo o derecho
         Thread_Carro carro = (Thread_Carro) malloc(sizeof(struct thread_carro));
         carro->thread_identificador = i;
@@ -307,14 +343,23 @@ void *generador_carros(void *t)
         carro -> limite_tiempo = NULL;
         carro -> corriendo = 0;
         carro -> vida_carro = NULL;
-        carro -> puente = 0;
+        carro -> puente = puente_random;
 
-        carro -> velocidad = 0.2;
+        carro -> velocidad = 0.8;
 
         pthread_t carro_thread;
         //carro -> hilo = carro_thread;
 
-        agregar_carro(carro, buscar_nodo_thread(threads,0)->puente->carros_izquierda);   // Agrego el carro a ese lado
+        if(lado_random == 0)
+        {
+            agregar_carro(carro, buscar_nodo_thread(threads,puente_random)->puente->carros_izquierda);   // Agrego el carro a ese lado
+
+        }
+        else
+        {
+            agregar_carro(carro, buscar_nodo_thread(threads,puente_random)->puente->carros_derecha);   // Agrego el carro a ese lado
+
+        }
 
         Thread thread_nuevo = (Thread) malloc(sizeof(struct thread));
         thread_nuevo->puente=NULL;
@@ -333,12 +378,12 @@ void *generador_carros(void *t)
         i++;
     }
 
-  /*  int j = 4;
-    while(j < i){
-        pthread_t tmp = array[j];
-        pthread_join(tmp, NULL);
-        j++;
-    }*/
+    /*  int j = 4;
+      while(j < i){
+          pthread_t tmp = array[j];
+          pthread_join(tmp, NULL);
+          j++;
+      }*/
 }
 
 void leer_config_puente_0()
@@ -381,9 +426,9 @@ int main()
     oficial_puente_0 -> thread_identificador = 0;              // El id de los threads en los puentes es fijo
     oficial_puente_0 -> puente_id = 0;             // identificador del puente, para los puentes es el mismo que el id de thread
     oficial_puente_0 -> ocupancia = 0;             // Cantidad de carros que estan en el puente transitando
-    oficial_puente_0 -> capacidad = 12;              // Capacidad, numero de carros en el puente al mismo tiempo
+    oficial_puente_0 -> capacidad = 5;              // Capacidad, numero de carros en el puente al mismo tiempo
     oficial_puente_0 -> control = OFICIAL;            // Algoritmo de control del puente
-    oficial_puente_0 -> k = 14;
+    oficial_puente_0 -> k = 10;
 
     oficial_puente_0 -> carros_circulando = malloc(sizeof(struct thread_list_carro));     // Contiene todos los threads de carros del puente
     oficial_puente_0 -> carros_circulando->tamanio = 0;
@@ -395,7 +440,7 @@ int main()
     oficial_puente_0 -> carros_derecha -> tamanio = 0;
 
     pthread_t thread_puente_0;           // Creo la instancia del thread del puente
-   // oficial_puente_0->hilo=thread_puente_0;         // Referencio esa instancia al objeto del puente para poder controlar aspectos del hilo
+    // oficial_puente_0->hilo=thread_puente_0;         // Referencio esa instancia al objeto del puente para poder controlar aspectos del hilo
 
     Thread thread_nuevo = (Thread) malloc(sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
     thread_nuevo->puente=oficial_puente_0;
@@ -418,7 +463,7 @@ int main()
     oficial_puente_1 -> ocupancia = 0;             // Cantidad de carros que estan en el puente transitando
     oficial_puente_1 -> capacidad = 5;              // Capacidad, numero de carros en el puente al mismo tiempo
     oficial_puente_1 -> control = OFICIAL;            // Algoritmo de control del puente
-    oficial_puente_1 -> k = 4;
+    oficial_puente_1 -> k = 10;
 
     oficial_puente_1 -> carros_circulando = malloc(sizeof(struct thread_list_carro));     // Contiene todos los threads de carros del puente
     oficial_puente_1 -> carros_circulando->tamanio = 0;
@@ -430,14 +475,14 @@ int main()
     oficial_puente_1 -> carros_derecha -> tamanio = 0;
 
     pthread_t thread_puente_1;           // Creo la instancia del thread del puente
-   // oficial_puente_1->hilo=thread_puente_1;         // Referencio esa instancia al objeto del puente para poder controlar aspectos del hilo
+    // oficial_puente_1->hilo=thread_puente_1;         // Referencio esa instancia al objeto del puente para poder controlar aspectos del hilo
 
     Thread thread_nuevo_1 = (Thread) malloc(sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
     thread_nuevo_1 ->puente=oficial_puente_1;
     thread_nuevo_1 ->carro=NULL;                   // Solo me interesa en este caso el thread de carro
     thread_nuevo_1 ->calendarizador=FCFS;
     thread_nuevo_1 ->thread_identificador=1;
-    agregar_thread(thread_nuevo_1 ,threads);           // Agrego el thread puente a la lista de threads
+    agregar_thread(thread_nuevo_1,threads);            // Agrego el thread puente a la lista de threads
 
     pthread_create(&thread_puente_1, NULL, algoritmo_puente_oficial, (void *) oficial_puente_1);
 
@@ -451,9 +496,9 @@ int main()
     oficial_puente_2 -> thread_identificador = 2;              // El id de los threads en los puentes es fijo
     oficial_puente_2 -> puente_id = 2;             // identificador del puente, para los puentes es el mismo que el id de thread
     oficial_puente_2 -> ocupancia = 0;             // Cantidad de carros que estan en el puente transitando
-    oficial_puente_2 -> capacidad = 5;              // Capacidad, numero de carros en el puente al mismo tiempo
+    oficial_puente_2 -> capacidad = 9;              // Capacidad, numero de carros en el puente al mismo tiempo
     oficial_puente_2 -> control = OFICIAL;            // Algoritmo de control del puente
-    oficial_puente_2 -> k = 4;
+    oficial_puente_2 -> k = 10;
 
     oficial_puente_2 -> carros_circulando = malloc(sizeof(struct thread_list_carro));     // Contiene todos los threads de carros del puente
     oficial_puente_2 -> carros_circulando->tamanio = 0;
@@ -488,9 +533,9 @@ int main()
     oficial_puente_3 -> thread_identificador = 3;              // El id de los threads en los puentes es fijo
     oficial_puente_3 -> puente_id = 3;             // identificador del puente, para los puentes es el mismo que el id de thread
     oficial_puente_3 -> ocupancia = 0;             // Cantidad de carros que estan en el puente transitando
-    oficial_puente_3 -> capacidad = 5;              // Capacidad, numero de carros en el puente al mismo tiempo
+    oficial_puente_3 -> capacidad = 15;              // Capacidad, numero de carros en el puente al mismo tiempo
     oficial_puente_3 -> control = OFICIAL;            // Algoritmo de control del puente
-    oficial_puente_3 -> k = 4;
+    oficial_puente_3 -> k = 7;
 
     oficial_puente_3 -> carros_circulando = malloc(sizeof(struct thread_list_carro));     // Contiene todos los threads de carros del puente
     oficial_puente_3 -> carros_circulando->tamanio = 0;
@@ -502,7 +547,7 @@ int main()
     oficial_puente_3 -> carros_derecha -> tamanio = 0;
 
     pthread_t thread_puente_3;           // Creo la instancia del thread del puente
-   // oficial_puente_3->hilo=thread_puente_3;         // Referencio esa instancia al objeto del puente para poder controlar aspectos del hilo
+    // oficial_puente_3->hilo=thread_puente_3;         // Referencio esa instancia al objeto del puente para poder controlar aspectos del hilo
 
     Thread thread_nuevo_3 = (Thread) malloc(sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
     thread_nuevo_3->puente=oficial_puente_3;
@@ -546,7 +591,8 @@ int main()
         printf("\n mutex init failed\n");
     }
 
-    if(pthread_mutex_init(&lock_modificar_lista, NULL) != 0){
+    if(pthread_mutex_init(&lock_modificar_lista, NULL) != 0)
+    {
         printf("\n mutex init failed\n");
     }
 
