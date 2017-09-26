@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1506389806 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
+1506461936 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
 	<stdio.h>
 	<stdlib.h>
 	"mythreads/mythread.h"
@@ -9,7 +9,7 @@
 
 1505762547 source:/home/santiago/Desktop/Animated_ThreadBridge/test.c
 
-1506387963 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
+1506448856 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
 	<pthread.h>
 
 1506374038 source:/home/santiago/Desktop/Animated_ThreadBridge/thread_data.c
@@ -48,10 +48,18 @@
 	<stdlib.h>
 	<string.h>
 
-1506389200 source:/home/santiago/Desktop/Animated_ThreadBridge/puentes.c
+1506461531 source:/home/santiago/Desktop/Animated_ThreadBridge/puentes.c
 	"puentes.h"
 	"lector_archivos.h"
 
 1506371019 /home/santiago/Desktop/Animated_ThreadBridge/puentes.h
 	"thread_data.h"
+
+1506448037 source:/home/santiago/Desktop/Animated_ThreadBridge/controlador_carros_jlaw.c
+	<stdio.h>
+	<stdlib.h>
+	"mythreads/mythread.h"
+	"thread_data.h"
+	<time.h>
+	"puentes.h"
 
