@@ -49,10 +49,13 @@ void *calendarizador_RoundRobin(void *t)
 
             pthread_mutex_lock(&lock_thread_terminado);
             thread_terminado = 0;
-            if(thread_actual>4){
-               printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo carro %d\n" ANSI_COLOR_RESET, thread_actual);
-            } else {
-              printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo puente %d\n" ANSI_COLOR_RESET, thread_actual);
+            if(thread_actual>4)
+            {
+                printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo carro %d\n" ANSI_COLOR_RESET, thread_actual);
+            }
+            else
+            {
+                printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo puente %d\n" ANSI_COLOR_RESET, thread_actual);
             }
 
             pthread_mutex_unlock(&lock_thread_terminado);
@@ -104,10 +107,13 @@ void *calendarizador_fcfs(void *t)
 
             pthread_mutex_lock(&lock_thread_terminado);
             thread_terminado = 0;
-            if(thread_actual>4){
-               printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo carro %d\n" ANSI_COLOR_RESET, thread_actual);
-            } else {
-              printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo puente %d\n" ANSI_COLOR_RESET, thread_actual);
+            if(thread_actual>4)
+            {
+                printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo carro %d\n" ANSI_COLOR_RESET, thread_actual);
+            }
+            else
+            {
+                printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo puente %d\n" ANSI_COLOR_RESET, thread_actual);
             }
             pthread_mutex_unlock(&lock_thread_terminado);
 
@@ -723,15 +729,152 @@ void *algoritmo_puente_semaforo(void *puente)
     }
 }
 
-/*
-void *algoritmo_puente_leyjungla(void *t)
+
+
+
+int *controlador_carros_jungla(void *carro)
 {
+    Thread_Carro data = (Thread_Carro) carro;
+
+    int distancia_tmp = 0;
     while(1)
     {
-        printf("Ejecutando algoritmo de puente con metodo de la ley de la jungla\n");
-        sleep(2);
+        if(thread_actual == data->thread_identificador && thread_terminado == 0)
+        {
+            Thread_Puente puente_tmp = buscar_nodo_thread(threads,data->puente)->puente;
+            if(puente_tmp->carros_circulando->tamanio < puente_tmp->capacidad)  // Hay espacio para pasar
+            {
+                // Me saco de la lista y auto inserto en circulando
+                if(data->lado_izquierdo == 1)           // Estoy en el lado izquierdo del puente
+                {
+                    Thread_Carro tmp = pop_primer_thread_carro(puente_tmp->carros_izquierda); // Extraigo la cabeza de la lista del lado izquierdo y reordeno
+                    agregar_carro(tmp,puente_tmp->carros_circulando);     // Paso el thread a los que estan circulando
+                    printf(ANSI_COLOR_MAGENTA "Agregando carro %lu a circulacion sobre puente \n" ANSI_COLOR_RESET, tmp->thread_identificador);
+
+                    pthread_mutex_lock(&lock_contador_tmp);
+                    buscar_nodo_thread(threads,data->thread_identificador)->carro->corriendo = 1; // Poner a caminar el carro
+
+
+                    //printf(ANSI_COLOR_MAGENTA "Agregando carro %lu a circulacion sobre puente \n" ANSI_COLOR_RESET, tmp->thread_identificador);
+                    puente_tmp->ocupancia +=  1;         // Solo se aumenta la ocupancia, que el carro salga del puente es su responsabilidad
+                    pthread_mutex_unlock(&lock_contador_tmp);
+
+
+
+                }
+                else                        // Estoy en el lado derecho
+                {
+                    Thread_Carro tmp = pop_primer_thread_carro(puente_tmp->carros_derecha); // Extraigo la cabeza de la lista del lado izquierdo y reordeno
+                    agregar_carro(tmp,puente_tmp->carros_circulando);     // Paso el thread a los que estan circulando
+                    printf(ANSI_COLOR_MAGENTA "Agregando carro %lu a circulacion sobre puente \n" ANSI_COLOR_RESET, tmp->thread_identificador);
+
+                    pthread_mutex_lock(&lock_contador_tmp);
+                    buscar_nodo_thread(threads,data->thread_identificador)->carro->corriendo = 1; // Poner a caminar el carro
+
+
+                    //printf(ANSI_COLOR_MAGENTA "Agregando carro %lu a circulacion sobre puente \n" ANSI_COLOR_RESET, tmp->thread_identificador);
+                    puente_tmp->ocupancia +=  1;         // Solo se aumenta la ocupancia, que el carro salga del puente es su responsabilidad
+                    pthread_mutex_unlock(&lock_contador_tmp);
+                }
+
+
+                if(data->corriendo == 1)
+                {
+                    Thread_Puente puente_tmp = buscar_nodo_thread(threads,data->puente)->puente;
+
+                    if(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev == NULL )    // Si no hay carros al frente
+                    {
+                        if(distancia_tmp == puente_tmp->capacidad)          // Ya termino de correrse todos los espacios disponibles
+                        {
+                            pthread_mutex_lock(&lock_thread_terminado);
+
+                            printf(ANSI_COLOR_YELLOW "Carro %d termino de pasar el puente, no habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
+
+                            eliminar_nodo_thread(threads,data->thread_identificador);           // Elimino el carro de la lista de hilos
+                            eliminar_nodo_carro(buscar_nodo_thread(threads,data->puente)->puente->carros_circulando,data->thread_identificador);    // Elimino el carro de la lista de los carros circulando de su debido puente
+                            buscar_nodo_thread(threads,data->puente)->puente->ocupancia -= 1;
+
+                            thread_terminado = 1;
+                            distancia_tmp = 0;
+
+                            pthread_mutex_unlock(&lock_thread_terminado);
+
+                            pthread_t id = pthread_self();
+                            pthread_detach(id);
+                            return 0;
+                        }
+                        else
+                        {
+                            printf("Carro %lu moviendose %d \n", data->thread_identificador, distancia_tmp);
+                            sleep(data->velocidad);                                             // Simulo la velocidad
+                            distancia_tmp ++;                                                   // Auento la distancia recorrida
+                        }
+                    }
+                    else                    // Hay un carro en frente
+                    {
+
+                        if(distancia_tmp == puente_tmp->capacidad)          // Ya termino de correrse todos los espacios disponibles
+                        {
+
+                            pthread_mutex_lock(&lock_thread_terminado);
+
+                            printf(ANSI_COLOR_YELLOW "Carro %d termino de pasar el puente, habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
+
+
+                            eliminar_nodo_thread(threads,data->thread_identificador);           // Elimino el carro de la lista de hilos
+                            eliminar_nodo_carro(buscar_nodo_thread(threads,data->puente)->puente->carros_circulando,data->thread_identificador);    // Elimino el carro de la lista de los carros circulando de su debido puente
+                            buscar_nodo_thread(threads,data->puente)->puente->ocupancia -= 1;
+
+
+                            thread_terminado = 1;
+                            pthread_mutex_unlock(&lock_thread_terminado);
+
+
+                            pthread_t id = pthread_self();
+                            pthread_detach(id);
+                            return 0;
+
+                        }
+                        else
+                        {
+                            printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp);
+                            sleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad);                                             // Utilizo la velocidad del nodo del frente
+                            distancia_tmp ++;                                        // Aumento la distancia avanzada
+                        }
+
+                    }
+                }
+                else    // Me dieron  el procesador pero aun no me ejecuto
+                {
+
+                    pthread_mutex_lock(&lock_thread_terminado);
+                    printf("Carro %lu no puede moverse\n", data->thread_identificador);
+                    thread_terminado = 1;
+                    pthread_mutex_unlock(&lock_thread_terminado);
+
+                }
+
+
+            }
+            else                // No hay espacio
+            {
+                    pthread_mutex_lock(&lock_thread_terminado);
+                    printf("Carro %lu no puede moverse\n", data->thread_identificador);
+                    thread_terminado = 1;
+                    pthread_mutex_unlock(&lock_thread_terminado);
+
+            }
+
+
+
+
+
+        }
+
+        usleep(10000);
     }
-}*/
+}
+
 
 
 // Utiliza la lista global de los hilos para encontrar el puente en el que tiene que insertar carros

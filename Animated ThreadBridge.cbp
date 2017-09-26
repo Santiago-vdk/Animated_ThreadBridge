@@ -36,9 +36,6 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="controlador_carros_jlaw.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="lector_archivos.c">
 			<Option compilerVar="CC" />
 		</Unit>
