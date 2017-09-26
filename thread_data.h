@@ -16,6 +16,13 @@
 #define JUNGLA		2
 #define K		    10
 
+typedef struct thread_espera
+{
+    //long thread_identificador_espera;
+    int puente_identificador;
+    int espera;
+
+} *Thread_Espera;
 
 
 
@@ -72,6 +79,9 @@ typedef struct thread_puente
     ThreadListCarro carros_circulando;          // Lista de carros que estan circulando, se utiliza para que los carros sepan quien esta adelante y atras
     ThreadListCarro carros_izquierda;    // Lista de carros en el lado izquierdo
 	ThreadListCarro carros_derecha;      // Lista de carros en el lado derecho
+
+	int temporizando;       // Se utiliza para identificar si el puente esta esperando dejar de ser temporizado
+	int temporizado_parcial;
 
 	struct thread_puente *next;
 
