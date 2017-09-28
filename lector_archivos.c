@@ -4,7 +4,7 @@
 #include <string.h>
 
 
-char* getParameterValueConfig(char* pNameFile, char* pParameterName){
+int getParameterValueConfig(char* pNameFile, char* pParameterName){
     FILE * fp;
     char * line = NULL;
     size_t len = 0;
@@ -41,5 +41,5 @@ char* getParameterValueConfig(char* pNameFile, char* pParameterName){
     fclose(fp);
     if (line)
         free(line);
-    return value;
+    return atoi(value);
 }

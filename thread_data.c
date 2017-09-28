@@ -4,6 +4,10 @@
 
 void agregar_puente(Thread_Puente node, ThreadListPuente list)
 {
+    node->prev = NULL;
+    node->next = NULL;
+    node->prev = NULL;
+    node->next = NULL;
     if (list->head == NULL)
     {
         list->head = node;
@@ -12,9 +16,9 @@ void agregar_puente(Thread_Puente node, ThreadListPuente list)
     }
     else
     {
-        Thread tmp = list->tail;
+        list->tail->next = node;
+        node->prev = list->tail;
         list->tail = node;
-        tmp->next = list->tail;
         list->tamanio += 1;
     }
 }
@@ -172,6 +176,28 @@ Thread_Carro buscar_nodo_carro(ThreadListCarro list, long thread_identificador)
         }
         return tmp;
     }
+}
+
+Thread_Puente buscar_nodo_puente(ThreadListPuente list, long thread_identificador){
+    if (list->head->thread_identificador == thread_identificador)
+    {
+        return list-> head;
+    }
+    else
+    {
+        Thread_Puente tmp = list->head;
+        while (tmp->thread_identificador != thread_identificador)
+        {
+
+            tmp = tmp->next;
+            if (!tmp)
+            {
+                return NULL;
+            }
+        }
+        return tmp;
+    }
+
 }
 
 /* Removes a thread node from the list */

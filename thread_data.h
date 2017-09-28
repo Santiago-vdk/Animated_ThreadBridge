@@ -86,6 +86,7 @@ typedef struct thread_puente
 	int temporizado_parcial_amarillo;
 
 	struct thread_puente *next;
+	struct thread_puente *prev;
 
    // pthread_t hilo;
 } *Thread_Puente;
@@ -130,14 +131,10 @@ Thread pop_primer_thread(ThreadList list);
 
 Thread buscar_nodo_thread(ThreadList list, long thread_identificador);
 Thread_Carro buscar_nodo_carro(ThreadListCarro list, long thread_identificador);
+Thread_Puente buscar_nodo_puente(ThreadListPuente list, long thread_identificador);
 
 void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador);
 void eliminar_nodo_thread(ThreadList list, long thread_identificador);
 
-
-//void print_list(ThreadList list);
-//void remove_node(int id, ThreadList list);
-//void free_mem(ThreadList list);
-//void copy_node(Thread_Carro_Puente src, Thread_Carro_Puente dst);
 
 #endif
