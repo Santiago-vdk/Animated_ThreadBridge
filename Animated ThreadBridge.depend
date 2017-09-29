@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1506578907 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
+1506663414 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
 	<stdio.h>
 	<stdlib.h>
 	"mythreads/mythread.h"
@@ -9,7 +9,7 @@
 
 1505762547 source:/home/santiago/Desktop/Animated_ThreadBridge/test.c
 
-1506546120 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
+1506644757 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
 	<pthread.h>
 
 1506546072 source:/home/santiago/Desktop/Animated_ThreadBridge/thread_data.c
@@ -48,7 +48,7 @@
 	<stdlib.h>
 	<string.h>
 
-1506573097 source:/home/santiago/Desktop/Animated_ThreadBridge/puentes.c
+1506645485 source:/home/santiago/Desktop/Animated_ThreadBridge/puentes.c
 	"puentes.h"
 	"lector_archivos.h"
 

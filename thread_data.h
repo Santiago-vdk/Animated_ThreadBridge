@@ -83,7 +83,6 @@ typedef struct thread_puente
 	int temporizando;       // Se utiliza para identificar si el puente esta esperando dejar de ser temporizado
 	int temporizado_parcial;
 
-	int temporizado_parcial_amarillo;
 
 	struct thread_puente *next;
 	struct thread_puente *prev;

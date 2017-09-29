@@ -10,18 +10,14 @@ Thread_Puente crear_puente_0()
     puente_0 -> puente_id = 0;             // identificador del puente, para los puentes es el mismo que el id de thread
     puente_0 -> ocupancia = 0;             // Cantidad de carros que estan en el puente transitando
 
-    //char * Parameter = "capacidad";
-    //int result = getParameterValueConfig("config_puente_0.txt",Parameter);
-
-    //printf("Res %d \n", result);
     puente_0 -> capacidad =10;              // Capacidad, numero de carros en el puente al mismo tiempo
     puente_0 -> control = SEMAFORO;           // Algoritmo de control del puente
     puente_0 -> k = 10;
 
     puente_0 -> semaforo_izquierda = 1;
     puente_0 -> semaforo_derecha = 0;
-    puente_0 -> tiempo_semaforo_izquierda = 2;
-    puente_0 -> tiempo_semaforo_derecha = 2;
+    puente_0 -> tiempo_semaforo_izquierda = 1;
+    puente_0 -> tiempo_semaforo_derecha = 1;
 
 
     puente_0 -> carros_circulando = malloc(sizeof(struct thread_list_carro));     // Contiene todos los threads de carros del puente
@@ -41,7 +37,6 @@ Thread_Puente crear_puente_0()
 
     puente_0 -> temporizando = 0;
     puente_0 -> temporizado_parcial = 0;      // Se utiliza para recordar cuanto tiempo se ha dejado pasar el semaforo
-    puente_0 -> temporizado_parcial_amarillo = 2;
 
     return puente_0;
 }
@@ -60,8 +55,8 @@ Thread_Puente crear_puente_1()
 
     puente_1 -> semaforo_izquierda = 1;
     puente_1 -> semaforo_derecha = 0;
-    puente_1 -> tiempo_semaforo_izquierda = 2;
-    puente_1 -> tiempo_semaforo_derecha = 2;
+    puente_1 -> tiempo_semaforo_izquierda = 1;
+    puente_1 -> tiempo_semaforo_derecha = 1;
 
     puente_1 -> carros_circulando = malloc(sizeof(struct thread_list_carro));     // Contiene todos los threads de carros del puente
     puente_1 -> carros_circulando->tamanio = 0;
@@ -80,7 +75,7 @@ Thread_Puente crear_puente_1()
 
     puente_1 -> temporizando = 0;
     puente_1 -> temporizado_parcial = 0;      // Se utiliza para recordar cuanto tiempo se ha dejado pasar el semaforo
-    puente_1 -> temporizado_parcial_amarillo = 2;
+
     return puente_1;
 }
 
@@ -101,8 +96,8 @@ Thread_Puente crear_puente_2()
 
     puente_2 -> semaforo_izquierda = 1;
     puente_2 -> semaforo_derecha = 0;
-    puente_2 -> tiempo_semaforo_izquierda = 2;
-    puente_2 -> tiempo_semaforo_derecha = 2;
+    puente_2 -> tiempo_semaforo_izquierda = 1;
+    puente_2 -> tiempo_semaforo_derecha = 1;
 
     puente_2 -> carros_circulando = malloc(sizeof(struct thread_list_carro));     // Contiene todos los threads de carros del puente
     puente_2 -> carros_circulando->tamanio = 0;
@@ -121,9 +116,6 @@ Thread_Puente crear_puente_2()
 
     puente_2 -> temporizando = 0;
     puente_2 -> temporizado_parcial = 0;      // Se utiliza para recordar cuanto tiempo se ha dejado pasar el semaforo
-    puente_2 -> temporizado_parcial_amarillo = 2;
-
-    //puente_2->hilo=thread_puente_2;         // Referencio esa instancia al objeto del puente para poder controlar aspectos del hilo
 
     return puente_2;
 }
@@ -145,8 +137,8 @@ Thread_Puente crear_puente_3()
 
     puente_3 -> semaforo_izquierda = 1;
     puente_3 -> semaforo_derecha = 0;
-    puente_3 -> tiempo_semaforo_izquierda =2;
-    puente_3 -> tiempo_semaforo_derecha = 2;
+    puente_3 -> tiempo_semaforo_izquierda =1;
+    puente_3 -> tiempo_semaforo_derecha = 1;
 
     puente_3 -> carros_circulando = malloc(sizeof(struct thread_list_carro));     // Contiene todos los threads de carros del puente
     puente_3 -> carros_circulando->tamanio = 0;
@@ -165,8 +157,6 @@ Thread_Puente crear_puente_3()
 
     puente_3 -> temporizando = 0;
     puente_3 -> temporizado_parcial = 0;      // Se utiliza para recordar cuanto tiempo se ha dejado pasar el semaforo
-    puente_3 -> temporizado_parcial_amarillo = 2;
-    // puente_3->hilo=thread_puente_3;         // Referencio esa instancia al objeto del puente para poder controlar aspectos del hilo
 
     return puente_3;
 }
