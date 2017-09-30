@@ -288,7 +288,7 @@ void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador)
                 {
                     list->head->prev = NULL;
                 }
-                free(tmp);
+                //free(tmp);            extraño
                 list->tamanio-=1;
             }
             else
@@ -303,7 +303,7 @@ void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador)
                             tmp->next = tmp->next->next;
                             tmp->next->prev = tmp;
                             list->tamanio-=1;
-                            free(tmp2);
+                            //free(tmp2);       extraño
                             break;
                         }
                         else //eliminar tail
@@ -311,7 +311,7 @@ void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador)
                             tmp->next = NULL;
                             list->tail=tmp;
                             list->tamanio-=1;
-                            free(tmp2);
+                            //free(tmp2);           extraño
                             break;
                         }
                     }
@@ -326,7 +326,7 @@ void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador)
 
 void agregar_thread_priority(Thread_Carro node, ThreadList list)
 {
-    if (list->head == NULL)
+    /*if (list->head == NULL)
     {
         list->head = node;
         list->tail = node;
@@ -371,6 +371,6 @@ void agregar_thread_priority(Thread_Carro node, ThreadList list)
             list->tail = node;
             list->tamanio += 1;
         }
-    }
+    }*/
 }
 

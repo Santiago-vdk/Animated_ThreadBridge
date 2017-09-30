@@ -36,7 +36,7 @@ typedef struct thread_carro
 	int corriendo;                  // Para saber si puede avanzar
 	int vida_carro;             // Vida antes de explotar (radioactivos)
 	int puente;                 // Puente al que pertenece
-	int velocidad;              // Velocidad del carro
+	double velocidad;              // Velocidad del carro
 	int lado_izquierdo;         // Para saber de cual lado es si lado_izquierdo = 1, el carro fue insertado del lado izq si es 0 fue del derecho
     int prioridad;
 
