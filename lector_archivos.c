@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 int getParameterValueConfig(char* pNameFile, char* pParameterName){
     FILE * fp;
     char * line = NULL;

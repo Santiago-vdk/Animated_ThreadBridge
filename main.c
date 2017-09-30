@@ -156,7 +156,7 @@ void *calendarizador_fcfs(void *t)
 
                 if(threads->tamanio != 0 && buscar_nodo_thread(threads,thread_actual) != NULL)
                 {
-                    printf(ANSI_COLOR_CYAN "Pop out & push in \n" ANSI_COLOR_RESET);
+                    //printf(ANSI_COLOR_CYAN "Pop out & push in \n" ANSI_COLOR_RESET);
                     agregar_thread(pop_primer_thread(threads),threads);
                 }
 
@@ -416,7 +416,7 @@ void *algoritmo_puente_semaforo(void *puente)
 {
     Thread_Puente data = (Thread_Puente) puente;
     int espera_tmp =0;
-    int semaforo_izquierda = 1;
+
     while(1)
     {
         if(thread_actual == data->thread_identificador && thread_terminado == 0)
@@ -666,7 +666,7 @@ void *controlador_carros_jungla(void *carro)
 
             }
 
-            else if(corriendo = 1)
+            else if(corriendo == 1)
             {
 
 
@@ -902,15 +902,15 @@ int main()
     puentes = (ThreadListPuente) malloc(sizeof(struct thread_list_puente));
     puentes->tamanio = 0;
 
-    /*
-        calendarizador =atoi(getParameterValueConfig("config_global.txt","calendarizador"));
-        if(calendarizador == NULL)
-        {
-            printf("Error leyendo configuracion global\n");
-            exit(EXIT_FAILURE);
-        }*/
 
-    calendarizador = 0;
+    calendarizador = getParameterValueConfig("config_global.txt","calendarizador");
+    if(calendarizador == NULL)
+    {
+        printf("Error leyendo configuracion global\n");
+        exit(EXIT_FAILURE);
+    }
+
+    //calendarizador = 0;
 
 
     switch (calendarizador )
