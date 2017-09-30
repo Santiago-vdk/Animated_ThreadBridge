@@ -18,7 +18,6 @@
 long thread_actual = -1;
 int thread_terminado = 1;
 int calendarizador = -1;
-int ley_jungla = 1;
 
 pthread_t thread_calendarizador;
 pthread_t thread_generador_carros;
@@ -41,7 +40,7 @@ void *calendarizador_RoundRobin(void *t)
 
 
     Thread temporal = threads->head;
-    int Quantum = 5;      //200
+    int Quantum = 7;      //200
     int QuantumTmp = 0;
     while(1)
     {
@@ -417,7 +416,7 @@ void *algoritmo_puente_semaforo(void *puente)
 {
     Thread_Puente data = (Thread_Puente) puente;
     int espera_tmp =0;
-
+    int semaforo_izquierda = 1;
     while(1)
     {
         if(thread_actual == data->thread_identificador && thread_terminado == 0)
@@ -479,7 +478,7 @@ void *algoritmo_puente_semaforo(void *puente)
 
                         }
 
-                        usleep(1000000);
+                        //usleep(1000000);
                         espera_tmp += 1;
 
                     }
@@ -544,7 +543,7 @@ void *algoritmo_puente_semaforo(void *puente)
 
                         }
 
-                        usleep(1000000);
+                        //usleep(1000000);
                         espera_tmp += 1;
 
                     }
@@ -629,13 +628,13 @@ void *controlador_carros_jungla(void *carro)
                         }
                         else
                         {
-                            printf("No pude entrar, viene gente del otro lado\n");
+                            // printf("No pude entrar, viene gente del otro lado\n");
                         }
 
                     }
                     else
                     {
-                        printf("Era del lado derecho\n");
+
 
                         if(puente_temporal->carros_circulando->head == NULL)
                         {
@@ -660,7 +659,7 @@ void *controlador_carros_jungla(void *carro)
                         }
                         else
                         {
-                            printf("No pude entrar, viene gente del otro lado\n");
+                            //printf("No pude entrar, viene gente del otro lado\n");
                         }
                     }
                 }
@@ -776,7 +775,7 @@ void *generador_carros(void *t)
     double lambda = 0.5;
     double probabilidad = 0;
     double porcentaje_ambulancia = 0.38;
-    while(i)
+    while(i<20)
     {
         srand(time(NULL));
         //printf("Generando carro de tipo CARRO al lado izquierdo del puente 0 \n");
@@ -830,9 +829,9 @@ void *generador_carros(void *t)
             }
             else
             {
-
-                if(ley_jungla == 1)
+                if(buscar_nodo_puente(puentes,puente_random) != NULL)
                 {
+
                     agregar_carro(carro, buscar_nodo_puente(puentes,puente_random)->carros_izquierda);
                 }
                 else
@@ -853,7 +852,7 @@ void *generador_carros(void *t)
             else
             {
 
-                if(ley_jungla == 1)
+                if(buscar_nodo_puente(puentes,puente_random) != NULL)
                 {
                     agregar_carro(carro, buscar_nodo_puente(puentes,puente_random)->carros_derecha);
                 }
@@ -877,7 +876,7 @@ void *generador_carros(void *t)
 
         agregar_thread(thread_nuevo,threads);
 
-        if(ley_jungla == 1)
+        if(buscar_nodo_puente(puentes,puente_random) != NULL)
         {
             pthread_create(&carro_thread, NULL, controlador_carros_jungla, (void *) carro);
         }
@@ -911,7 +910,7 @@ int main()
             exit(EXIT_FAILURE);
         }*/
 
-    calendarizador = 1;
+    calendarizador = 0;
 
 
     switch (calendarizador )
@@ -943,7 +942,7 @@ int main()
     Thread_Puente puente_creado_0 = crear_puente_0();
     pthread_t thread_puente_0;           // Creo la instancia del thread del puente
 
-    if(ley_jungla == 1)
+    if(puente_creado_0->control == JUNGLA)
     {
 
         agregar_puente(puente_creado_0, puentes);
@@ -957,8 +956,21 @@ int main()
         thread_nuevo->thread_identificador=0;
         agregar_thread(thread_nuevo,threads);           // Agrego el thread puente a la lista de threads
 
-        pthread_create(&thread_puente_0, NULL, algoritmo_puente_semaforo, (void *) puente_creado_0);
 
+        switch (puente_creado_0->control)
+        {
+        case OFICIAL:
+
+            pthread_create(&thread_puente_0, NULL, algoritmo_puente_oficial, (void *) puente_creado_0);
+            break;
+        case SEMAFORO:
+
+            pthread_create(&thread_puente_0, NULL, algoritmo_puente_semaforo, (void *) puente_creado_0);
+            break;
+        default:
+            pthread_create(&thread_puente_0, NULL, algoritmo_puente_oficial, (void *) puente_creado_0);
+            break;
+        }
 
     }
 
@@ -967,7 +979,7 @@ int main()
     Thread_Puente puente_creado_1 = crear_puente_1();
     pthread_t thread_puente_1;           // Creo la instancia del thread del puente
 
-    if(ley_jungla == 1)
+    if(puente_creado_1->control == JUNGLA)
     {
         agregar_puente(puente_creado_1, puentes);
 
@@ -981,9 +993,20 @@ int main()
         thread_nuevo_1 ->thread_identificador=1;
         agregar_thread(thread_nuevo_1,threads);            // Agrego el thread puente a la lista de threads
 
-        pthread_create(&thread_puente_1, NULL, algoritmo_puente_semaforo, (void *) puente_creado_1);
 
 
+        switch (puente_creado_1->control)
+        {
+        case OFICIAL:
+            pthread_create(&thread_puente_1, NULL, algoritmo_puente_oficial, (void *) puente_creado_1);
+            break;
+        case SEMAFORO:
+            pthread_create(&thread_puente_1, NULL, algoritmo_puente_semaforo, (void *) puente_creado_1);
+            break;
+        default:
+            pthread_create(&thread_puente_1, NULL, algoritmo_puente_oficial, (void *) puente_creado_1);
+            break;
+        }
 
     }
 
@@ -992,7 +1015,7 @@ int main()
     Thread_Puente puente_creado_2 = crear_puente_2();
     pthread_t thread_puente_2;           // Creo la instancia del thread del puente
 
-    if(ley_jungla == 1)
+    if(puente_creado_2->control == JUNGLA)
     {
         agregar_puente(puente_creado_2, puentes);
 
@@ -1007,8 +1030,19 @@ int main()
         thread_nuevo_2->thread_identificador=2;
         agregar_thread(thread_nuevo_2,threads);           // Agrego el thread puente a la lista de threads
 
-        pthread_create(&thread_puente_2, NULL, algoritmo_puente_semaforo, (void *) puente_creado_2);
 
+        switch (puente_creado_2->control)
+        {
+        case OFICIAL:
+            pthread_create(&thread_puente_2, NULL, algoritmo_puente_oficial, (void *) puente_creado_2);
+            break;
+        case SEMAFORO:
+            pthread_create(&thread_puente_2, NULL, algoritmo_puente_semaforo, (void *) puente_creado_2);
+            break;
+        default:
+            pthread_create(&thread_puente_2, NULL, algoritmo_puente_oficial, (void *) puente_creado_2);
+            break;
+        }
 
     }
 
@@ -1016,7 +1050,7 @@ int main()
     /* PUENTE 3 */
     Thread_Puente puente_creado_3 = crear_puente_3();
     pthread_t thread_puente_3;
-    if(ley_jungla == 1)
+    if(puente_creado_3->control == JUNGLA)
     {
         agregar_puente(puente_creado_3, puentes);
     }
@@ -1030,11 +1064,20 @@ int main()
         agregar_thread(thread_nuevo_3,threads);           // Agrego el thread puente a la lista de threads
 
         // Creo la instancia del thread del puente
-        pthread_create(&thread_puente_3, NULL, algoritmo_puente_semaforo, (void *) puente_creado_3);
+        switch (puente_creado_3->control)
+        {
+        case OFICIAL:
+            pthread_create(&thread_puente_3, NULL, algoritmo_puente_oficial, (void *) puente_creado_3);
+            break;
+        case SEMAFORO:
+            pthread_create(&thread_puente_3, NULL, algoritmo_puente_semaforo, (void *) puente_creado_3);
+            break;
+        default:
+            pthread_create(&thread_puente_3, NULL, algoritmo_puente_oficial, (void *) puente_creado_3);
+            break;
+        }
 
     }
-
-
 
 
     if (pthread_mutex_init(&lock_thread_terminado, NULL) != 0)
@@ -1078,13 +1121,21 @@ int main()
     pthread_create(&thread_generador_carros, NULL, generador_carros, NULL);
 
 
-    if(ley_jungla == 0)
+    if(puente_creado_0->control != JUNGLA)
     {
         pthread_join(thread_puente_0, NULL);
+    }
+    if(puente_creado_0->control != JUNGLA)
+    {
         pthread_join(thread_puente_1, NULL);
+    }
+    if(puente_creado_0->control != JUNGLA)
+    {
         pthread_join(thread_puente_2, NULL);
+    }
+    if(puente_creado_0->control != JUNGLA)
+    {
         pthread_join(thread_puente_3, NULL);
-
     }
 
 
