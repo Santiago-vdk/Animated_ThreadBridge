@@ -283,6 +283,7 @@ int *controlador_carros(void *carro)
 
 void *algoritmo_puente_oficial(void *puente)
 {
+
     Thread_Puente data = (Thread_Puente) puente;
     int temporal_k_izquierda = 0;
     int temporal_k_derecha = 0;
@@ -580,8 +581,6 @@ void *algoritmo_puente_semaforo(void *puente)
 }
 
 
-
-
 void *controlador_carros_jungla(void *carro)
 {
     Thread_Carro data = (Thread_Carro) carro;
@@ -770,8 +769,6 @@ void *controlador_carros_jungla(void *carro)
 
 
 }
-
-
 
 
 // Utiliza la lista global de los hilos para encontrar el puente en el que tiene que insertar carros
