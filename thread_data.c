@@ -23,8 +23,6 @@ void agregar_puente(Thread_Puente node, ThreadListPuente list)
     }
 }
 
-
-
 void agregar_carro(Thread_Carro node, ThreadListCarro list)
 {
     node->prev = NULL;
@@ -57,8 +55,6 @@ void agregar_carro(Thread_Carro node, ThreadListCarro list)
     }
 
 }
-
-
 
 void agregar_thread(Thread node, ThreadList list)
 {
@@ -599,73 +595,100 @@ void agregar_thread_velocidad(Thread node, ThreadList list)
 }
 
 
+
+
+
+
+
+
+
+///////////////////////////////////////////////////
+
 /**
- * Organiza segun el tipo de vehiculo y envia a ingresar a su metodo correspondiente
+ * Agrega el nodo Thread al final de la lista por ser un puente
  */
-void agregar_thread_Tiempo_Real(Thread_Carro node, ThreadListCarro list)
+void agregar_Puente_Tiempo_Real(Thread node, ThreadList list)
 {
-    switch(node->tipo_carro)
+    if(list->head == NULL)
     {
-    case AMBULANCIA:
-        agregar_Ambulacia_Tiempo_Real(node,list);
-        list->cantidad_ambulancias += 1;
-        break;
-
-    case RADIOACTIVO:
-        agregar_Radioactivo_Tiempo_Real(node,list);
-        list->cantidad_radioactivos += 1;
-        break;
-
-    default:
-        agregar_Carro_Tiempo_Real(node,list);
+        list->head = node;  // Define al nodo como cabeza
+        list->tail = node;  // Define al nodo como cola
     }
-    list->tamanio +=1;
+    else
+    {
+        ((Thread)list->tail)->next = node; // Define el elemento siguiente del tail hacia el nuevo nodo
+        node->prev = ((Thread)list->tail); // Define el elemento anterior del nodo nuevo hacia el tail de la lista
+        list->tail = node;                         // Cambia el puntero tail al nodo nuevo
+    }
 }
+
 
 /**
  * Ingresa los carros por orden de velocidad, a mayor velocidad ira mas adelante en la lista.
  */
-void agregar_Carro_Tiempo_Real(Thread_Carro node, ThreadListCarro list)
+void agregar_Carro_Tiempo_Real_Lista_General(Thread node, ThreadList list)
 {
+    //printf("\n++ Insertando Carro ++");
+
+    //printf("Tam %d\n",list->tamanio);
+    //printf("\nHILO : %lu",list->head->puente->puente_id);
+
     if (list->head == NULL)
     {
+        //printf("\nINSERTO PRIMER ELEMENTO");
         list->head = node;
         list->tail = node;
     }
     else
     {
-        Thread_Carro tmp = list->head;
+        //printf("\n\n-- BUSCANDO --");
+        Thread tmp = list->head;
         int flag = 0;
 
         while (tmp != NULL && flag == 0)
         {
-            //Prioridad es mayor al nodo en evaluacion
-            if (  node->tipo_carro >= tmp->tipo_carro && node->velocidad > tmp->velocidad )
+            if(tmp->puente == NULL)
             {
-                //Nodo es la cabeza
-                if(tmp->thread_identificador ==  list->head->thread_identificador)
-                {
-                    node->next = list->head;        //Apunta el siguiente del nodo a la cabeza de la lista
-                    list->head->prev = node;        //Apunta el anterior de la cabeza al nodo
-                    list->head = node;              //Corre el de la cabeza al nodo nuevo
-                }
-                else
-                {
-                    //Insercion intermedia
-                    tmp->prev->next = node;     //Nodo anterior al tmp se le asigna como el siguiente el nodo entrante
-                    node->next = tmp;
-                    node->prev = tmp->prev;           //
-                    tmp->prev = node;
-                }
-                flag = 1;       //Cambia la bandera como ingresado
-            }
+                Thread_Carro carroLista = tmp->carro;
+                Thread_Carro carroNuevo = node->carro;
 
+                //printf("\n** (TMP) Codigo: %d, Tipo Carro: %d, Velocidad: %d **\n",carroLista->thread_identificador,carroLista->tipo_carro,carroLista->velocidad);
+                //printf("** (NUEVO) Codigo: %d, Tipo Carro: %d, Velocidad: %d **\n",carroNuevo->thread_identificador,carroNuevo->tipo_carro,carroNuevo->velocidad);
+                //sleep(1);
+
+                //Prioridad es mayor al nodo en evaluacion
+                if (  carroNuevo->tipo_carro >= carroLista->tipo_carro && carroNuevo->velocidad > carroLista->velocidad )
+                {
+                    //printf("\n-- INGRESANDO --");
+                    //Nodo es la cabeza
+                    if(tmp->thread_identificador ==  list->head->thread_identificador)
+                    {
+                        //printf("\nCABEZA");
+                        node->next = list->head;        //Apunta el siguiente del nodo a la cabeza de la lista
+                        list->head->prev = node;        //Apunta el anterior de la cabeza al nodo
+                        list->head = node;              //Corre el de la cabeza al nodo nuevo
+                    }
+                    else
+                    {
+                        //Insercion intermedia
+                        //printf("\nINTERMEDIO");
+                        tmp->prev->next = node;     //Nodo anterior al tmp se le asigna como el siguiente el nodo entrante
+                        node->next = tmp;
+                        node->prev = tmp->prev;           //
+                        tmp->prev = node;
+                    }
+                    flag = 1;       //Cambia la bandera como ingresado
+                }
+            }
             tmp = tmp->next;
+            //sleep(1);
         }
 
+        //printf("\nFlag: %d",flag);
         if(flag == 0)
         {
             // inserta al final
+            //printf("\nFINAL");
             list->tail->next = node;
             node->prev = list->tail;
             list->tail = node;
@@ -673,7 +696,6 @@ void agregar_Carro_Tiempo_Real(Thread_Carro node, ThreadListCarro list)
     }
 
 }
-
 
 /**
  * Ingresa a la lista los carros tomando en cuanta distintos criterios. Primer criterio que valida es que si
@@ -681,54 +703,70 @@ void agregar_Carro_Tiempo_Real(Thread_Carro node, ThreadListCarro list)
  * basa en el criterio del tiempo el que tenga menor tiempo. En caso de que ambos tengan el mismo tiempo el mas veloz
  * sera el que tenga prioridad
  */
-void agregar_Radioactivo_Tiempo_Real (Thread_Carro node, ThreadListCarro list)
+void agregar_Radioactivo_Tiempo_Real_Lista_General (Thread node, ThreadList list)
 {
+    //printf("\n++ Insertando Radioactivo ++");
     if (list->head == NULL)
     {
+        //printf("\nINSERTO PRIMER ELEMENTO");
         list->head = node;
         list->tail = node;
+        //sleep(1);
     }
     else
     {
-        Thread_Carro tmp = list->head;
+        Thread tmp = list->head;
         int flag = 0;
 
         while (tmp != NULL && flag == 0)
         {
-            int esTipoMayor      = (node->tipo_carro    >   tmp->tipo_carro)    ? 1 : 0;
-            int esTipoIgual      = (node->tipo_carro    ==  tmp->tipo_carro)    ? 1 : 0;
-            int esTiempoMenor    = (node->limite_tiempo <   tmp->limite_tiempo) ? 1 : 0;
-            int esTiempoIgual    = (node->limite_tiempo ==  tmp->limite_tiempo) ? 1 : 0;
-            int esVelocidadMayor = (node->velocidad     >   tmp->velocidad)     ? 1 : 0;
-
-            //Prioridad es mayor al nodo en evaluacion
-            if ( esTipoMayor == 1 || ( esTipoIgual == 1 && ( esTiempoMenor == 1 || ( esTiempoIgual == 1 && esVelocidadMayor == 1 ) ) ) )
+            if(tmp->puente == NULL)
             {
-                //Nodo es la cabeza
-                if(tmp->thread_identificador ==  list->head->thread_identificador)
-                {
-                    node->next = list->head;        //Apunta el siguiente del nodo a la cabeza de la lista
-                    list->head->prev = node;        //Apunta el anterior de la cabeza al nodo
-                    list->head = node;              //Corre el de la cabeza al nodo nuevo
-                }
-                else
-                {
-                    //Insercion intermedia
-                    tmp->prev->next = node;     //Nodo anterior al tmp se le asigna como el siguiente el nodo entrante
-                    node->next = tmp;
-                    node->prev = tmp->prev;           //
-                    tmp->prev = node;
-                }
-                flag = 1;       //Cambia la bandera como ingresado
-            }
+                Thread_Carro carroLista = tmp->carro;
+                Thread_Carro carroNuevo = node->carro;
+                //printf("\n** (TMP) Codigo: %d, Tipo Carro: %d, Velocidad: %d Tiempo: %d**\n", carroLista->thread_identificador, carroLista->tipo_carro,carroLista->velocidad, carroLista->limite_tiempo);
+                //printf("\n** (NODE) Codigo: %d, Tipo Carro: %d, Velocidad: %d Tiempo: %d**\n", carroNuevo->thread_identificador, carroNuevo->tipo_carro, carroNuevo->velocidad, carroNuevo->limite_tiempo);
+                //sleep(1);
 
+                int esTipoMayor      = (carroNuevo->tipo_carro    >   carroLista->tipo_carro)    ? 1 : 0;
+                int esTipoIgual      = (carroNuevo->tipo_carro    ==  carroLista->tipo_carro)    ? 1 : 0;
+                int esTiempoMenor    = (carroNuevo->limite_tiempo <   carroLista->limite_tiempo) ? 1 : 0;
+                int esTiempoIgual    = (carroNuevo->limite_tiempo ==  carroLista->limite_tiempo) ? 1 : 0;
+                int esVelocidadMayor = (carroNuevo->velocidad     >   carroLista->velocidad)     ? 1 : 0;
+
+                //Prioridad es mayor al nodo en evaluacion
+                if ( esTipoMayor == 1 || ( esTipoIgual == 1 && ( esTiempoMenor == 1 || ( esTiempoIgual == 1 && esVelocidadMayor == 1 ) ) ) )
+                {
+                    //printf("\n-- INGRESANDO --");
+                    //Nodo es la cabeza
+                    if(tmp->thread_identificador ==  list->head->thread_identificador)
+                    {
+                        //printf("\nCABEZA");
+                        node->next = list->head;        //Apunta el siguiente del nodo a la cabeza de la lista
+                        list->head->prev = node;        //Apunta el anterior de la cabeza al nodo
+                        list->head = node;              //Corre el de la cabeza al nodo nuevo
+                    }
+                    else
+                    {
+                        //Insercion intermedia
+                        //printf("\nINTERMEDIO");
+                        tmp->prev->next = node;     //Nodo anterior al tmp se le asigna como el siguiente el nodo entrante
+                        node->next = tmp;
+                        node->prev = tmp->prev;           //
+                        tmp->prev = node;
+                    }
+                    flag = 1;       //Cambia la bandera como ingresado
+                }
+            }
             tmp = tmp->next;
             //sleep(1);
         }
 
+        //printf("\nFlag: %d",flag);
         if(flag == 0)
         {
             // inserta al final
+            //printf("\nFINAL");
             list->tail->next = node;
             node->prev = list->tail;
             list->tail = node;
@@ -736,59 +774,113 @@ void agregar_Radioactivo_Tiempo_Real (Thread_Carro node, ThreadListCarro list)
     }
 }
 
-
-/**
- * Ingresa una ambulacia delante de todos los carros normales y detras de los
- * carros radioactivos. En el caso de las ambulacias, entre ellas mismas se aplicara
- * un shortest job first tomando como parametro la velocidad del vehiculo
- */
-void agregar_Ambulacia_Tiempo_Real (Thread_Carro node, ThreadListCarro list)
+void agregar_Ambulacia_Tiempo_Real_Lista_General(Thread node, ThreadList list)
 {
+    //printf("\n++ Insertando Ambulancia ++");
     if (list->head == NULL)
     {
+        //printf("\nINSERTO PRIMER ELEMETO");
         list->head = node;
         list->tail = node;
     }
     else
     {
-        Thread_Carro tmp = list->head;
+        Thread tmp = list->head;
+
         int flag = 0;
 
         while (tmp != NULL && flag == 0)
         {
-            //Prioridad es mayor al nodo en evaluacion
-            if ( (node->tipo_carro > tmp->tipo_carro) || (node->tipo_carro == tmp->tipo_carro && node->velocidad > tmp->velocidad) )
+            if(tmp->puente == NULL)
             {
-                //Nodo es la cabeza
-                if(tmp->thread_identificador ==  list->head->thread_identificador)
-                {
-                    node->next = list->head;        //Apunta el siguiente del nodo a la cabeza de la lista
-                    list->head->prev = node;        //Apunta el anterior de la cabeza al nodo
-                    list->head = node;              //Corre el de la cabeza al nodo nuevo
-                }
-                else
-                {
-                    //Insercion intermedia
-                    tmp->prev->next = node;     //Nodo anterior al tmp se le asigna como el siguiente el nodo entrante
-                    node->next = tmp;
-                    node->prev = tmp->prev;           //
-                    tmp->prev = node;
-                }
-                flag = 1;       //Cambia la bandera como ingresado
-            }
+                Thread_Carro carroLista = tmp->carro;
+                Thread_Carro carroNuevo = node->carro;
 
+                //printf("\n** (TMP) Codigo: %d, Tipo Carro: %d, Velocidad: %d **\n",carroLista->thread_identificador,carroLista->tipo_carro,carroLista->velocidad);
+                //printf("** (NUEVO) Codigo: %d, Tipo Carro: %d, Velocidad: %d **\n",carroNuevo->thread_identificador,carroNuevo->tipo_carro,carroNuevo->velocidad);
+                //sleep(1);
+
+                //Prioridad es mayor al nodo en evaluacion
+                if ( (carroNuevo->tipo_carro > carroLista->tipo_carro) || (carroNuevo->tipo_carro == carroLista->tipo_carro && carroNuevo->velocidad > carroLista->velocidad) )
+                {
+                    //printf("\n-- INGRESANDO --");
+                    //Nodo es la cabeza
+                    if(tmp->thread_identificador ==  list->head->thread_identificador)
+                    {
+                        //printf("\nCABEZA");
+                        node->next = list->head;        //Apunta el siguiente del nodo a la cabeza de la lista
+                        list->head->prev = node;        //Apunta el anterior de la cabeza al nodo
+                        list->head = node;              //Corre el de la cabeza al nodo nuevo
+                    }
+                    else
+                    {
+                        //Insercion intermedia
+                        //printf("\nINTERMEDIO");
+                        tmp->prev->next = node;     //Nodo anterior al tmp se le asigna como el siguiente el nodo entrante
+                        node->next = tmp;
+                        node->prev = tmp->prev;           //
+                        tmp->prev = node;
+                    }
+                    flag = 1;       //Cambia la bandera como ingresado
+                }
+            }
             tmp = tmp->next;
+            //sleep(1);
         }
 
+        //printf("\nFlag: %d",flag);
         if(flag == 0)
         {
             // inserta al final
+            //printf("\nFINAL");
             list->tail->next = node;
             node->prev = list->tail;
             list->tail = node;
         }
     }
 }
+
+void agregar_thread_Tiempo_Real(Thread node, ThreadList list)
+{
+
+    if(node->thread_identificador < 4)
+    {
+        //printf("\n\n//// INSERTANTO PUENTE \\\\");
+        agregar_Puente_Tiempo_Real(node, list);
+    }
+    else
+    {
+        //printf("\n\n//// INSERTANTO CARRO \\\\");
+        Thread_Carro carro = node->carro;      // asigna nodo para manejarlo como carro
+
+        //printf("\nINSERTAR CARRO\n");
+        //agregar_Carro_Tiempo_Real_Lista_General(node,list);
+
+        switch(carro->tipo_carro)
+        {
+        case 1  :
+            //printf("\nINSERTAR AMBULACIA\n");
+            agregar_Ambulacia_Tiempo_Real_Lista_General(node,list);
+            break;
+
+        case 2  :
+            //printf("\nINSERTAR RADIOACTIVO\n");
+            agregar_Radioactivo_Tiempo_Real_Lista_General(node,list);
+            break;
+
+        default:
+            //printf("\nINSERTAR CARRO\n");
+            agregar_Carro_Tiempo_Real_Lista_General(node,list);
+            break;
+        }
+    }
+    list->tamanio +=1;
+}
+
+///////////////////////////////////////////////////
+
+
+
 
 
 /*

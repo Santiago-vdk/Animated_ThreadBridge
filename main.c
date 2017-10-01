@@ -204,8 +204,8 @@ void *calendarizador_real_time(void *t)
                 {
                     printf("\nComenzando a ejecutar hilo %d", thread_actual);
                     printf(ANSI_COLOR_RED " CARRO" ANSI_COLOR_RESET);
-                    printf(" con prioridad");
-                    printf(ANSI_COLOR_RED " %d\n" ANSI_COLOR_RESET, buscar_nodo_thread(threads,thread_actual)->prioridad);
+                    printf(" con Real Time\n");
+                   // printf(ANSI_COLOR_RED " %d\n" ANSI_COLOR_RESET, buscar_nodo_thread(threads,thread_actual)->prioridad);
                 }
                 else
                 {
@@ -1159,7 +1159,8 @@ void *generador_carros(void *t)
         {
             agregar_thread_velocidad(thread_nuevo, threads);
         } else if (calendarizador == 4){
-
+            printf("Aqui %d\n",thread_nuevo->thread_identificador);
+            agregar_thread_Tiempo_Real(thread_nuevo,threads);
 
         }
         else
