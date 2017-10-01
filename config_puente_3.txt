@@ -1,4 +1,4 @@
-distribucion_exponencial:0.5
+distribucion_exponencial:0
 probabilidad_ambulancia:0.38
 capacidad:10
 valor_k:5
