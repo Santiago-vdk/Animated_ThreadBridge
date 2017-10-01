@@ -124,7 +124,9 @@ void agregar_puente(Thread_Puente node, ThreadListPuente list);
 void agregar_carro(Thread_Carro node, ThreadListCarro list);
 void agregar_thread(Thread node, ThreadList list);
 void agregar_thread_priority(Thread_Carro node, ThreadList list);
+void agregar_thread_priority(Thread_Carro node, ThreadList list);
 
+Thread_Carro popCar(ThreadListCarro list);
 Thread_Carro pop_primer_thread_carro(ThreadListCarro list);
 Thread pop_primer_thread(ThreadList list);
 
@@ -135,5 +137,5 @@ Thread_Puente buscar_nodo_puente(ThreadListPuente list, long thread_identificado
 void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador);
 void eliminar_nodo_thread(ThreadList list, long thread_identificador);
 
-
+void Envejecer(ThreadList list);
 #endif

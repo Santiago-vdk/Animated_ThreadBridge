@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-int getParameterValueConfig(char* pNameFile, char* pParameterName){
+int getParameterValueConfig(char* pNameFile, char* pParameterName)
+{
     FILE * fp;
     char * line = NULL;
     size_t len = 0;
@@ -14,7 +15,8 @@ int getParameterValueConfig(char* pNameFile, char* pParameterName){
     if (fp == NULL)
         exit(EXIT_FAILURE);
 
-    while ((read = getline(&line, &len, fp)) != -1) {
+    while ((read = getline(&line, &len, fp)) != -1)
+    {
         char *token;
         char *search = ":";
 
@@ -30,7 +32,8 @@ int getParameterValueConfig(char* pNameFile, char* pParameterName){
         int number = strcmp(token, pParameterName);
         //printf("\tNumber :%d",number);
 
-        if(number == 0){
+        if(number == 0)
+        {
             value = strtok(NULL, search);
             break;
             //printf("\tVALOR :%s",value);
@@ -41,4 +44,25 @@ int getParameterValueConfig(char* pNameFile, char* pParameterName){
     if (line)
         free(line);
     return atoi(value);
+}
+
+
+void leer()
+{
+
+
+
+    FILE* fp;
+    char buffer[255];
+
+    fp = fopen("config_puente_02.txt", "r");
+
+    while(fgets(buffer, 255, (FILE*) fp))
+    {
+        printf("%s\n", buffer);
+    }
+
+    fclose(fp);
+
+
 }

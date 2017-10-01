@@ -595,16 +595,23 @@ void *controlador_carros_jungla(void *carro)
         if(thread_actual == id && thread_terminado == 0)
         {
 
+
             if(corriendo == 0)
             {
                 // Simulo la velocidad
 
 
+
                 Thread_Puente puente_temporal = buscar_nodo_puente(puentes,puente);
+
+
                 if(puente_temporal->carros_circulando->tamanio < puente_temporal->capacidad)  // Hay espacio para pasar
                 {
+
+
                     if(data->lado_izquierdo == 1)           // Estoy en el lado izquierdo del puente
                     {
+                        //printf("Aqui %p %d\n", puente_temporal->carros_circulando->head, puente_temporal->carros_circulando->tamanio);
                         if(puente_temporal->carros_circulando->head == NULL)
                         {
                             eliminar_nodo_carro(puente_temporal->carros_izquierda, id);
@@ -778,19 +785,18 @@ void *generador_carros(void *t)
     while(i<20)
     {
         srand(time(NULL));
-        //printf("Generando carro de tipo CARRO al lado izquierdo del puente 0 \n");
+        //printf("Generando carro %lu de tipo %d al lado %d del puente %d \n",i, carro->tipo_carro, lado_random, puente_random);
 
         int puente_random = rand() % 4;
         int lado_random = rand() % 2;
 
-        Thread_Carro carro = (Thread_Carro) malloc(sizeof(struct thread_carro));
+        Thread_Carro carro = (Thread_Carro) calloc(1, sizeof(struct thread_carro));
         carro -> thread_identificador = i;
         carro -> corriendo = 0;
         carro -> puente = puente_random;
         carro -> velocidad = rand() / (RAND_MAX + 1.);
 
         probabilidad = lambda*pow(2.71828,-lambda*5);
-
         if(rand() < probabilidad *( (double) RAND_MAX) )
         {
             carro -> tipo_carro = RADIOACTIVO;
@@ -818,6 +824,7 @@ void *generador_carros(void *t)
         carro -> limite_tiempo = -1;
 
 
+
         pthread_t carro_thread;
         if(lado_random == 0)        // Izquierda
         {
@@ -825,7 +832,7 @@ void *generador_carros(void *t)
             // Si se trabaja con cola de prioridad es necesario ordenar los carros por prioridad
             if(calendarizador == 3)
             {
-                agregar_thread_priority(carro, buscar_nodo_thread(threads,puente_random)->puente->carros_izquierda);
+                //agregar_thread_priority(carro, buscar_nodo_thread(threads,puente_random)->puente->carros_izquierda);
             }
             else
             {
@@ -833,6 +840,7 @@ void *generador_carros(void *t)
                 {
 
                     agregar_carro(carro, buscar_nodo_puente(puentes,puente_random)->carros_izquierda);
+
                 }
                 else
                 {
@@ -847,13 +855,14 @@ void *generador_carros(void *t)
             // Si se trabaja con cola de prioridad es necesario ordenar los carros por prioridad
             if(calendarizador == 3)
             {
-                agregar_thread_priority(carro, buscar_nodo_thread(threads,puente_random)->puente->carros_derecha);
+                //agregar_thread_priority(carro, buscar_nodo_thread(threads,puente_random)->puente->carros_derecha);
             }
             else
             {
 
                 if(buscar_nodo_puente(puentes,puente_random) != NULL)
                 {
+
                     agregar_carro(carro, buscar_nodo_puente(puentes,puente_random)->carros_derecha);
                 }
                 else
@@ -868,7 +877,7 @@ void *generador_carros(void *t)
         }
 
 
-        Thread thread_nuevo = (Thread) malloc(sizeof(struct thread));
+        Thread thread_nuevo = (Thread) calloc(1, sizeof(struct thread));
         thread_nuevo->puente=NULL;
         thread_nuevo->carro=carro;
         thread_nuevo->calendarizador=FCFS;
@@ -878,7 +887,12 @@ void *generador_carros(void *t)
 
         if(buscar_nodo_puente(puentes,puente_random) != NULL)
         {
+
             pthread_create(&carro_thread, NULL, controlador_carros_jungla, (void *) carro);
+
+
+
+
         }
         else
         {
@@ -896,21 +910,22 @@ void *generador_carros(void *t)
 
 int main()
 {
-    threads = (ThreadList) malloc(sizeof(struct thread_list));   // Inicializo una lista con todos los threads puentes y carros
+
+    threads = (ThreadList) calloc(1, sizeof(struct thread_list));   // Inicializo una lista con todos los threads puentes y carros
     threads -> tamanio = 0;
 
-    puentes = (ThreadListPuente) malloc(sizeof(struct thread_list_puente));
+    puentes = (ThreadListPuente) calloc(1, sizeof(struct thread_list_puente));
     puentes->tamanio = 0;
 
 
-    calendarizador = getParameterValueConfig("config_global.txt","calendarizador");
-    if(calendarizador == NULL)
-    {
-        printf("Error leyendo configuracion global\n");
-        exit(EXIT_FAILURE);
-    }
+     calendarizador = getParameterValueConfig("config_global.txt","calendarizador");
+     if(calendarizador == NULL)
+     {
+         printf("Error leyendo configuracion global\n");
+         exit(EXIT_FAILURE);
+     }
 
-    //calendarizador = 0;
+   // calendarizador = 0;
 
 
     switch (calendarizador )
@@ -938,6 +953,8 @@ int main()
         break;
     }
 
+//leer();
+
     /* PUENTE 0 */
     Thread_Puente puente_creado_0 = crear_puente_0();
     pthread_t thread_puente_0;           // Creo la instancia del thread del puente
@@ -949,7 +966,7 @@ int main()
     }
     else
     {
-        Thread thread_nuevo = (Thread) malloc(sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
+        Thread thread_nuevo = (Thread) calloc(1, sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
         thread_nuevo->puente=puente_creado_0;
         thread_nuevo->carro=NULL;                   // Solo me interesa en este caso el thread de carro
         thread_nuevo->calendarizador=calendarizador;
@@ -986,7 +1003,7 @@ int main()
     }
     else
     {
-        Thread thread_nuevo_1 = (Thread) malloc(sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
+        Thread thread_nuevo_1 = (Thread) calloc(1, sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
         thread_nuevo_1 ->puente=puente_creado_1;
         thread_nuevo_1 ->carro=NULL;                   // Solo me interesa en este caso el thread de carro
         thread_nuevo_1 ->calendarizador=calendarizador;
@@ -1023,7 +1040,7 @@ int main()
     else
     {
 
-        Thread thread_nuevo_2 = (Thread) malloc(sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
+        Thread thread_nuevo_2 = (Thread) calloc(1, sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
         thread_nuevo_2->puente=puente_creado_2;
         thread_nuevo_2->carro=NULL;                   // Solo me interesa en este caso el thread de carro
         thread_nuevo_2->calendarizador=calendarizador;
@@ -1056,7 +1073,7 @@ int main()
     }
     else
     {
-        Thread thread_nuevo_3 = (Thread) malloc(sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
+        Thread thread_nuevo_3 = (Thread) calloc(1,sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
         thread_nuevo_3->puente=puente_creado_3;
         thread_nuevo_3->carro=NULL;                   // Solo me interesa en este caso el thread de carro
         thread_nuevo_3->calendarizador=calendarizador;
@@ -1125,15 +1142,15 @@ int main()
     {
         pthread_join(thread_puente_0, NULL);
     }
-    if(puente_creado_0->control != JUNGLA)
+    if(puente_creado_1->control != JUNGLA)
     {
         pthread_join(thread_puente_1, NULL);
     }
-    if(puente_creado_0->control != JUNGLA)
+    if(puente_creado_2->control != JUNGLA)
     {
         pthread_join(thread_puente_2, NULL);
     }
-    if(puente_creado_0->control != JUNGLA)
+    if(puente_creado_3->control != JUNGLA)
     {
         pthread_join(thread_puente_3, NULL);
     }
