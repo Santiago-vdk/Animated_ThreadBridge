@@ -44,6 +44,17 @@ void agregar_carro(Thread_Carro node, ThreadListCarro list)
         list->tail = node;
         list->tamanio += 1;
     }
+
+       switch(node->tipo_carro) {
+    case AMBULANCIA:
+        list->cantidad_ambulancias += 1;
+        break;
+
+    case RADIOACTIVO:
+        list->cantidad_radioactivos += 1;
+        break;
+    }
+
 }
 
 
@@ -321,120 +332,120 @@ void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador)
         }
     }
 }
-//
-///**
-// * Aumenta en una unidad la prioridad de cada elemento de la lista.
-// */
-//void Envejecer(ThreadList list){
-//    Thread_Carro tmp = list->head;
-//    int largo = list->tamanio;
-//    for (int indice = 0; indice < largo; indice++){
-//        //printf("Identificador: %d \t",tmp->thread_identificador);
-//        //printf("\nPrioridad: %d \n",tmp->prioridad);
-//        tmp->prioridad += 1;
-//        tmp = tmp->next;
-//    }
-//}
-//
-///**
-// * Elimina la cabeza de la lista como parametro.
-// */
-//Thread_Carro popCar(ThreadListCarro list){
-//    Thread_Carro tmp = list->head;       // Guarda la cabeza en una variable temporal
-//    if (list->tamanio > 0) {            // Verifica que la lista no este vacia
-//        list->head = tmp->next;         // Cambia la cabeza al elemento siguiente
-//        tmp->next = NULL;               // Elimina la relacion de siguiente de la cabeza anterior con la actual.
-//
-//        if (list->head != NULL) {       // Verifica si la cabeza nueva no sea vacia
-//            list->head->prev = NULL;    // Elimina la relacion de anterior de la nueva cabeza con la vieja.
-//        }
-//
-//        // Valida si el tipo de carro es ambulacia o radioactivo para disminuir la cantidad de la lista
-//        switch(tmp->tipo_carro) {
-//            case 1  :
-//                list->cantidad_ambulancias -= 1;
-//                break;
-//
-//            case 2  :
-//                list->cantidad_radioactivos -= 1;
-//                break;
-//        }
-//
-//        // Disminuye la cantidad de elementos de la lista.
-//        list->tamanio -=1;
-//    }
-//    return tmp;
-//}
-//
-///**
-// * Agrega el elemento a la lista
-// */
-//void agregar_thread_priority(Thread_Carro node, ThreadList list)
-//{
-//    Envejecer(list);
-//    //printf("\n\n\n*** Insertando nodo: %d *** tam %d",node->thread_identificador,list->tamanio);
-//    if (list->head == NULL)
-//    {
-//        //printf("\nINSERTO PRIMER ELEMETO");
-//        list->head = node;
-//        list->tail = node;
-//        list->tamanio += 1;
-//        sleep(5);
-//    }
-//    else
-//    {
-//        ThreadCarro tmp = list->head;
-//        int flag = 0;
-//
-//        while (tmp != NULL && flag == 0){
-//        //printf("\n** Revisando tmp: %d Prioridad: %d **\n",tmp->thread_identificador,tmp->prioridad);
-//        //printf("** Revisando Nodo: %d Prioridad: %d **\n",node->thread_identificador,node->prioridad);
-//        //sleep(1);
-//
-//            //Prioridad es mayor al nodo en evaluacion
-//            if (node->prioridad > tmp->prioridad){
-//                //printf("\nTiene prioridad mayor");
-//                //Nodo es la cabeza
-//                if(tmp->thread_identificador ==  list->head->thread_identificador){
-//                    //printf("\nPrioridad mayor a Cabeza");
-//                    node->next = list->head;        //Apunta el siguiente del nodo a la cabeza de la lista
-//                    list->head->prev = node;        //Apunta el anterior de la cabeza al nodo
-//                    list->head = node;              //Corre el de la cabeza al nodo nuevo
-//                }else{
-//                    //Insercion intermedia
-//                    //printf("\nPrioridad mayor a (%d,%d)",tmp->thread_identificador,tmp->prioridad);
-//                    tmp->prev->next = node;     //Nodo anterior al tmp se le asigna como el siguiente el nodo entrante
-//                    node->next = tmp;
-//                    node->prev = tmp->prev;           //
-//                    tmp->prev = node;
-//                }
-//                list->tamanio += 1; //Aumenta el tamanio de la lista
-//                flag = 1;       //Cambia la bandera como ingresado
-//            }
-//
-//            tmp = tmp->next;
-//            sleep(5);
-//        }
-//
-//        //printf("\nFlag: %d",flag);
-//        if(flag == 0){
-//            // inserta al final
-//            //printf("\nInsertando Final de la lista");
-//            list->tail->next = node;
-//            node->prev = list->tail;
-//            list->tail = node;
-//            list->tamanio += 1;
-//        }
-//    }
-//
-//    switch(node->tipo_carro) {
-//    case 1  :
-//        list->cantidad_ambulancias += 1;
-//        break;
-//
-//    case 2  :
-//        list->cantidad_radioactivos += 1;
-//        break;
-//    }
-//
-//}
+
+/**
+ * Aumenta en una unidad la prioridad de cada elemento de la lista.
+ */
+void Envejecer(ThreadListCarro list){
+    Thread_Carro tmp = list->head;
+    int largo = list->tamanio;
+    for (int indice = 0; indice < largo; indice++){
+        //printf("Identificador: %d \t",tmp->thread_identificador);
+        //printf("\nPrioridad: %d \n",tmp->prioridad);
+        tmp->prioridad += 1;
+        tmp = tmp->next;
+    }
+}
+
+/**
+ * Elimina la cabeza de la lista como parametro.
+ */
+Thread_Carro popCar(ThreadListCarro list){
+    Thread_Carro tmp = list->head;       // Guarda la cabeza en una variable temporal
+    if (list->tamanio > 0) {            // Verifica que la lista no este vacia
+        list->head = tmp->next;         // Cambia la cabeza al elemento siguiente
+        tmp->next = NULL;               // Elimina la relacion de siguiente de la cabeza anterior con la actual.
+
+        if (list->head != NULL) {       // Verifica si la cabeza nueva no sea vacia
+            list->head->prev = NULL;    // Elimina la relacion de anterior de la nueva cabeza con la vieja.
+        }
+
+        // Valida si el tipo de carro es ambulacia o radioactivo para disminuir la cantidad de la lista
+        switch(tmp->tipo_carro) {
+            case 1  :
+                list->cantidad_ambulancias -= 1;
+                break;
+
+            case 2  :
+                list->cantidad_radioactivos -= 1;
+                break;
+        }
+
+        // Disminuye la cantidad de elementos de la lista.
+        list->tamanio -=1;
+    }
+    return tmp;
+}
+
+/**
+ * Agrega el elemento a la lista
+ */
+void agregar_thread_priority(Thread_Carro node, ThreadListCarro list)
+{
+    Envejecer(list);
+    //printf("\n\n\n*** Insertando nodo: %d *** tam %d",node->thread_identificador,list->tamanio);
+    if (list->head == NULL)
+    {
+        //printf("\nINSERTO PRIMER ELEMETO");
+        list->head = node;
+        list->tail = node;
+        list->tamanio += 1;
+        //sleep(5);
+    }
+    else
+    {
+        Thread_Carro tmp = list->head;
+        int flag = 0;
+
+        while (tmp != NULL && flag == 0){
+        //printf("\n** Revisando tmp: %d Prioridad: %d **\n",tmp->thread_identificador,tmp->prioridad);
+        //printf("** Revisando Nodo: %d Prioridad: %d **\n",node->thread_identificador,node->prioridad);
+        //sleep(1);
+
+            //Prioridad es mayor al nodo en evaluacion
+            if (node->prioridad > tmp->prioridad){
+                //printf("\nTiene prioridad mayor");
+                //Nodo es la cabeza
+                if(tmp->thread_identificador ==  list->head->thread_identificador){
+                    //printf("\nPrioridad mayor a Cabeza");
+                    node->next = list->head;        //Apunta el siguiente del nodo a la cabeza de la lista
+                    list->head->prev = node;        //Apunta el anterior de la cabeza al nodo
+                    list->head = node;              //Corre el de la cabeza al nodo nuevo
+                }else{
+                    //Insercion intermedia
+                    //printf("\nPrioridad mayor a (%d,%d)",tmp->thread_identificador,tmp->prioridad);
+                    tmp->prev->next = node;     //Nodo anterior al tmp se le asigna como el siguiente el nodo entrante
+                    node->next = tmp;
+                    node->prev = tmp->prev;           //
+                    tmp->prev = node;
+                }
+                list->tamanio += 1; //Aumenta el tamanio de la lista
+                flag = 1;       //Cambia la bandera como ingresado
+            }
+
+            tmp = tmp->next;
+            //sleep(5);
+        }
+
+        //printf("\nFlag: %d",flag);
+        if(flag == 0){
+            // inserta al final
+            //printf("\nInsertando Final de la lista");
+            list->tail->next = node;
+            node->prev = list->tail;
+            list->tail = node;
+            list->tamanio += 1;
+        }
+    }
+
+    switch(node->tipo_carro) {
+    case AMBULANCIA:
+        list->cantidad_ambulancias += 1;
+        break;
+
+    case RADIOACTIVO:
+        list->cantidad_radioactivos += 1;
+        break;
+    }
+
+}

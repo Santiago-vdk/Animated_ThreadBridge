@@ -13,13 +13,14 @@ Thread_Puente crear_puente_0()
 
     puente_0 -> capacidad = getParameterValueConfig("config_puente_0.txt","capacidad");//getParameterValueConfig("config_puente_0.txt","capacidad");              // Capacidad, numero de carros en el puente al mismo tiempo
     puente_0 -> control = getParameterValueConfig("config_puente_0.txt","metodo_control");           // Algoritmo de control del puente
-    puente_0 -> k = getParameterValueConfig("config_puente_0.txt","k");
+    puente_0 -> k = getParameterValueConfig("config_puente_0.txt","valor_k");
 
     puente_0 -> semaforo_izquierda = 1;
     puente_0 -> semaforo_derecha = 0;
     puente_0 -> tiempo_semaforo_izquierda = getParameterValueConfig("config_puente_0.txt","tiempo_semaforo_izquierda");
     puente_0 -> tiempo_semaforo_derecha = getParameterValueConfig("config_puente_0.txt","tiempo_semaforo_derecha");
 
+    puente_0 -> distribucion_exponencial = getParameterValueConfigDouble("config_puente_0.txt","distribucion_exponencial");
 
     puente_0 -> carros_circulando = calloc(1,sizeof(struct thread_list_carro));     // Contiene todos los threads de carros del puente
     puente_0 -> carros_circulando->tamanio = 0;
@@ -50,14 +51,16 @@ Thread_Puente crear_puente_1()
     puente_1 -> thread_identificador = 1;              // El id de los threads en los puentes es fijo
     puente_1 -> puente_id = 1;             // identificador del puente, para los puentes es el mismo que el id de thread
     puente_1 -> ocupancia = 0;             // Cantidad de carros que estan en el puente transitando
-    puente_1 -> capacidad =  10;              // Capacidad, numero de carros en el puente al mismo tiempo
+    puente_1 -> capacidad = getParameterValueConfig("config_puente_1.txt","capacidad");              // Capacidad, numero de carros en el puente al mismo tiempo
     puente_1 -> control = getParameterValueConfig("config_puente_1.txt","metodo_control");           // Algoritmo de control del puente
-    puente_1 -> k =10;
+    puente_1 -> k = getParameterValueConfig("config_puente_1.txt","valor_k");
 
     puente_1 -> semaforo_izquierda = 1;
     puente_1 -> semaforo_derecha = 0;
-    puente_1 -> tiempo_semaforo_izquierda = 1;
-    puente_1 -> tiempo_semaforo_derecha = 1;
+    puente_1 -> tiempo_semaforo_izquierda = getParameterValueConfig("config_puente_1.txt","tiempo_semaforo_izquierda");
+    puente_1 -> tiempo_semaforo_derecha = getParameterValueConfig("config_puente_1.txt","tiempo_semaforo_derecha");
+
+    puente_1 -> distribucion_exponencial = getParameterValueConfigDouble("config_puente_1.txt","distribucion_exponencial");
 
     puente_1 -> carros_circulando = calloc(1,sizeof(struct thread_list_carro));     // Contiene todos los threads de carros del puente
     puente_1 -> carros_circulando->tamanio = 0;
@@ -91,14 +94,16 @@ Thread_Puente crear_puente_2()
     puente_2 -> thread_identificador = 2;              // El id de los threads en los puentes es fijo
     puente_2 -> puente_id = 2;             // identificador del puente, para los puentes es el mismo que el id de thread
     puente_2 -> ocupancia = 0;             // Cantidad de carros que estan en el puente transitando
-    puente_2 -> capacidad = 10;              // Capacidad, numero de carros en el puente al mismo tiempo
+    puente_2 -> capacidad = getParameterValueConfig("config_puente_2.txt","capacidad");               // Capacidad, numero de carros en el puente al mismo tiempo
     puente_2 -> control = getParameterValueConfig("config_puente_2.txt","metodo_control");            // Algoritmo de control del puente
-    puente_2 -> k = 10;
+    puente_2 -> k = getParameterValueConfig("config_puente_2.txt","valor_k");
 
     puente_2 -> semaforo_izquierda = 1;
     puente_2 -> semaforo_derecha = 0;
-    puente_2 -> tiempo_semaforo_izquierda = 1;
-    puente_2 -> tiempo_semaforo_derecha = 1;
+    puente_2 -> tiempo_semaforo_izquierda = getParameterValueConfig("config_puente_2.txt","tiempo_semaforo_izquierda");
+    puente_2 -> tiempo_semaforo_derecha = getParameterValueConfig("config_puente_2.txt","tiempo_semaforo_derecha");
+
+    puente_2 -> distribucion_exponencial = getParameterValueConfigDouble("config_puente_2.txt","distribucion_exponencial");
 
     puente_2 -> carros_circulando = calloc(1,sizeof(struct thread_list_carro));     // Contiene todos los threads de carros del puente
     puente_2 -> carros_circulando->tamanio = 0;
@@ -132,14 +137,16 @@ Thread_Puente crear_puente_3()
     puente_3 -> thread_identificador = 3;              // El id de los threads en los puentes es fijo
     puente_3 -> puente_id = 3;             // identificador del puente, para los puentes es el mismo que el id de thread
     puente_3 -> ocupancia = 0;             // Cantidad de carros que estan en el puente transitando
-    puente_3 -> capacidad = 10;              // Capacidad, numero de carros en el puente al mismo tiempo
-    puente_3 -> control = JUNGLA;//getParameterValueConfig("config_puente_3.txt","metodo_control");             // Algoritmo de control del puente
-    puente_3 -> k = 7;
+    puente_3 -> capacidad = getParameterValueConfig("config_puente_3.txt","capacidad");               // Capacidad, numero de carros en el puente al mismo tiempo
+    puente_3 -> control = getParameterValueConfig("config_puente_3.txt","metodo_control");             // Algoritmo de control del puente
+    puente_3 -> k = getParameterValueConfig("config_puente_3.txt","valor_k");
 
     puente_3 -> semaforo_izquierda = 1;
     puente_3 -> semaforo_derecha = 0;
-    puente_3 -> tiempo_semaforo_izquierda =1;
-    puente_3 -> tiempo_semaforo_derecha = 1;
+    puente_3 -> tiempo_semaforo_izquierda = getParameterValueConfig("config_puente_3.txt","tiempo_semaforo_izquierda");
+    puente_3 -> tiempo_semaforo_derecha = getParameterValueConfig("config_puente_3.txt","tiempo_semaforo_derecha");
+
+    puente_3 -> distribucion_exponencial = getParameterValueConfigDouble("config_puente_3.txt","distribucion_exponencial");
 
     puente_3 -> carros_circulando = calloc(1,sizeof(struct thread_list_carro));     // Contiene todos los threads de carros del puente
     puente_3 -> carros_circulando->tamanio = 0;

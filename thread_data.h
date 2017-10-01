@@ -83,6 +83,7 @@ typedef struct thread_puente
 	int temporizando;       // Se utiliza para identificar si el puente esta esperando dejar de ser temporizado
 	int temporizado_parcial;
 
+	double distribucion_exponencial;
 
 	struct thread_puente *next;
 	struct thread_puente *prev;
@@ -123,8 +124,7 @@ typedef struct thread_list
 void agregar_puente(Thread_Puente node, ThreadListPuente list);
 void agregar_carro(Thread_Carro node, ThreadListCarro list);
 void agregar_thread(Thread node, ThreadList list);
-void agregar_thread_priority(Thread_Carro node, ThreadList list);
-void agregar_thread_priority(Thread_Carro node, ThreadList list);
+void agregar_thread_priority(Thread_Carro node, ThreadListCarro list);
 
 Thread_Carro popCar(ThreadListCarro list);
 Thread_Carro pop_primer_thread_carro(ThreadListCarro list);
@@ -137,5 +137,5 @@ Thread_Puente buscar_nodo_puente(ThreadListPuente list, long thread_identificado
 void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador);
 void eliminar_nodo_thread(ThreadList list, long thread_identificador);
 
-void Envejecer(ThreadList list);
+void Envejecer(ThreadListCarro list);
 #endif

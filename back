@@ -115,72 +115,7 @@ void *calendarizador_RoundRobin(void *t)
 }
 
 
-void *calendarizador_priority_queue(void *t)
-{
-    // Thread thread_corriendo;
-    Thread temporal = threads->head;
-    while(1)
-    {
 
-        if(threads->head != NULL)
-        {
-
-            if(temporal != NULL)
-            {
-
-                pthread_mutex_lock(&lock_thread_actual);
-                thread_actual = temporal->thread_identificador;
-                pthread_mutex_unlock(&lock_thread_actual);
-
-
-                pthread_mutex_lock(&lock_thread_terminado);
-                thread_terminado = 0;
-
-                if(thread_actual>3)
-                {
-                    printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo carro %d\n" ANSI_COLOR_RESET, thread_actual);
-                }
-                else
-                {
-                    printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo puente %d\n" ANSI_COLOR_RESET, thread_actual);
-                }
-                pthread_mutex_unlock(&lock_thread_terminado);
-
-
-                while (thread_terminado == 0)
-                {
-
-
-                }
-
-                if(threads->tamanio != 0 && buscar_nodo_thread(threads,thread_actual) != NULL)
-                {
-                    //printf(ANSI_COLOR_CYAN "Pop out & push in \n" ANSI_COLOR_RESET);
-                    agregar_thread(pop_primer_thread(threads),threads);
-                }
-
-                if(temporal->next != NULL)
-                {
-                    temporal = temporal->next;      // Obtengo el siguiente
-                }
-                else
-                {
-                    temporal = threads->head;
-                }
-            }
-            else
-            {
-                temporal = threads->head;
-            }
-        }
-        else
-        {
-            printf("No hay hilos para calendarizar \n");
-        }
-        usleep(100000);
-
-    }
-}
 void *calendarizador_fcfs(void *t)
 {
     // Thread thread_corriendo;
@@ -348,7 +283,6 @@ int *controlador_carros(void *carro)
 
 void *algoritmo_puente_oficial(void *puente)
 {
-
     Thread_Puente data = (Thread_Puente) puente;
     int temporal_k_izquierda = 0;
     int temporal_k_derecha = 0;
@@ -402,7 +336,7 @@ void *algoritmo_puente_oficial(void *puente)
                     else
                     {
                         pthread_mutex_lock(&lock_thread_terminado);
-                        printf("No hay carros a la izquierda del puente \n");
+                        //printf("No hay carros a la izquierda del puente \n");
                         thread_terminado = 1;
                         temporal_k_izquierda = data->k;
                         pthread_mutex_unlock(&lock_thread_terminado);
@@ -462,7 +396,7 @@ void *algoritmo_puente_oficial(void *puente)
                         else
                         {
                             pthread_mutex_lock(&lock_thread_terminado);
-                            printf("No hay carros a la derecha del puente \n");
+                            //printf("No hay carros a la derecha del puente \n");
                             thread_terminado = 1;
                             temporal_k_derecha = data->k;
                             temporal_k_izquierda = 0;
@@ -646,6 +580,8 @@ void *algoritmo_puente_semaforo(void *puente)
 }
 
 
+
+
 void *controlador_carros_jungla(void *carro)
 {
     Thread_Carro data = (Thread_Carro) carro;
@@ -658,13 +594,24 @@ void *controlador_carros_jungla(void *carro)
     {
         if(thread_actual == id && thread_terminado == 0)
         {
+
+
             if(corriendo == 0)
             {
+                // Simulo la velocidad
+
+
+
                 Thread_Puente puente_temporal = buscar_nodo_puente(puentes,puente);
+
+
                 if(puente_temporal->carros_circulando->tamanio < puente_temporal->capacidad)  // Hay espacio para pasar
                 {
+
+
                     if(data->lado_izquierdo == 1)           // Estoy en el lado izquierdo del puente
                     {
+                        //printf("Aqui %p %d\n", puente_temporal->carros_circulando->head, puente_temporal->carros_circulando->tamanio);
                         if(puente_temporal->carros_circulando->head == NULL)
                         {
                             eliminar_nodo_carro(puente_temporal->carros_izquierda, id);
@@ -672,6 +619,9 @@ void *controlador_carros_jungla(void *carro)
                             printf(ANSI_COLOR_MAGENTA "Agregando carro %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id,puente);
                             corriendo = 1; // Poner a caminar el carro
                             puente_temporal->ocupancia +=  1;         // Solo se aumenta la ocupancia, que el carro salga del puente es su responsabilidad
+
+
+
                         }
                         else if(puente_temporal->carros_circulando->head->lado_izquierdo == 1 && puente_temporal->carros_circulando < puente_temporal->capacidad)
                         {
@@ -681,6 +631,7 @@ void *controlador_carros_jungla(void *carro)
                             printf(ANSI_COLOR_MAGENTA "Agregando carro %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id,puente);
                             corriendo = 1; // Poner a caminar el carro
                             puente_temporal->ocupancia +=  1;         // Solo se aumenta la ocupancia, que el carro salga del puente es s
+
                         }
                         else
                         {
@@ -690,6 +641,8 @@ void *controlador_carros_jungla(void *carro)
                     }
                     else
                     {
+
+
                         if(puente_temporal->carros_circulando->head == NULL)
                         {
                             eliminar_nodo_carro(puente_temporal->carros_derecha, id);
@@ -698,14 +651,18 @@ void *controlador_carros_jungla(void *carro)
                             corriendo = 1; // Poner a caminar el carro
                             puente_temporal->ocupancia +=  1;         // Solo se aumenta la ocupancia, que el carro salga del puente es su responsabilidad
 
+
+
                         }
                         else if(puente_temporal->carros_circulando->head->lado_izquierdo == 1 && puente_temporal->carros_circulando < puente_temporal->capacidad)
                         {
+
                             agregar_carro(data,puente_temporal->carros_circulando);     // Paso el thread a los que estan circulando
                             eliminar_nodo_carro(puente_temporal->carros_derecha, id);
                             printf(ANSI_COLOR_MAGENTA "Agregando carro %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id,puente);
                             corriendo = 1; // Poner a caminar el carro
                             puente_temporal->ocupancia +=  1;         // Solo se aumenta la ocupancia, que el carro salga del puente es s
+
                         }
                         else
                         {
@@ -718,6 +675,9 @@ void *controlador_carros_jungla(void *carro)
 
             else if(corriendo == 1)
             {
+
+
+
                 Thread_Puente puente_tmp = buscar_nodo_puente(puentes,data->puente);
 
                 if(buscar_nodo_carro(puente_tmp->carros_circulando,id) != NULL )    // Si no hay carros al frente
@@ -812,6 +772,8 @@ void *controlador_carros_jungla(void *carro)
 }
 
 
+
+
 // Utiliza la lista global de los hilos para encontrar el puente en el que tiene que insertar carros
 void *generador_carros(void *t)
 {
@@ -820,13 +782,13 @@ void *generador_carros(void *t)
     double lambda = 0.5;
     double probabilidad = 0;
     double porcentaje_ambulancia = 0.38;
-    while(i)
+    while(i<20)
     {
         srand(time(NULL));
         //printf("Generando carro %lu de tipo %d al lado %d del puente %d \n",i, carro->tipo_carro, lado_random, puente_random);
 
         int puente_random = rand() % 4;
-        int lado_random =0; //rand() % 2;
+        int lado_random = rand() % 2;
 
         Thread_Carro carro = (Thread_Carro) calloc(1, sizeof(struct thread_carro));
         carro -> thread_identificador = i;
@@ -834,31 +796,9 @@ void *generador_carros(void *t)
         carro -> puente = puente_random;
         carro -> velocidad = rand() / (RAND_MAX + 1.);
 
-
-        switch (puente_random)
-        {
-        case 0:
-            probabilidad = lambda*pow(2.71828,-lambda*getParameterValueConfigDouble("config_puente_0.txt","distribucion_exponencial"));
-            porcentaje_ambulancia = getParameterValueConfigDouble("config_puente_0.txt","probabilidad_ambulancia");
-            break;
-        case 1:
-            probabilidad = lambda*pow(2.71828,-lambda*getParameterValueConfigDouble("config_puente_1.txt","distribucion_exponencial"));
-            porcentaje_ambulancia = getParameterValueConfigDouble("config_puente_1.txt","probabilidad_ambulancia");
-            break;
-        case 2:
-            probabilidad = lambda*pow(2.71828,-lambda*getParameterValueConfigDouble("config_puente_2.txt","distribucion_exponencial"));
-            porcentaje_ambulancia = getParameterValueConfigDouble("config_puente_2.txt","probabilidad_ambulancia");
-            break;
-        case 3:
-            probabilidad = lambda*pow(2.71828,-lambda*getParameterValueConfigDouble("config_puente_3.txt","distribucion_exponencial"));
-            porcentaje_ambulancia = getParameterValueConfigDouble("config_puente_3.txt","probabilidad_ambulancia");
-            break;
-        }
-
-
+        probabilidad = lambda*pow(2.71828,-lambda*5);
         if(rand() < probabilidad *( (double) RAND_MAX) )
         {
-           // printf(ANSI_COLOR_MAGENTA"Carro %lu, radiactivo\n" ANSI_COLOR_RESET,i);
             carro -> tipo_carro = RADIOACTIVO;
             carro -> prioridad = 0;
             carro -> vida_carro = 10;
@@ -868,14 +808,12 @@ void *generador_carros(void *t)
         {
             if(rand()%100 < porcentaje_ambulancia*100)
             {
-                //printf(ANSI_COLOR_MAGENTA"Carro %lu, ambulancia\n" ANSI_COLOR_RESET,i);
                 carro -> tipo_carro = AMBULANCIA;
                 carro -> prioridad = 1;
                 carro -> vida_carro = 40;
             }
             else
             {
-               // printf(ANSI_COLOR_MAGENTA "Carro %lu, regular\n" ANSI_COLOR_RESET,i);
                 carro -> tipo_carro = CARRO;
                 carro -> prioridad = (int) 2;
                 carro -> vida_carro = -1;
@@ -894,25 +832,19 @@ void *generador_carros(void *t)
             // Si se trabaja con cola de prioridad es necesario ordenar los carros por prioridad
             if(calendarizador == 3)
             {
-
-
-                if(puentes->tamanio > 0 && buscar_nodo_puente(puentes,puente_random) != NULL)   // LEy selva
-                {
-                    agregar_thread_priority(carro, buscar_nodo_puente(puentes,puente_random)->carros_izquierda);
-                }
-                else
-                {
-                    agregar_thread_priority(carro, buscar_nodo_thread(threads,puente_random)->puente->carros_izquierda);
-                }
+                //agregar_thread_priority(carro, buscar_nodo_thread(threads,puente_random)->puente->carros_izquierda);
             }
             else
             {
-                if(puentes->tamanio > 0 && buscar_nodo_puente(puentes,puente_random) != NULL) // LEy selva
+                if(buscar_nodo_puente(puentes,puente_random) != NULL)
                 {
+
                     agregar_carro(carro, buscar_nodo_puente(puentes,puente_random)->carros_izquierda);
+
                 }
                 else
                 {
+
                     agregar_carro(carro, buscar_nodo_thread(threads,puente_random)->puente->carros_izquierda);   // Agrego el carro a ese lado
                 }
             }
@@ -923,24 +855,14 @@ void *generador_carros(void *t)
             // Si se trabaja con cola de prioridad es necesario ordenar los carros por prioridad
             if(calendarizador == 3)
             {
-
-
-                if(puentes->tamanio > 0 && buscar_nodo_puente(puentes,puente_random) != NULL)
-                {
-                     agregar_thread_priority(carro, buscar_nodo_puente(puentes,puente_random)->carros_derecha);
-                }
-                else
-                {
-
-                    agregar_thread_priority(carro, buscar_nodo_thread(threads,puente_random)->puente->carros_derecha);
-
-                }
+                //agregar_thread_priority(carro, buscar_nodo_thread(threads,puente_random)->puente->carros_derecha);
             }
             else
             {
 
-                if(puentes->tamanio > 0 && buscar_nodo_puente(puentes,puente_random) != NULL)
+                if(buscar_nodo_puente(puentes,puente_random) != NULL)
                 {
+
                     agregar_carro(carro, buscar_nodo_puente(puentes,puente_random)->carros_derecha);
                 }
                 else
@@ -963,11 +885,14 @@ void *generador_carros(void *t)
 
         agregar_thread(thread_nuevo,threads);
 
-
-        if(puentes->tamanio > 0 && buscar_nodo_puente(puentes,puente_random) != NULL)
+        if(buscar_nodo_puente(puentes,puente_random) != NULL)
         {
 
             pthread_create(&carro_thread, NULL, controlador_carros_jungla, (void *) carro);
+
+
+
+
         }
         else
         {
@@ -992,7 +917,17 @@ int main()
     puentes = (ThreadListPuente) calloc(1, sizeof(struct thread_list_puente));
     puentes->tamanio = 0;
 
-    calendarizador = getParameterValueConfig("config_global.txt","calendarizador");
+
+
+     calendarizador = getParameterValueConfig("config_global.txt","calendarizador");
+     if(calendarizador == NULL)
+     {
+         printf("Error leyendo configuracion global\n");
+         exit(EXIT_FAILURE);
+     }
+
+   // calendarizador = 0;
+
 
     switch (calendarizador )
     {
@@ -1006,12 +941,9 @@ int main()
         break;
     case 2:
         printf(ANSI_COLOR_YELLOW "Utilizando SJF para calendarizar\n" ANSI_COLOR_RESET);
-
         break;
     case 3:
         printf(ANSI_COLOR_YELLOW "Utilizando Priority Queue para calendarizar\n" ANSI_COLOR_RESET);
-        pthread_create(&thread_calendarizador, NULL, calendarizador_priority_queue, NULL);    // Se debe crear primero para poder ordenar el sistema
-
         break;
     case 4:
         printf(ANSI_COLOR_YELLOW "Utilizando Real Time para calendarizar\n" ANSI_COLOR_RESET);
@@ -1022,7 +954,7 @@ int main()
         break;
     }
 
-
+//leer();
 
     /* PUENTE 0 */
     Thread_Puente puente_creado_0 = crear_puente_0();
@@ -1046,6 +978,7 @@ int main()
         switch (puente_creado_0->control)
         {
         case OFICIAL:
+
             pthread_create(&thread_puente_0, NULL, algoritmo_puente_oficial, (void *) puente_creado_0);
             break;
         case SEMAFORO:
@@ -1148,7 +1081,7 @@ int main()
         thread_nuevo_3->thread_identificador=3;
         agregar_thread(thread_nuevo_3,threads);           // Agrego el thread puente a la lista de threads
 
-
+        printf("Metodo %d \n", puente_creado_0->control);
         // Creo la instancia del thread del puente
         switch (puente_creado_3->control)
         {
@@ -1202,7 +1135,7 @@ int main()
         printf("\n mutex init failed\n");
     }
 
-
+    sleep(1);
     // Por ultimo comienzo la ejecucion del hilo y su respectivo join
     pthread_create(&thread_generador_carros, NULL, generador_carros, NULL);
 
@@ -1238,4 +1171,5 @@ int main()
     return 0;
 
 }
+
 
