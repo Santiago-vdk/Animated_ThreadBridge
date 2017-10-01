@@ -203,7 +203,9 @@ void *calendarizador_priority_queue(void *t)
                 if(thread_actual>3)
                 {
                     printf("\nComenzando a ejecutar hilo %d", thread_actual);
-                    printf(ANSI_COLOR_RED " CARRO\n" ANSI_COLOR_RESET);
+                    printf(ANSI_COLOR_RED " CARRO" ANSI_COLOR_RESET);
+                    printf(" con prioridad");
+                    printf(ANSI_COLOR_RED " %d\n" ANSI_COLOR_RESET, buscar_nodo_thread(threads,thread_actual)->prioridad);
                 }
                 else
                 {
@@ -221,7 +223,7 @@ void *calendarizador_priority_queue(void *t)
                 if(threads->tamanio != 0 && buscar_nodo_thread(threads,thread_actual) != NULL)
                 {
                     //printf(ANSI_COLOR_CYAN "Pop out & push in \n" ANSI_COLOR_RESET);
-                    agregar_thread(pop_primer_thread(threads),threads);
+                    agregar_thread_prioridad(pop_primer_thread(threads),threads);
                 }
 
                 if(temporal->next != NULL)
