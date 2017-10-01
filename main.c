@@ -6,6 +6,7 @@
 #include "puentes.h"
 #include <unistd.h>
 #include <math.h>
+#include "lector_archivos.h"
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -981,8 +982,8 @@ void *generador_carros(void *t)
     int i = 4;
     //pthread_t array [10000];
     double lambda = 0.5;
-    double probabilidad = 0;
-    double porcentaje_ambulancia = 0;
+    double probabilidad = 0.0;
+    double porcentaje_ambulancia = 0.0;
     while(i)
     {
         srand(time(NULL));
@@ -996,7 +997,6 @@ void *generador_carros(void *t)
         carro -> corriendo = 0;
         carro -> puente = puente_random;
         carro -> velocidad = rand() / (RAND_MAX + 1.);
-
 
         switch (puente_random)
         {
@@ -1018,6 +1018,8 @@ void *generador_carros(void *t)
             break;
         }
 
+        //printf("rand %d\n",rand()%100);
+        //printf("ambu %lf\n", porcentaje_ambulancia*100);
 
         if(rand() < probabilidad *( (double) RAND_MAX) )
         {
@@ -1087,7 +1089,8 @@ void *generador_carros(void *t)
         {
             agregar_thread_prioridad(thread_nuevo, threads);
         }
-        else if(calendarizador == 2) {
+        else if(calendarizador == 2)
+        {
             agregar_thread_velocidad(thread_nuevo, threads);
         }
         else
@@ -1274,6 +1277,7 @@ int main()
     /* PUENTE 3 */
     Thread_Puente puente_creado_3 = crear_puente_3();
     pthread_t thread_puente_3;
+
     if(puente_creado_3->control == JUNGLA)
     {
         agregar_puente(puente_creado_3, puentes);

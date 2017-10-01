@@ -84,14 +84,14 @@ double getParameterValueConfigDouble(char* pNameFile, char* pParameterName)
         //printf("\tTOKEN: %s",token);
 
         int number = strcmp(token, pParameterName);
-        //printf("\tNumber :%d",number);
+        //printf("\tNUMBER :%d",number);
 
         if(number == 0)
         {
             value = strtok(NULL, search);
             findIt = 1;
-            break;
             //printf("\tVALOR :%s",value);
+            break;
         }
     }
 
@@ -102,8 +102,8 @@ double getParameterValueConfigDouble(char* pNameFile, char* pParameterName)
     if(findIt == 0) {
         exit(EXIT_FAILURE);
     }
-
-    return atof(value);
+//printf("\nFINAL :%lf",strtod(value,NULL));
+return strtod(value,NULL);
 }
 
 
