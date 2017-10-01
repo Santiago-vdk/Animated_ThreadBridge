@@ -543,3 +543,124 @@ void agregar_thread_prioridad(Thread node, ThreadList list)
     }
 
 }
+
+
+
+void agregar_thread_velocidad(Thread node, ThreadList list)
+{
+    if (list->head == NULL)
+    {
+        list->head = node;
+        list->tail = node;
+        list->tamanio += 1;
+    }
+    else
+    {
+        Thread tmp = list->head;
+        int flag = 0;
+
+        while (tmp != NULL && flag == 0)
+        {
+            //Prioridad es mayor al nodo en evaluacion
+            if (node->velocidad > tmp->velocidad)
+            {
+                //Nodo es la cabeza
+                if(tmp->thread_identificador ==  list->head->thread_identificador)
+                {
+                    node->next = list->head;        //Apunta el siguiente del nodo a la cabeza de la lista
+                    list->head->prev = node;        //Apunta el anterior de la cabeza al nodo
+                    list->head = node;              //Corre el de la cabeza al nodo nuevo
+                }
+                else
+                {
+                    //Insercion intermedia
+                    tmp->prev->next = node;     //Nodo anterior al tmp se le asigna como el siguiente el nodo entrante
+                    node->next = tmp;
+                    node->prev = tmp->prev;           //
+                    tmp->prev = node;
+                }
+                list->tamanio += 1; //Aumenta el tamanio de la lista
+                flag = 1;       //Cambia la bandera como ingresado
+            }
+
+            tmp = tmp->next;
+        }
+
+        if(flag == 0)
+        {
+            // inserta al final
+            list->tail->next = node;
+            node->prev = list->tail;
+            list->tail = node;
+            list->tamanio += 1;
+        }
+    }
+
+}
+
+
+
+/*
+void agregar_carro_velocidad(Thread_Carro node, ThreadListCarro list)
+{
+    if (list->head == NULL)
+    {
+        list->head = node;
+        list->tail = node;
+        list->tamanio += 1;
+    }
+    else
+    {
+        Thread_Carro tmp = list->head;
+        int flag = 0;
+
+        while (tmp != NULL && flag == 0)
+        {
+            //Prioridad es mayor al nodo en evaluacion
+            if (node->velocidad < tmp->velocidad)
+            {
+                //Nodo es la cabeza
+                if(tmp->thread_identificador ==  list->head->thread_identificador)
+                {
+                    node->next = list->head;        //Apunta el siguiente del nodo a la cabeza de la lista
+                    list->head->prev = node;        //Apunta el anterior de la cabeza al nodo
+                    list->head = node;              //Corre el de la cabeza al nodo nuevo
+                }
+                else
+                {
+                    //Insercion intermedia
+                    tmp->prev->next = node;     //Nodo anterior al tmp se le asigna como el siguiente el nodo entrante
+                    node->next = tmp;
+                    node->prev = tmp->prev;           //
+                    tmp->prev = node;
+                }
+                list->tamanio += 1; //Aumenta el tamanio de la lista
+                flag = 1;       //Cambia la bandera como ingresado
+            }
+
+            tmp = tmp->next;
+        }
+
+        if(flag == 0)
+        {
+            // inserta al final
+            list->tail->next = node;
+            node->prev = list->tail;
+            list->tail = node;
+            list->tamanio += 1;
+        }
+    }
+
+    switch(node->tipo_carro)
+    {
+    case 1  :
+        list->cantidad_ambulancias += 1;
+        break;
+
+    case 2  :
+        list->cantidad_radioactivos += 1;
+        break;
+    }
+
+}*/
+

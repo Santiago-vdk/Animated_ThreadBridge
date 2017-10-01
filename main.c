@@ -107,6 +107,77 @@ void *calendarizador_RoundRobin(void *t)
 
 }
 
+void *calendarizador_sjf(void *t)
+{
+// Thread thread_corriendo;
+    Thread temporal = threads->head;
+    while(1)
+    {
+
+        if(threads->head != NULL)
+        {
+
+            if(temporal != NULL)
+            {
+
+                pthread_mutex_lock(&lock_thread_actual);
+                thread_actual = temporal->thread_identificador;
+                pthread_mutex_unlock(&lock_thread_actual);
+
+
+                pthread_mutex_lock(&lock_thread_terminado);
+                thread_terminado = 0;
+                printf("\n");
+                if(thread_actual>3)
+                {
+                    printf("\nComenzando a ejecutar hilo %d", thread_actual);
+                    printf(ANSI_COLOR_RED " CARRO" ANSI_COLOR_RESET);
+                    printf(" con velocidad");
+                    printf(ANSI_COLOR_RED " %lf\n" ANSI_COLOR_RESET, buscar_nodo_thread(threads,thread_actual)->velocidad);
+
+                }
+                else
+                {
+                    printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo puente %d con velocidad %lf\n" ANSI_COLOR_RESET, thread_actual, buscar_nodo_thread(threads,thread_actual)->velocidad);
+                }
+                pthread_mutex_unlock(&lock_thread_terminado);
+
+
+                while (thread_terminado == 0)
+                {
+
+
+                }
+
+                if(threads->tamanio != 0 && buscar_nodo_thread(threads,thread_actual) != NULL)
+                {
+                    //printf(ANSI_COLOR_CYAN "Pop out & push in \n" ANSI_COLOR_RESET);
+                    agregar_thread_velocidad(pop_primer_thread(threads),threads);
+                }
+
+                if(temporal->next != NULL)
+                {
+                    temporal = temporal->next;      // Obtengo el siguiente
+                }
+                else
+                {
+                    temporal = threads->head;
+                }
+            }
+            else
+            {
+                temporal = threads->head;
+            }
+        }
+        else
+        {
+            printf("No hay hilos para calendarizar \n");
+        }
+        usleep(100000);
+
+    }
+
+}
 
 void *calendarizador_priority_queue(void *t)
 {
@@ -269,7 +340,7 @@ int *controlador_carros(void *carro)
 
                         pthread_mutex_lock(&lock_thread_terminado);
 
-                        printf(ANSI_COLOR_BLUE "Carro %d termino de pasar el puente, no habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
+                        printf(ANSI_COLOR_YELLOW "Carro %d termino de pasar el puente, no habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
 
                         eliminar_nodo_thread(threads,data->thread_identificador);           // Elimino el carro de la lista de hilos
                         eliminar_nodo_carro(buscar_nodo_thread(threads,data->puente)->puente->carros_circulando,data->thread_identificador);    // Elimino el carro de la lista de los carros circulando de su debido puente
@@ -287,8 +358,8 @@ int *controlador_carros(void *carro)
                     }
                     else
                     {
-                        //printf("Carro %lu moviendose %d \n", data->thread_identificador, distancia_tmp);
-                        sleep(data->velocidad);                                             // Simulo la velocidad
+                        printf("Carro %lu moviendose %d \n", data->thread_identificador, distancia_tmp);
+                        usleep(data->velocidad*100000);                                              // Simulo la velocidad
                         distancia_tmp ++;                                                   // Auento la distancia recorrida
                     }
                 }
@@ -300,7 +371,7 @@ int *controlador_carros(void *carro)
 
                         pthread_mutex_lock(&lock_thread_terminado);
 
-                        printf(ANSI_COLOR_BLUE "Carro %d termino de pasar el puente, habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
+                        printf(ANSI_COLOR_YELLOW "Carro %d termino de pasar el puente, habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
 
 
                         eliminar_nodo_thread(threads,data->thread_identificador);           // Elimino el carro de la lista de hilos
@@ -319,8 +390,8 @@ int *controlador_carros(void *carro)
                     }
                     else
                     {
-                        //printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp);
-                        sleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad);                                             // Utilizo la velocidad del nodo del frente
+                        printf("Carro %lu moviendose %d \n", data->thread_identificador, distancia_tmp);
+                        usleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad*100000);                                             // Utilizo la velocidad del nodo del frente
                         distancia_tmp ++;                                        // Aumento la distancia avanzada
                     }
 
@@ -1006,12 +1077,16 @@ void *generador_carros(void *t)
         thread_nuevo->puente=NULL;
         thread_nuevo->carro=carro;
         thread_nuevo->prioridad = carro->prioridad;
+        thread_nuevo->velocidad = carro->velocidad;
         thread_nuevo->calendarizador=calendarizador;
         thread_nuevo->thread_identificador=i;
 
         if(calendarizador == 3)             // Si se esta trabajando con Priority Queue
         {
             agregar_thread_prioridad(thread_nuevo, threads);
+        }
+        else if(calendarizador == 2) {
+            agregar_thread_velocidad(thread_nuevo, threads);
         }
         else
         {
@@ -1061,6 +1136,7 @@ int main()
         break;
     case 2:
         printf(ANSI_COLOR_YELLOW "Utilizando SJF para calendarizar\n" ANSI_COLOR_RESET);
+        pthread_create(&thread_calendarizador, NULL, calendarizador_sjf, NULL);    // Se debe crear primero para poder ordenar el sistema
 
         break;
     case 3:
@@ -1094,6 +1170,7 @@ int main()
         thread_nuevo->puente=puente_creado_0;
         thread_nuevo->carro=NULL;
         thread_nuevo->prioridad=-1;               // Solo me interesa en este caso el thread de carro
+        thread_nuevo->velocidad=0;
         thread_nuevo->calendarizador=calendarizador;
         thread_nuevo->thread_identificador=0;
         agregar_thread(thread_nuevo,threads);           // Agrego el thread puente a la lista de threads
@@ -1131,6 +1208,7 @@ int main()
         thread_nuevo_1 ->puente=puente_creado_1;
         thread_nuevo_1 ->carro=NULL;
         thread_nuevo_1->prioridad=-1;                   // Solo me interesa en este caso el thread de carro
+        thread_nuevo_1->velocidad=0;
         thread_nuevo_1 ->calendarizador=calendarizador;
         thread_nuevo_1 ->thread_identificador=1;
         agregar_thread(thread_nuevo_1,threads);            // Agrego el thread puente a la lista de threads
@@ -1169,6 +1247,7 @@ int main()
         thread_nuevo_2->puente=puente_creado_2;
         thread_nuevo_2->carro=NULL;
         thread_nuevo_2->prioridad=-1;                  // Solo me interesa en este caso el thread de carro
+        thread_nuevo_2->velocidad=0;
         thread_nuevo_2->calendarizador=calendarizador;
         thread_nuevo_2->thread_identificador=2;
         agregar_thread(thread_nuevo_2,threads);           // Agrego el thread puente a la lista de threads
@@ -1203,6 +1282,7 @@ int main()
         thread_nuevo_3->puente=puente_creado_3;
         thread_nuevo_3->carro=NULL;
         thread_nuevo_3->prioridad=-1;                   // Solo me interesa en este caso el thread de carro
+        thread_nuevo_3->velocidad=0;
         thread_nuevo_3->calendarizador=calendarizador;
         thread_nuevo_3->thread_identificador=3;
         agregar_thread(thread_nuevo_3,threads);           // Agrego el thread puente a la lista de threads

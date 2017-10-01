@@ -108,7 +108,7 @@ typedef struct thread
 	long thread_identificador;             // Id para mantener referencia a los hilos
     long calendarizador;              // Tipo de calendarizador en uso
     int prioridad;
-
+    double velocidad;
     struct thread *next;
     struct thread *prev;
 } *Thread;
@@ -124,8 +124,12 @@ typedef struct thread_list
 void agregar_puente(Thread_Puente node, ThreadListPuente list);
 void agregar_carro(Thread_Carro node, ThreadListCarro list);
 void agregar_thread(Thread node, ThreadList list);
+
 void agregar_carro_prioridad(Thread_Carro node, ThreadListCarro list);
 void agregar_thread_prioridad(Thread node, ThreadList list);
+
+//void agregar_carro_velocidad(Thread_Carro node, ThreadListCarro list);
+void agregar_thread_velocidad(Thread node, ThreadList list);
 
 Thread_Carro popCar(ThreadListCarro list);
 Thread_Carro pop_primer_thread_carro(ThreadListCarro list);
