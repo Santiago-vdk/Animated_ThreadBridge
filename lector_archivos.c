@@ -8,7 +8,9 @@ int getParameterValueConfig(char* pNameFile, char* pParameterName)
     FILE * fp;
     char * line = NULL;
     size_t len = 0;
-    char * value = NULL;
+    char * value = "0";
+    int findIt = 0;
+
     ssize_t read;
 
     fp = fopen(pNameFile, "r");
@@ -35,6 +37,7 @@ int getParameterValueConfig(char* pNameFile, char* pParameterName)
         if(number == 0)
         {
             value = strtok(NULL, search);
+            findIt = 1;
             break;
             //printf("\tVALOR :%s",value);
         }
@@ -43,15 +46,17 @@ int getParameterValueConfig(char* pNameFile, char* pParameterName)
     fclose(fp);
     if (line)
         free(line);
+
+    if(findIt == 0) {
+        exit(EXIT_FAILURE);
+    }
+
     return atoi(value);
 }
 
 
 void leer()
 {
-
-
-
     FILE* fp;
     char buffer[255];
 
@@ -63,6 +68,4 @@ void leer()
     }
 
     fclose(fp);
-
-
 }
