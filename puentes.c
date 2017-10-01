@@ -51,7 +51,7 @@ Thread_Puente crear_puente_1()
     puente_1 -> puente_id = 1;             // identificador del puente, para los puentes es el mismo que el id de thread
     puente_1 -> ocupancia = 0;             // Cantidad de carros que estan en el puente transitando
     puente_1 -> capacidad =  10;              // Capacidad, numero de carros en el puente al mismo tiempo
-    puente_1 -> control =JUNGLA;            // Algoritmo de control del puente
+    puente_1 -> control = getParameterValueConfig("config_puente_1.txt","metodo_control");           // Algoritmo de control del puente
     puente_1 -> k =10;
 
     puente_1 -> semaforo_izquierda = 1;
@@ -92,7 +92,7 @@ Thread_Puente crear_puente_2()
     puente_2 -> puente_id = 2;             // identificador del puente, para los puentes es el mismo que el id de thread
     puente_2 -> ocupancia = 0;             // Cantidad de carros que estan en el puente transitando
     puente_2 -> capacidad = 10;              // Capacidad, numero de carros en el puente al mismo tiempo
-    puente_2 -> control = JUNGLA;            // Algoritmo de control del puente
+    puente_2 -> control = getParameterValueConfig("config_puente_2.txt","metodo_control");            // Algoritmo de control del puente
     puente_2 -> k = 10;
 
     puente_2 -> semaforo_izquierda = 1;
@@ -133,7 +133,7 @@ Thread_Puente crear_puente_3()
     puente_3 -> puente_id = 3;             // identificador del puente, para los puentes es el mismo que el id de thread
     puente_3 -> ocupancia = 0;             // Cantidad de carros que estan en el puente transitando
     puente_3 -> capacidad = 10;              // Capacidad, numero de carros en el puente al mismo tiempo
-    puente_3 -> control = JUNGLA;            // Algoritmo de control del puente
+    puente_3 -> control = JUNGLA;//getParameterValueConfig("config_puente_3.txt","metodo_control");             // Algoritmo de control del puente
     puente_3 -> k = 7;
 
     puente_3 -> semaforo_izquierda = 1;

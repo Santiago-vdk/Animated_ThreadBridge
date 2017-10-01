@@ -918,6 +918,7 @@ int main()
     puentes->tamanio = 0;
 
 
+
      calendarizador = getParameterValueConfig("config_global.txt","calendarizador");
      if(calendarizador == NULL)
      {
@@ -1080,6 +1081,7 @@ int main()
         thread_nuevo_3->thread_identificador=3;
         agregar_thread(thread_nuevo_3,threads);           // Agrego el thread puente a la lista de threads
 
+        printf("Metodo %d \n", puente_creado_0->control);
         // Creo la instancia del thread del puente
         switch (puente_creado_3->control)
         {

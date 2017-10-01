@@ -1,0 +1,6 @@
+distribucion_exponencial:0.5
+capacidad:10
+k:5
+metodo_control:1
+tiempo_semaforo_izquierda:1
+tiempo_semaforo_derecha:1
