@@ -180,9 +180,77 @@ void *calendarizador_sjf(void *t)
 
 }
 
+void *calendarizador_real_time(void *t)
+{
+    Thread temporal = threads->head;
+    while(1)
+    {
+
+        if(threads->head != NULL)
+        {
+
+            if(temporal != NULL)
+            {
+
+                pthread_mutex_lock(&lock_thread_actual);
+                thread_actual = temporal->thread_identificador;
+                pthread_mutex_unlock(&lock_thread_actual);
+
+
+                pthread_mutex_lock(&lock_thread_terminado);
+                thread_terminado = 0;
+                printf("\n");
+                if(thread_actual>3)
+                {
+                    printf("\nComenzando a ejecutar hilo %d", thread_actual);
+                    printf(ANSI_COLOR_RED " CARRO" ANSI_COLOR_RESET);
+                    printf(" con prioridad");
+                    printf(ANSI_COLOR_RED " %d\n" ANSI_COLOR_RESET, buscar_nodo_thread(threads,thread_actual)->prioridad);
+                }
+                else
+                {
+                    printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo puente %d\n" ANSI_COLOR_RESET, thread_actual);
+                }
+                pthread_mutex_unlock(&lock_thread_terminado);
+
+
+                while (thread_terminado == 0)
+                {
+
+
+                }
+
+                if(threads->tamanio != 0 && buscar_nodo_thread(threads,thread_actual) != NULL)
+                {
+                    //printf(ANSI_COLOR_CYAN "Pop out & push in \n" ANSI_COLOR_RESET);
+                    agregar_thread_Tiempo_Real(pop_primer_thread(threads),threads);
+                }
+
+                if(temporal->next != NULL)
+                {
+                    temporal = temporal->next;      // Obtengo el siguiente
+                }
+                else
+                {
+                    temporal = threads->head;
+                }
+            }
+            else
+            {
+                temporal = threads->head;
+            }
+        }
+        else
+        {
+            printf("No hay hilos para calendarizar \n");
+        }
+        usleep(100000);
+
+    }
+}
+
 void *calendarizador_priority_queue(void *t)
 {
-    // Thread thread_corriendo;
     Thread temporal = threads->head;
     while(1)
     {
@@ -1018,14 +1086,14 @@ void *generador_carros(void *t)
             break;
         }
 
-        //printf("rand %d\n",rand()%100);
-        //printf("ambu %lf\n", porcentaje_ambulancia*100);
+
 
         if(rand() < probabilidad *( (double) RAND_MAX) )
         {
             carro -> tipo_carro = RADIOACTIVO;
             carro -> prioridad = 0;
-            carro -> vida_carro = 10;
+            carro -> vida_carro = rand() % 10;
+            carro -> limite_tiempo = rand() % 20;
         }
 
         else
@@ -1034,19 +1102,17 @@ void *generador_carros(void *t)
             {
                 carro -> tipo_carro = AMBULANCIA;
                 carro -> prioridad = 1;
-                carro -> vida_carro = 40;
+                carro -> vida_carro =(int) rand % 60;
+                carro -> limite_tiempo =(int) rand % 80;
             }
             else
             {
                 carro -> tipo_carro = CARRO;
                 carro -> prioridad = 2;
-                carro -> vida_carro = -1;
+                carro -> vida_carro = 1000;
+                carro -> limite_tiempo = 1000;
             }
         }
-
-
-        carro -> limite_tiempo = -1;
-
 
 
         pthread_t carro_thread;
@@ -1092,6 +1158,9 @@ void *generador_carros(void *t)
         else if(calendarizador == 2)
         {
             agregar_thread_velocidad(thread_nuevo, threads);
+        } else if (calendarizador == 4){
+
+
         }
         else
         {
@@ -1142,15 +1211,14 @@ int main()
     case 2:
         printf(ANSI_COLOR_YELLOW "Utilizando SJF para calendarizar\n" ANSI_COLOR_RESET);
         pthread_create(&thread_calendarizador, NULL, calendarizador_sjf, NULL);    // Se debe crear primero para poder ordenar el sistema
-
         break;
     case 3:
         printf(ANSI_COLOR_YELLOW "Utilizando Priority Queue para calendarizar\n" ANSI_COLOR_RESET);
         pthread_create(&thread_calendarizador, NULL, calendarizador_priority_queue, NULL);    // Se debe crear primero para poder ordenar el sistema
-
         break;
     case 4:
         printf(ANSI_COLOR_YELLOW "Utilizando Real Time para calendarizar\n" ANSI_COLOR_RESET);
+        pthread_create(&thread_calendarizador, NULL, calendarizador_real_time, NULL);    // Se debe crear primero para poder ordenar el sistema
         break;
     default:
         printf(ANSI_COLOR_YELLOW "Utilizando Round Robin para calendarizar\n" ANSI_COLOR_RESET);

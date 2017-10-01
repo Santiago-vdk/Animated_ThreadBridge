@@ -128,6 +128,11 @@ void agregar_thread(Thread node, ThreadList list);
 void agregar_carro_prioridad(Thread_Carro node, ThreadListCarro list);
 void agregar_thread_prioridad(Thread node, ThreadList list);
 
+void agregar_Ambulacia_Tiempo_Real(Thread_Carro node, ThreadListCarro list);
+void agregar_Radioactivo_Tiempo_Real(Thread_Carro node, ThreadListCarro list);
+void agregar_Carro_Tiempo_Real(Thread_Carro node, ThreadListCarro list);
+void agregar_thread_Tiempo_Real (Thread_Carro node, ThreadListCarro list);
+
 //void agregar_carro_velocidad(Thread_Carro node, ThreadListCarro list);
 void agregar_thread_velocidad(Thread node, ThreadList list);
 
