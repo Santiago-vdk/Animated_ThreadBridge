@@ -37,6 +37,30 @@
 		<Linker>
 			<Add option="-pthread" />
 		</Linker>
+		<Unit filename="algoritmos_control.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="algoritmos_control.h" />
+		<Unit filename="calendarizador_fcfs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="calendarizador_fcfs.h" />
+		<Unit filename="calendarizador_priority_queue.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="calendarizador_priority_queue.h" />
+		<Unit filename="calendarizador_real_time.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="calendarizador_real_time.h" />
+		<Unit filename="calendarizador_rr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="calendarizador_rr.h" />
+		<Unit filename="calendarizador_sjf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="calendarizador_sjf.h" />
 		<Unit filename="lector_archivos.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -44,6 +68,11 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="main.h" />
+		<Unit filename="manejo_carros.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="manejo_carros.h" />
 		<Unit filename="mythreads/mythread.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -52,6 +81,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="puentes.h" />
+		<Unit filename="rasp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="rasp.h" />
 		<Unit filename="thread_data.c">
 			<Option compilerVar="CC" />
 		</Unit>
