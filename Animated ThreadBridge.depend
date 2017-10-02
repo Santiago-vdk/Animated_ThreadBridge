@@ -66,3 +66,47 @@
 	<time.h>
 	"puentes.h"
 
+1506905639 source:/home/pi/Desktop/Animated_ThreadBridge/lector_archivos.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1506914466 source:/home/pi/Desktop/Animated_ThreadBridge/main.c
+	<stdio.h>
+	<stdlib.h>
+	"mythreads/mythread.h"
+	"thread_data.h"
+	<time.h>
+	"puentes.h"
+	<unistd.h>
+	<math.h>
+	"lector_archivos.h"
+	<fcntl.h>
+	<sys/mman.h>
+
+1506906222 /home/pi/Desktop/Animated_ThreadBridge/mythreads/mythread.h
+
+1506905639 /home/pi/Desktop/Animated_ThreadBridge/thread_data.h
+	<pthread.h>
+
+1506905639 /home/pi/Desktop/Animated_ThreadBridge/puentes.h
+	"thread_data.h"
+
+1506905639 /home/pi/Desktop/Animated_ThreadBridge/lector_archivos.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1506906230 source:/home/pi/Desktop/Animated_ThreadBridge/mythreads/mythread.c
+	<pthread.h>
+	"mythread.h"
+
+1506905639 source:/home/pi/Desktop/Animated_ThreadBridge/puentes.c
+	"puentes.h"
+	"lector_archivos.h"
+
+1506905639 source:/home/pi/Desktop/Animated_ThreadBridge/thread_data.c
+	<stdlib.h>
+	<stdio.h>
+	"thread_data.h"
+

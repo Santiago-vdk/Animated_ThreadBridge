@@ -8,6 +8,10 @@
 #include <math.h>
 #include "lector_archivos.h"
 
+#include <fcntl.h>
+#include <sys/mman.h>
+
+
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_YELLOW  "\x1b[33m"
@@ -19,9 +23,11 @@
 long thread_actual = -1;
 int thread_terminado = 1;
 int calendarizador = -1;
-
+int hardware = 0;
 pthread_t thread_calendarizador;
 pthread_t thread_generador_carros;
+
+pthread_t thread_puente_hardware_0;
 
 pthread_mutex_t lock_thread_terminado;
 pthread_mutex_t lock_thread_actual;
@@ -36,12 +42,61 @@ ThreadList threads;
 ThreadListPuente puentes;
 
 
+
+//---------------Raspberry----------------------
+
+#define BCM2708_PERI_BASE        0x3F000000
+#define GPIO_BASE                (BCM2708_PERI_BASE + 0x200000) /* GPIO controller */
+
+#define PAGE_SIZE (4*1024)
+#define BLOCK_SIZE (4*1024)
+
+int  mem_fd;
+void *gpio_map;
+
+// I/O access
+volatile unsigned *gpio;
+
+// GPIO setup macros. Always use INP_GPIO(x) before using OUT_GPIO(x) or SET_GPIO_ALT(x,y)
+#define INP_GPIO(g) *(gpio+((g)/10)) &= ~(7<<(((g)%10)*3))
+#define OUT_GPIO(g) *(gpio+((g)/10)) |=  (1<<(((g)%10)*3))
+#define SET_GPIO_ALT(g,a) *(gpio+(((g)/10))) |= (((a)<=3?(a)+4:(a)==4?3:2)<<(((g)%10)*3))
+
+#define GPIO_SET *(gpio+7)  // sets   bits which are 1 ignores bits which are 0
+#define GPIO_CLR *(gpio+10) // clears bits which are 1 ignores bits which are 0
+
+#define GET_GPIO(g) (*(gpio+13)&(1<<g)) // 0 if LOW, (1<<g) if HIGH
+
+#define GPIO_PULL *(gpio+37) // Pull up/pull down
+#define GPIO_PULLCLK0 *(gpio+38) // Pull up/pull down clock
+
+//---------------Variables Hardware----------------------
+
+
+
+int Izq_1_1 = 0;
+int Izq_1_2 = 0;
+int Der_1_1 = 0;
+int Der_1_2 = 0;
+int Ctr_1_1 = 0;
+int Ctr_1_2 = 0;
+int Ctr_1_3 = 0;
+int Tip_1_1 = 0;
+
+//--------------------Metodos-----------------------------
+void setup_io();
+void set_outputRasp();
+void *Estado_P1(void *arg);
+void principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int centro,int posicionCentro,int actCentro,int tipoCarro);
+
+
+
 void *calendarizador_RoundRobin(void *t)
 {
 
 
     Thread temporal = threads->head;
-    int Quantum = 7;      //200
+    int Quantum = 2;      //7
     int QuantumTmp = 0;
     while(1)
     {
@@ -205,7 +260,7 @@ void *calendarizador_real_time(void *t)
                     printf("\nComenzando a ejecutar hilo %d", thread_actual);
                     printf(ANSI_COLOR_RED " CARRO" ANSI_COLOR_RESET);
                     printf(" con Real Time\n");
-                   // printf(ANSI_COLOR_RED " %d\n" ANSI_COLOR_RESET, buscar_nodo_thread(threads,thread_actual)->prioridad);
+                    // printf(ANSI_COLOR_RED " %d\n" ANSI_COLOR_RESET, buscar_nodo_thread(threads,thread_actual)->prioridad);
                 }
                 else
                 {
@@ -382,7 +437,7 @@ void *calendarizador_fcfs(void *t)
         {
             printf("No hay hilos para calendarizar \n");
         }
-        usleep(100000);
+        usleep(10000); // usleep(100000);
 
     }
 }
@@ -429,9 +484,29 @@ int *controlador_carros(void *carro)
                     }
                     else
                     {
-                        printf("Carro %lu moviendose %d \n", data->thread_identificador, distancia_tmp);
-                        usleep(data->velocidad*100000);                                              // Simulo la velocidad
-                        distancia_tmp ++;                                                   // Auento la distancia recorrida
+                        /* printf("Carro %lu moviendose %d \n", data->thread_identificador, distancia_tmp);
+                         usleep(data->velocidad*100000);                                              // Simulo la velocidad
+                         distancia_tmp ++;                                                   // Auento la distancia recorrida
+                         */
+
+                        if(data->puente<2)
+                        {
+                            principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,1,data->tipo_carro);
+                            printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp, data->lado_izquierdo);
+                            usleep(data->velocidad*100000);                                             // Simulo la velocidad
+                            principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
+                            distancia_tmp ++;
+                        }
+                        else
+                        {
+
+                            printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp, data->lado_izquierdo);
+                            usleep(data->velocidad*100000);                                             // Simulo la velocidad
+                            distancia_tmp ++;
+
+                        }
+                        // Auento la distancia recorrida
+
                     }
                 }
                 else                    // Hay un carro en frente
@@ -461,9 +536,26 @@ int *controlador_carros(void *carro)
                     }
                     else
                     {
-                        printf("Carro %lu moviendose %d \n", data->thread_identificador, distancia_tmp);
+                        /*printf("Carro %lu moviendose %d \n", data->thread_identificador, distancia_tmp);
                         usleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad*100000);                                             // Utilizo la velocidad del nodo del frente
-                        distancia_tmp ++;                                        // Aumento la distancia avanzada
+                        distancia_tmp ++;         */                               // Aumento la distancia avanzada
+
+                        if(data->puente<2)
+                        {
+
+                            principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,1,data->tipo_carro);
+                            printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp);
+                            usleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad*100000);
+                            principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
+                            distancia_tmp ++;
+                        }
+                        else
+                        {
+                            printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp);
+                            usleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad*100000);
+                            distancia_tmp ++;
+
+                        }
                     }
 
                 }
@@ -991,9 +1083,27 @@ void *controlador_carros_jungla(void *carro)
                         }
                         else
                         {
-                            printf("Carro %lu moviendose %d \n", id, distancia_tmp);
-                            usleep(data->velocidad*100000);                                             // Simulo la velocidad
-                            distancia_tmp ++;                                                   // Auento la distancia recorrida
+
+                            if(puente < 2)
+                            {
+                                principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,1,data->tipo_carro);
+                                printf("Carro %lu moviendose %d\n", id, distancia_tmp, data->lado_izquierdo);
+                                usleep(data->velocidad*100000);                                             // Simulo la velocidad
+                                principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
+                                distancia_tmp ++;                                                   // Auento la distancia recorrida
+
+                            }
+                            else
+                            {
+
+                                printf("Carro %lu moviendose %d\n", id, distancia_tmp, data->lado_izquierdo);
+                                usleep(data->velocidad*100000);                                             // Simulo la velocidad
+                                distancia_tmp ++;                                                   // Auento la distancia recorrida
+
+
+                            }
+
+
                         }
                     }
                     else                      // Hay un carro en frente
@@ -1017,9 +1127,24 @@ void *controlador_carros_jungla(void *carro)
                         }
                         else
                         {
-                            printf("Carro %lu moviendose %d\n", id, distancia_tmp);
-                            usleep(buscar_nodo_carro(puente_tmp->carros_circulando,id)->prev->velocidad*100000);                                             // Utilizo la velocidad del nodo del frente
-                            distancia_tmp ++;                                        // Aumento la distancia avanzada
+                            if(puente<2)
+                            {
+                                principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,1,data->tipo_carro);
+                                printf("Carro %lu moviendose %d\n", id, distancia_tmp);
+                                usleep(buscar_nodo_carro(puente_tmp->carros_circulando,id)->prev->velocidad*100000);
+                                principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
+                                distancia_tmp ++;
+                            }
+                            else
+                            {
+
+                                printf("Carro %lu moviendose %d\n", id, distancia_tmp);
+                                usleep(buscar_nodo_carro(puente_tmp->carros_circulando,id)->prev->velocidad*100000);
+
+                                distancia_tmp ++;
+
+                            }
+                            // Aumento la distancia avanzada
                         }
 
                     }
@@ -1052,13 +1177,13 @@ void *generador_carros(void *t)
     double lambda = 0.5;
     double probabilidad = 0.0;
     double porcentaje_ambulancia = 0.0;
-    while(i)
+    while(i<60)
     {
         srand(time(NULL));
         //printf("Generando carro %lu de tipo %d al lado %d del puente %d \n",i, carro->tipo_carro, lado_random, puente_random);
 
-        int puente_random = rand() % 4;
-        int lado_random =0; //rand() % 2;
+        int puente_random = 0;//rand() % 4;
+        int lado_random = rand() % 2;
 
         Thread_Carro carro = (Thread_Carro) calloc(1, sizeof(struct thread_carro));
         carro -> thread_identificador = i;
@@ -1122,10 +1247,12 @@ void *generador_carros(void *t)
             if(puentes->tamanio > 0 && buscar_nodo_puente(puentes,puente_random) != NULL)
             {
                 agregar_carro_prioridad(carro, buscar_nodo_puente(puentes,puente_random)->carros_izquierda);
+
             }
             else
             {
                 agregar_carro_prioridad(carro, buscar_nodo_thread(threads,puente_random)->puente->carros_izquierda);
+                //printf("prev %p \n",buscar_nodo_thread(threads,puente_random)->puente->carros_izquierda->head->prev);
             }
 
         }
@@ -1158,8 +1285,9 @@ void *generador_carros(void *t)
         else if(calendarizador == 2)
         {
             agregar_thread_velocidad(thread_nuevo, threads);
-        } else if (calendarizador == 4){
-            printf("Aqui %d\n",thread_nuevo->thread_identificador);
+        }
+        else if (calendarizador == 4)
+        {
             agregar_thread_Tiempo_Real(thread_nuevo,threads);
 
         }
@@ -1181,15 +1309,86 @@ void *generador_carros(void *t)
 
         //pthread_join(carro_thread, NULL);
 
-        usleep(1000000);//usleep(600000); para regular          usleep(1000000); para semaforo
+        usleep(60000);//usleep(600000); para regular          usleep(1000000); para semaforo
         i++;
     }
 }
 
+pthread_t thread_puente_hardware_0_lados;
+
+void * hardware_0_lados()
+{
+    while(1)
+    {
+        if(threads != NULL)
+        {
+            if(threads->tamanio > 0)
+            {
+
+                if(buscar_nodo_thread(threads,0) != NULL)
+                {
+                    if(buscar_nodo_thread(threads,0)->puente->carros_izquierda->tamanio>0)
+                    {
+                        Thread_Carro primer_carro = buscar_nodo_thread(threads,0)->puente->carros_izquierda->head;
+                        principal(0,primer_carro->lado_izquierdo,1,1,0,0,0,primer_carro->tipo_carro);
+
+                        //printf(ANSI_COLOR_RED "aqusdddi tamanio %d\n" ANSI_COLOR_RESET,buscar_nodo_thread(threads,0)->puente->carros_izquierda->tamanio);
+
+                        if(buscar_nodo_thread(threads,0)->puente->carros_izquierda->head->prev != NULL)
+                        {
+
+                            Thread_Carro segundo_carro = primer_carro->prev;
+                            principal(0,segundo_carro->lado_izquierdo,1,1,0,0,0,segundo_carro->tipo_carro);
+                        }
+                    }
+
+                    if(buscar_nodo_thread(threads,0)->puente->carros_derecha->tamanio>0)
+                    {
+                        Thread_Carro primer_carro_derecha =buscar_nodo_thread(threads,0)->puente->carros_derecha->head;
+                        principal(0,primer_carro_derecha->lado_izquierdo,0,1,0,0,0,primer_carro_derecha->tipo_carro);
+                        if(primer_carro_derecha->prev != NULL)
+                        {
+                            Thread_Carro segundo_carro_derecha = primer_carro_derecha->prev;
+                            principal(0,segundo_carro_derecha->lado_izquierdo,1,1,0,0,0,segundo_carro_derecha->tipo_carro);
+                        }
+
+                    }
+
+
+
+
+                }
+            }
+
+        }
+
+
+        usleep(100000);
+
+    }
+
+}
 
 
 int main()
 {
+    hardware = getParameterValueConfig("config_global.txt","hardware");
+    if(hardware == 1)
+    {
+        printf("Hardware ENABLED\n");
+        int g,rep;
+
+        // Set up gpi pointer for direct register access
+        setup_io();
+        set_outputRasp();
+        pthread_create(&thread_puente_hardware_0, NULL , Estado_P1 , NULL);
+
+        pthread_create(&thread_puente_hardware_0_lados, NULL , hardware_0_lados , NULL);
+        //principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int centro,int posicionCentro,int actCentro,int tipoCarro)
+
+    }
+
+
 
     threads = (ThreadList) calloc(1, sizeof(struct thread_list));   // Inicializo una lista con todos los threads puentes y carros
     threads -> tamanio = 0;
@@ -1385,7 +1584,6 @@ int main()
         printf("\n mutex init failed\n");
     }
 
-
     if (pthread_mutex_init(&lock_thread_actual, NULL) != 0)
     {
         printf("\n mutex init failed\n");
@@ -1441,6 +1639,11 @@ int main()
 
     pthread_join(thread_calendarizador, NULL);
     pthread_join(thread_generador_carros, NULL);
+    if(hardware==1)
+    {
+        pthread_join(thread_puente_hardware_0, NULL);
+
+    }
 
     pthread_mutex_destroy(&lock_thread_terminado);
     pthread_mutex_destroy(&lock_thread_actual);
@@ -1452,4 +1655,334 @@ int main()
     return 0;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+//
+// Set up a memory regions to access GPIO
+//
+void setup_io()
+{
+    /* open /dev/mem */
+    if ((mem_fd = open("/dev/mem", O_RDWR|O_SYNC) ) < 0)
+    {
+        printf("can't open /dev/mem \n");
+        exit(-1);
+    }
+
+    /* mmap GPIO */
+    gpio_map = mmap(
+                   NULL,             //Any adddress in our space will do
+                   BLOCK_SIZE,       //Map length
+                   PROT_READ|PROT_WRITE,// Enable reading & writting to mapped memory
+                   MAP_SHARED,       //Shared with other processes
+                   mem_fd,           //File to map
+                   GPIO_BASE         //Offset to GPIO peripheral
+               );
+
+    close(mem_fd); //No need to keep mem_fd open after mmap
+
+    if (gpio_map == MAP_FAILED)
+    {
+        printf("mmap error %d\n", (int)gpio_map);//errno also set!
+        exit(-1);
+    }
+
+    // Always use volatile pointer!
+    gpio = (volatile unsigned *)gpio_map;
+
+
+}
+
+void set_outputRasp()
+{
+    int g;
+    for (g=1; g<=26; g++)
+    {
+        INP_GPIO(g); // must use INP_GPIO before we can use OUT_GPIO
+        OUT_GPIO(g);
+    }
+}
+
+void principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int centro,int posicionCentro,int actCentro,int tipoCarro)
+{
+    if(puente==0)
+    {
+        if(ladoIzquierdo==1)
+        {
+            if(posicion==0)
+            {
+                if(actPosicion==1)
+                {
+                    Izq_1_1 = 1;
+                }
+                else
+                {
+                    Izq_1_1 = 0;
+                }
+            }
+            else
+            {
+                if(actPosicion==1)
+                {
+                    Izq_1_2 = 1;
+                }
+                else
+                {
+                    Izq_1_2 = 0;
+                }
+            }
+            if(centro==1)
+            {
+                if(tipoCarro==1)
+                {
+                    Tip_1_1=1;
+                }
+                else if(tipoCarro==2)
+                {
+                    Tip_1_1=2;
+                }
+                else
+                {
+                    Tip_1_1=0;
+                }
+                if(posicionCentro==0)
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_1_1 = 1;
+                    }
+                    else
+                    {
+                        Ctr_1_1 = 0;
+                    }
+
+                }
+                else if(posicionCentro==1)
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_1_2 = 1;
+                    }
+                    else
+                    {
+                        Ctr_1_2 = 0;
+                    }
+                }
+                else
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_1_3 = 1;
+                    }
+                    else
+                    {
+                        Ctr_1_3 = 0;
+                    }
+                }
+            }
+            else
+            {
+                Ctr_1_1 = 0;
+                Ctr_1_2 = 0;
+                Ctr_1_3 = 0;
+            }
+        }
+        else//-----------------Lado Derecho-----------------------
+        {
+            if(posicion==0)
+            {
+                if(actPosicion==1)
+                {
+                    Der_1_1 = 1;
+                }
+                else
+                {
+                    Der_1_1 = 0;
+                }
+            }
+            else
+            {
+                if(actPosicion==1)
+                {
+                    Der_1_2 = 1;
+                }
+                else
+                {
+                    Der_1_2 = 0;
+                }
+            }
+            if(centro==1)
+            {
+                if(tipoCarro==1)
+                {
+                    Tip_1_1=1;
+                }
+                else if(tipoCarro==2)
+                {
+                    Tip_1_1=2;
+                }
+                else
+                {
+                    Tip_1_1=0;
+                }
+                if(posicionCentro==0)
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_1_3 = 1;
+                    }
+                    else
+                    {
+                        Ctr_1_3 = 0;
+                    }
+
+                }
+                else if(posicionCentro==1)
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_1_2 = 1;
+                    }
+                    else
+                    {
+                        Ctr_1_2 = 0;
+                    }
+                }
+                else
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_1_1 = 1;
+                    }
+                    else
+                    {
+                        Ctr_1_1 = 0;
+                    }
+                }
+            }
+            else
+            {
+                Ctr_1_1 = 0;
+                Ctr_1_2 = 0;
+                Ctr_1_3 = 0;
+            }
+        }
+    }
+    else
+    {
+        printf("Aqui van los otrs puentes\n");
+    }
+}
+
+void *Estado_P1(void *arg)
+{
+    int rep = 0;
+    while(1)
+    {
+        if(Izq_1_1==1)
+        {
+            GPIO_SET = 1<<2;
+        }
+        else
+        {
+            GPIO_CLR = 1<<2;
+        }
+
+        if(Izq_1_2==1)
+        {
+            GPIO_SET = 1<<3;
+        }
+
+        else
+        {
+            GPIO_CLR = 1<<3;
+        }
+        if(Der_1_1==1)
+        {
+            GPIO_SET = 1<<4;
+        }
+        else
+        {
+            GPIO_CLR = 1<<4;
+        }
+
+        if(Der_1_2==1)
+        {
+            GPIO_SET = 1<<5;
+        }
+        else
+        {
+            GPIO_CLR = 1<<5;
+        }
+
+        if(Ctr_1_1==1)
+        {
+            GPIO_SET = 1<<6;
+        }
+        else
+        {
+            GPIO_CLR = 1<<6;
+        }
+
+        if(Ctr_1_2==1)
+        {
+            GPIO_SET = 1<<7;
+        }
+        else
+        {
+            GPIO_CLR = 1<<7;
+        }
+
+        if(Ctr_1_3==1)
+        {
+            GPIO_SET = 1<<8;
+        }
+        else
+        {
+            GPIO_CLR = 1<<8;
+        }
+
+        if(Tip_1_1)
+        {
+            if(Tip_1_1==1)
+            {
+                GPIO_SET = 1<<9;
+            }
+            else
+            {
+                //    for (rep=0; rep<3; rep++)
+                //{
+                //GPIO_SET = 1<<9;
+                //  usleep(100000);
+                //  GPIO_CLR = 1<<9;
+                //   usleep(100000);
+                // }
+                // rep=0;
+            }
+        }
+        else
+        {
+            GPIO_CLR = 1<<9;
+        }
+    }
+    return  NULL;
+}
+
+
+
+
+
+
+
+
 
