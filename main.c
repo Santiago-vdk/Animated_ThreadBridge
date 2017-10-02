@@ -7,58 +7,106 @@
 #include "algoritmos_control.h"
 #include "manejo_carros.h"
 #include "rasp.h"
+#include "principal.h"
+#include "control_puentes_hardware.h"
+
+//Using SDL, SDL_image, standard IO, and strings
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+
+//Screen dimension constants
+const int SCREEN_WIDTH = 802;
+const int SCREEN_HEIGHT = 680;
 
 
-void * hardware_0_lados()
+int posX = 0;
+SDL_Rect rect2;
+SDL_Texture* texture2 = NULL;
+
+SDL_Rect rect2_1;
+SDL_Texture* texture2_1 = NULL;
+
+SDL_Rect rect2_2;
+SDL_Texture* texture2_2 = NULL;
+
+SDL_Rect rect2_3;
+SDL_Texture* texture2_3 = NULL;
+
+
+// Derecha
+SDL_Rect rect3;
+SDL_Texture* texture3 = NULL;
+
+// Derecha
+SDL_Rect rect3_1;
+SDL_Texture* texture3_1 = NULL;
+
+
+// Derecha
+SDL_Rect rect3_2;
+SDL_Texture* texture3_2 = NULL;
+
+
+// Derecha
+SDL_Rect rect3_3;
+SDL_Texture* texture3_3 = NULL;
+
+
+void move()
 {
+    if(rect2.x > 195 && rect2.x < 205)
+    {
+        rect2.x += 1;
+        rect2.y += 2;
+        usleep(10000);
+    }
+    else if(rect2.x > 545 && rect2.x < 555)
+    {
+        rect2.x += 1;
+        rect2.y -= 2;
+        usleep(10000);
+    }
+    else
+    {
+        usleep(10000);
+        rect2.x += 1;
+    }
+}
+
+void moveDerecha()
+{
+    if(rect3.x > 545 && rect3.x < 555)
+    {
+
+        rect3.x -= 1;
+        rect3.y -= 2;
+        usleep(10000);
+    }
+    else  if(rect3.x > 195 && rect3.x < 205)
+    {
+        rect3.x -= 1;
+        rect3.y += 2;
+        usleep(10000);
+    }
+    else
+    {
+        usleep(10000);
+        rect3.x -= 1;
+    }
+}
+
+
+
+int threadFunction( void* data )   //Print incoming data
+{
+
     while(1)
     {
-        if(threads != NULL)
-        {
-            if(threads->tamanio > 0)
-            {
-
-                if(buscar_nodo_thread(threads,0) != NULL)
-                {
-                    if(buscar_nodo_thread(threads,0)->puente->carros_izquierda->tamanio>0)
-                    {
-                        Thread_Carro primer_carro = buscar_nodo_thread(threads,0)->puente->carros_izquierda->head;
-                        principal(0,primer_carro->lado_izquierdo,1,1,0,0,0,primer_carro->tipo_carro);
-
-                        //printf(ANSI_COLOR_RED "aqusdddi tamanio %d\n" ANSI_COLOR_RESET,buscar_nodo_thread(threads,0)->puente->carros_izquierda->tamanio);
-
-                        if(buscar_nodo_thread(threads,0)->puente->carros_izquierda->head->prev != NULL)
-                        {
-
-                            Thread_Carro segundo_carro = primer_carro->prev;
-                            principal(0,segundo_carro->lado_izquierdo,1,1,0,0,0,segundo_carro->tipo_carro);
-                        }
-                    }
-
-                    if(buscar_nodo_thread(threads,0)->puente->carros_derecha->tamanio>0)
-                    {
-                        Thread_Carro primer_carro_derecha =buscar_nodo_thread(threads,0)->puente->carros_derecha->head;
-                        principal(0,primer_carro_derecha->lado_izquierdo,0,1,0,0,0,primer_carro_derecha->tipo_carro);
-                        if(primer_carro_derecha->prev != NULL)
-                        {
-                            Thread_Carro segundo_carro_derecha = primer_carro_derecha->prev;
-                            principal(0,segundo_carro_derecha->lado_izquierdo,1,1,0,0,0,segundo_carro_derecha->tipo_carro);
-                        }
-
-                    }
-
-
-
-
-                }
-            }
-
-        }
-
-
-        usleep(100000);
-
+        ejecutar();         // Inicia ejecucion principal
     }
+
+    return 0;
 
 }
 
@@ -69,6 +117,7 @@ int main()
     thread_terminado = 1;
     calendarizador = -1;
     hardware = 0;
+    gui = 0;
 
 
     hardware = getParameterValueConfig("config_global.txt","hardware");
@@ -91,277 +140,183 @@ int main()
 
     }
 
-
-
-    threads = (ThreadList) calloc(1, sizeof(struct thread_list));   // Inicializo una lista con todos los threads puentes y carros
-    threads -> tamanio = 0;
-
-    puentes = (ThreadListPuente) calloc(1, sizeof(struct thread_list_puente));
-    puentes->tamanio = 0;
-
-    calendarizador = getParameterValueConfig("config_global.txt","calendarizador");
-
-    switch (calendarizador )
+    gui = getParameterValueConfig("config_global.txt","interfaz");
+    if(gui == 1)
     {
-    case 0:
-        printf(ANSI_COLOR_YELLOW "Utilizando Round Robin para calendarizar\n" ANSI_COLOR_RESET);
-        pthread_create(&thread_calendarizador, NULL, calendarizador_RoundRobin, NULL);    // Se debe crear primero para poder ordenar el sistema
-        break;
-    case 1:
-        printf(ANSI_COLOR_YELLOW "Utilizando FCFS para calendarizar\n" ANSI_COLOR_RESET);
-        pthread_create(&thread_calendarizador, NULL, calendarizador_fcfs, NULL);    // Se debe crear primero para poder ordenar el sistema
-        break;
-    case 2:
-        printf(ANSI_COLOR_YELLOW "Utilizando SJF para calendarizar\n" ANSI_COLOR_RESET);
-        pthread_create(&thread_calendarizador, NULL, calendarizador_sjf, NULL);    // Se debe crear primero para poder ordenar el sistema
-        break;
-    case 3:
-        printf(ANSI_COLOR_YELLOW "Utilizando Priority Queue para calendarizar\n" ANSI_COLOR_RESET);
-        pthread_create(&thread_calendarizador, NULL, calendarizador_priority_queue, NULL);    // Se debe crear primero para poder ordenar el sistema
-        break;
-    case 4:
-        printf(ANSI_COLOR_YELLOW "Utilizando Real Time para calendarizar\n" ANSI_COLOR_RESET);
-        pthread_create(&thread_calendarizador, NULL, calendarizador_real_time, NULL);    // Se debe crear primero para poder ordenar el sistema
-        break;
-    default:
-        printf(ANSI_COLOR_YELLOW "Utilizando Round Robin para calendarizar\n" ANSI_COLOR_RESET);
-        pthread_create(&thread_calendarizador, NULL, calendarizador_RoundRobin, NULL);    // Se debe crear primero para poder ordenar el sistema
-        break;
-    }
+        printf("Ejecutando GUI\n");
+
+        SDL_Init(SDL_INIT_EVERYTHING);
+        //For loading PNG images
+        IMG_Init(IMG_INIT_PNG);
+        SDL_Window* window = SDL_CreateWindow("Animated RKT Bridge", SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
+        SDL_Event input;
+        int quit = 0;
+
+        SDL_Thread* threadID = SDL_CreateThread( threadFunction, "MainThread", NULL);
+        SDL_Texture* texture = NULL;
+        SDL_Surface* temp = IMG_Load("bg.png");
+
+        //Filling texture with the image using a surface
+        texture = SDL_CreateTextureFromSurface(renderer, temp);
+
+        SDL_Surface* image = IMG_Load("carro regular izquierda.png");
+        texture2 = SDL_CreateTextureFromSurface(renderer, image);
+
+        SDL_Surface* image_1 = IMG_Load("carro regular izquierda.png");
+        texture2_1 = SDL_CreateTextureFromSurface(renderer, image_1);
+
+        SDL_Surface* image_2 = IMG_Load("carro regular izquierda.png");
+        texture2_2 = SDL_CreateTextureFromSurface(renderer, image_2);
+
+        SDL_Surface* image_3 = IMG_Load("carro regular izquierda.png");
+        texture2_3 = SDL_CreateTextureFromSurface(renderer, image_3);
+
+        SDL_Surface* image3 = IMG_Load("carro regular derecha.png");
+        texture3 = SDL_CreateTextureFromSurface(renderer, image3);
+
+        SDL_Surface* image3_1 = IMG_Load("carro regular derecha.png");
+        texture3_1 = SDL_CreateTextureFromSurface(renderer, image3_1);
+
+        SDL_Surface* image3_2 = IMG_Load("carro regular derecha.png");
+        texture3_2 = SDL_CreateTextureFromSurface(renderer, image3_2);
+
+        SDL_Surface* image3_3 = IMG_Load("carro regular derecha.png");
+        texture3_3 = SDL_CreateTextureFromSurface(renderer, image3_3);
+
+        //Deleting the temporary surface
+        SDL_FreeSurface(temp);
+        SDL_FreeSurface(image);
+        SDL_FreeSurface(image_1);
+        SDL_FreeSurface(image_2);
+        SDL_FreeSurface(image_3);
+        SDL_FreeSurface(image3);
+
+        SDL_Rect rect;
+        rect.x = 0; //Extreme left of the window
+        rect.y = 0; //Very bottom of the window
+        rect.w = SCREEN_WIDTH; //100 pixels width
+        rect.h = SCREEN_HEIGHT; //100 pixels height
+
+        rect2.x = posX; //Extreme left of the window
+        rect2.y = 580; //Very bottom of the window
+        rect2.w = 38; //100 pixels width
+        rect2.h = 21; //100 pixels height
+
+        rect2_1.x = posX; //Extreme left of the window
+        rect2_1.y = 435; //Very bottom of the window
+        rect2_1.w = 38; //100 pixels width
+        rect2_1.h = 21; //100 pixels height
+
+        rect2_2.x = posX; //Extreme left of the window
+        rect2_2.y = 298; //Very bottom of the window
+        rect2_2.w = 38; //100 pixels width
+        rect2_2.h = 21; //100 pixels height
+
+        rect2_3.x = posX; //Extreme left of the window
+        rect2_3.y = 165; //Very bottom of the window
+        rect2_3.w = 38; //100 pixels width
+        rect2_3.h = 21; //100 pixels height
+
+        rect3.x = 750; //Extreme left of the window
+        rect3.y = 630; //Very bottom of the window
+        rect3.w = 38; //100 pixels width
+        rect3.h = 21; //100 pixels height
+
+        rect3_1.x = 750; //Extreme left of the window
+        rect3_1.y = 485; //Very bottom of the window
+        rect3_1.w = 38; //100 pixels width
+        rect3_1.h = 21; //100 pixels height
+
+        rect3_2.x = 750; //Extreme left of the window
+        rect3_2.y = 345; //Very bottom of the window
+        rect3_2.w = 38; //100 pixels width
+        rect3_2.h = 21; //100 pixels height
+
+        rect3_3.x = 750; //Extreme left of the window
+        rect3_3.y = 215; //Very bottom of the window
+        rect3_3.w = 38; //100 pixels width
+        rect3_3.h = 21; //100 pixels height
+
+        TTF_Init();
+        TTF_Font* Sans = TTF_OpenFont( "FreeSans.ttf", 18); //this opens a font style and sets a size
+        SDL_Color White = {0, 0, 0};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+
+        SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "Semaforo", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+        SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
+
+        SDL_Rect Message_rect; //create a rect
+        Message_rect.x = 100;  //controls the rect's x coordinate
+        Message_rect.y = 30; // controls the rect's y coordinte
+        Message_rect.w = surfaceMessage->w; // controls the width of the rect
+        Message_rect.h = surfaceMessage->h;// controls the height of the rect
+
+        SDL_FreeSurface(surfaceMessage);
+
+        while (!quit)
+        {
+            while (SDL_PollEvent(&input) > 0)
+            {
+                if (input.type == SDL_QUIT) quit = 1;
+            }
+
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderClear(renderer);
+
+            move();
+            moveDerecha();
+            //Render current frame
+
+            //Copying the texture on to the window using renderer and rectangle
+            SDL_RenderCopy(renderer, texture, NULL, &rect);
+
+            if(rect2.x > SCREEN_WIDTH)
+            {
+                SDL_DestroyTexture(texture2);
+            }
+            else
+            {
+                SDL_RenderCopy(renderer, texture2, NULL, &rect2);
+            }
+
+            SDL_RenderCopy(renderer, texture2_1, NULL, &rect2_1);
+            SDL_RenderCopy(renderer, texture2_2, NULL, &rect2_2);
+            SDL_RenderCopy(renderer, texture2_3, NULL, &rect2_3);
+            SDL_RenderCopy(renderer, texture3, NULL, &rect3);
+            SDL_RenderCopy(renderer, texture3_1, NULL, &rect3_1);
+            SDL_RenderCopy(renderer, texture3_2, NULL, &rect3_2);
+            SDL_RenderCopy(renderer, texture3_3, NULL, &rect3_3);
+            SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+            SDL_RenderPresent(renderer);
+
+        }
+
+        //Deleting the texture
+        SDL_DestroyTexture(texture);
+
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+
+        //For quitting IMG systems
+        IMG_Quit();
+
+        SDL_Quit();
 
 
 
-    /* PUENTE 0 */
-    Thread_Puente puente_creado_0 = crear_puente_0();
-    pthread_t thread_puente_0;           // Creo la instancia del thread del puente
-
-    if(puente_creado_0->control == JUNGLA)
-    {
-
-        agregar_puente(puente_creado_0, puentes);
     }
     else
     {
-        Thread thread_nuevo = (Thread) calloc(1, sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
-        thread_nuevo->puente=puente_creado_0;
-        thread_nuevo->carro=NULL;
-        thread_nuevo->prioridad=-1;               // Solo me interesa en este caso el thread de carro
-        thread_nuevo->velocidad=0;
-        thread_nuevo->calendarizador=calendarizador;
-        thread_nuevo->thread_identificador=0;
-        agregar_thread(thread_nuevo,threads);           // Agrego el thread puente a la lista de threads
 
-
-        switch (puente_creado_0->control)
-        {
-        case OFICIAL:
-            pthread_create(&thread_puente_0, NULL, algoritmo_puente_oficial, (void *) puente_creado_0);
-            break;
-        case SEMAFORO:
-
-            pthread_create(&thread_puente_0, NULL, algoritmo_puente_semaforo, (void *) puente_creado_0);
-            break;
-        default:
-            pthread_create(&thread_puente_0, NULL, algoritmo_puente_oficial, (void *) puente_creado_0);
-            break;
-        }
+        ejecutar();         // Inicia ejecucion principal
 
     }
 
 
-    /* PUENTE 1 */
-    Thread_Puente puente_creado_1 = crear_puente_1();
-    pthread_t thread_puente_1;           // Creo la instancia del thread del puente
 
-    if(puente_creado_1->control == JUNGLA)
-    {
-        agregar_puente(puente_creado_1, puentes);
-
-    }
-    else
-    {
-        Thread thread_nuevo_1 = (Thread) calloc(1, sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
-        thread_nuevo_1 ->puente=puente_creado_1;
-        thread_nuevo_1 ->carro=NULL;
-        thread_nuevo_1->prioridad=-1;                   // Solo me interesa en este caso el thread de carro
-        thread_nuevo_1->velocidad=0;
-        thread_nuevo_1 ->calendarizador=calendarizador;
-        thread_nuevo_1 ->thread_identificador=1;
-        agregar_thread(thread_nuevo_1,threads);            // Agrego el thread puente a la lista de threads
-
-
-
-        switch (puente_creado_1->control)
-        {
-        case OFICIAL:
-            pthread_create(&thread_puente_1, NULL, algoritmo_puente_oficial, (void *) puente_creado_1);
-            break;
-        case SEMAFORO:
-            pthread_create(&thread_puente_1, NULL, algoritmo_puente_semaforo, (void *) puente_creado_1);
-            break;
-        default:
-            pthread_create(&thread_puente_1, NULL, algoritmo_puente_oficial, (void *) puente_creado_1);
-            break;
-        }
-
-    }
-
-
-    /* PUENTE 2 */
-    Thread_Puente puente_creado_2 = crear_puente_2();
-    pthread_t thread_puente_2;           // Creo la instancia del thread del puente
-
-    if(puente_creado_2->control == JUNGLA)
-    {
-        agregar_puente(puente_creado_2, puentes);
-
-    }
-    else
-    {
-
-        Thread thread_nuevo_2 = (Thread) calloc(1, sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
-        thread_nuevo_2->puente=puente_creado_2;
-        thread_nuevo_2->carro=NULL;
-        thread_nuevo_2->prioridad=-1;                  // Solo me interesa en este caso el thread de carro
-        thread_nuevo_2->velocidad=0;
-        thread_nuevo_2->calendarizador=calendarizador;
-        thread_nuevo_2->thread_identificador=2;
-        agregar_thread(thread_nuevo_2,threads);           // Agrego el thread puente a la lista de threads
-
-
-        switch (puente_creado_2->control)
-        {
-        case OFICIAL:
-            pthread_create(&thread_puente_2, NULL, algoritmo_puente_oficial, (void *) puente_creado_2);
-            break;
-        case SEMAFORO:
-            pthread_create(&thread_puente_2, NULL, algoritmo_puente_semaforo, (void *) puente_creado_2);
-            break;
-        default:
-            pthread_create(&thread_puente_2, NULL, algoritmo_puente_oficial, (void *) puente_creado_2);
-            break;
-        }
-
-    }
-
-
-    /* PUENTE 3 */
-    Thread_Puente puente_creado_3 = crear_puente_3();
-    pthread_t thread_puente_3;
-
-    if(puente_creado_3->control == JUNGLA)
-    {
-        agregar_puente(puente_creado_3, puentes);
-    }
-    else
-    {
-        Thread thread_nuevo_3 = (Thread) calloc(1,sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
-        thread_nuevo_3->puente=puente_creado_3;
-        thread_nuevo_3->carro=NULL;
-        thread_nuevo_3->prioridad=-1;                   // Solo me interesa en este caso el thread de carro
-        thread_nuevo_3->velocidad=0;
-        thread_nuevo_3->calendarizador=calendarizador;
-        thread_nuevo_3->thread_identificador=3;
-        agregar_thread(thread_nuevo_3,threads);           // Agrego el thread puente a la lista de threads
-
-
-        // Creo la instancia del thread del puente
-        switch (puente_creado_3->control)
-        {
-        case OFICIAL:
-            pthread_create(&thread_puente_3, NULL, algoritmo_puente_oficial, (void *) puente_creado_3);
-            break;
-        case SEMAFORO:
-            pthread_create(&thread_puente_3, NULL, algoritmo_puente_semaforo, (void *) puente_creado_3);
-            break;
-        default:
-            pthread_create(&thread_puente_3, NULL, algoritmo_puente_oficial, (void *) puente_creado_3);
-            break;
-        }
-
-    }
-
-
-    if (pthread_mutex_init(&lock_thread_terminado, NULL) != 0)
-    {
-        printf("\n mutex init failed\n");
-    }
-
-    if (pthread_mutex_init(&lock_thread_actual, NULL) != 0)
-    {
-        printf("\n mutex init failed\n");
-    }
-
-    if (pthread_mutex_init(&lock_contador_tmp, NULL) != 0)
-    {
-        printf("\n mutex init failed\n");
-    }
-
-    if (pthread_mutex_init(&lock_carro_movimiento, NULL) != 0)
-    {
-        printf("\n mutex init failed\n");
-    }
-
-    if(pthread_mutex_init(&lock_modificar_lista, NULL) != 0)
-    {
-        printf("\n mutex init failed\n");
-    }
-
-    if(pthread_mutex_init(&lock_comenzar_espera, NULL) != 0)
-    {
-        printf("\n mutex init failed\n");
-    }
-
-    if(pthread_mutex_init(&lock_agregarse, NULL) != 0)
-    {
-        printf("\n mutex init failed\n");
-    }
-
-
-    // Por ultimo comienzo la ejecucion del hilo y su respectivo join
-    pthread_create(&thread_generador_carros, NULL, generador_carros, NULL);
-
-
-    if(puente_creado_0->control != JUNGLA)
-    {
-        pthread_join(thread_puente_0, NULL);
-    }
-    if(puente_creado_1->control != JUNGLA)
-    {
-        pthread_join(thread_puente_1, NULL);
-    }
-    if(puente_creado_2->control != JUNGLA)
-    {
-        pthread_join(thread_puente_2, NULL);
-    }
-    if(puente_creado_3->control != JUNGLA)
-    {
-        pthread_join(thread_puente_3, NULL);
-    }
-
-
-    pthread_join(thread_calendarizador, NULL);
-    pthread_join(thread_generador_carros, NULL);
-    if(hardware==1)
-    {
-        pthread_join(thread_puente_hardware_0, NULL);
-//        pthread_join(thread_puente_hardware_1, NULL);
-//        pthread_join(thread_puente_hardware_2, NULL);
-    }
-
-    pthread_mutex_destroy(&lock_thread_terminado);
-    pthread_mutex_destroy(&lock_thread_actual);
-    pthread_mutex_destroy(&lock_contador_tmp);
-    pthread_mutex_destroy(&lock_carro_movimiento);
-    pthread_mutex_destroy(&lock_modificar_lista);
-    pthread_mutex_destroy(&lock_comenzar_espera);
-    pthread_mutex_destroy(&lock_agregarse);
     return 0;
 
 }
-
-
-
 
 
 

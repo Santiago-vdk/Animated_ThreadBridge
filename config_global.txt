@@ -1,2 +1,3 @@
 calendarizador:1
 hardware:0
+interfaz:1

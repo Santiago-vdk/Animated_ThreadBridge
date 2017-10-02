@@ -30,6 +30,7 @@ long thread_actual;
 int thread_terminado;
 int calendarizador;
 int hardware;
+int gui;
 
 pthread_t thread_calendarizador;
 pthread_t thread_generador_carros;
