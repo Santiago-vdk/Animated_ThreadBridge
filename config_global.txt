@@ -1,2 +1,2 @@
-calendarizador:0
-hardware:1
+calendarizador:1
+hardware:0

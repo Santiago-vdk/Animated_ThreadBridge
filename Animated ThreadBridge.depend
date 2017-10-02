@@ -1,28 +1,27 @@
 # depslib dependency file v1.0
-1506894039 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
-	<stdio.h>
-	<stdlib.h>
-	"mythreads/mythread.h"
-	"thread_data.h"
-	<time.h>
-	"puentes.h"
-	<unistd.h>
-	<math.h>
-	"lector_archivos.h"
+1506960289 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
+	"main.h"
+	"calendarizador_rr.h"
+	"calendarizador_fcfs.h"
+	"calendarizador_sjf.h"
+	"calendarizador_real_time.h"
+	"calendarizador_priority_queue.h"
+	"algoritmos_control.h"
+	"manejo_carros.h"
 
 1505762547 source:/home/santiago/Desktop/Animated_ThreadBridge/test.c
 
-1506891796 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
+1506958638 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
 	<pthread.h>
 
-1506896007 source:/home/santiago/Desktop/Animated_ThreadBridge/thread_data.c
+1506958638 source:/home/santiago/Desktop/Animated_ThreadBridge/thread_data.c
 	<stdlib.h>
 	<stdio.h>
 	"thread_data.h"
 
-1505964665 /home/santiago/Desktop/Animated_ThreadBridge/mythreads/mythread.h
+1506958638 /home/santiago/Desktop/Animated_ThreadBridge/mythreads/mythread.h
 
-1505965479 source:/home/santiago/Desktop/Animated_ThreadBridge/mythreads/mythread.c
+1506958638 source:/home/santiago/Desktop/Animated_ThreadBridge/mythreads/mythread.c
 	<pthread.h>
 	"mythread.h"
 
@@ -41,21 +40,21 @@
 	"thread_data.h"
 	"globales.h"
 
-1506844699 source:/home/santiago/Desktop/Animated_ThreadBridge/lector_archivos.c
+1506958638 source:/home/santiago/Desktop/Animated_ThreadBridge/lector_archivos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1506843082 /home/santiago/Desktop/Animated_ThreadBridge/lector_archivos.h
+1506958638 /home/santiago/Desktop/Animated_ThreadBridge/lector_archivos.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1506843393 source:/home/santiago/Desktop/Animated_ThreadBridge/puentes.c
+1506958638 source:/home/santiago/Desktop/Animated_ThreadBridge/puentes.c
 	"puentes.h"
 	"lector_archivos.h"
 
-1506371019 /home/santiago/Desktop/Animated_ThreadBridge/puentes.h
+1506958638 /home/santiago/Desktop/Animated_ThreadBridge/puentes.h
 	"thread_data.h"
 
 1506448037 source:/home/santiago/Desktop/Animated_ThreadBridge/controlador_carros_jlaw.c
@@ -109,4 +108,60 @@
 	<stdlib.h>
 	<stdio.h>
 	"thread_data.h"
+
+1506959192 /home/santiago/Desktop/Animated_ThreadBridge/main.h
+	<stdio.h>
+	<stdlib.h>
+	"mythreads/mythread.h"
+	"thread_data.h"
+	<time.h>
+	"puentes.h"
+	<unistd.h>
+	<math.h>
+	"lector_archivos.h"
+	"pthread.h"
+	<fcntl.h>
+	<sys/mman.h>
+
+1506959160 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_rr.h
+	"main.h"
+
+1506959119 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_rr.c
+	"calendarizador_rr.h"
+
+1506959340 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_fcfs.c
+	"calendarizador_fcfs.h"
+
+1506959311 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_fcfs.h
+	"main.h"
+
+1506959523 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_sjf.c
+	"calendarizador_sjf.h"
+
+1506959474 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_sjf.h
+	"main.h"
+
+1506959653 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_real_time.c
+	"calendarizador_real_time.h"
+
+1506959597 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_real_time.h
+	"main.h"
+
+1506959714 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.c
+	"calendarizador_priority_queue.h"
+
+1506959756 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.h
+	"main.h"
+
+1506960084 source:/home/santiago/Desktop/Animated_ThreadBridge/algoritmos_control.c
+	"algoritmos_control.h"
+
+1506960086 /home/santiago/Desktop/Animated_ThreadBridge/algoritmos_control.h
+	"main.h"
+
+1506960263 /home/santiago/Desktop/Animated_ThreadBridge/manejo_carros.h
+	"main.h"
+
+1506960222 source:/home/santiago/Desktop/Animated_ThreadBridge/manejo_carros.c
+	"manejo_carros.h"
 
