@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1506962942 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
+1506979460 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
 	"main.h"
 	"calendarizador_rr.h"
 	"calendarizador_fcfs.h"
@@ -11,14 +11,12 @@
 	"rasp.h"
 	"principal.h"
 	"control_puentes_hardware.h"
-	<SDL2/SDL.h>
-	<SDL2/SDL_image.h>
-	<SDL2/SDL_ttf.h>
 
 1505762547 source:/home/santiago/Desktop/Animated_ThreadBridge/test.c
 
-1506958638 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
+1506963359 /home/santiago/Desktop/Animated_ThreadBridge/thread_data.h
 	<pthread.h>
+	<SDL2/SDL.h>
 
 1506958638 source:/home/santiago/Desktop/Animated_ThreadBridge/thread_data.c
 	<stdlib.h>
@@ -115,7 +113,7 @@
 	<stdio.h>
 	"thread_data.h"
 
-1506961514 /home/santiago/Desktop/Animated_ThreadBridge/main.h
+1506978899 /home/santiago/Desktop/Animated_ThreadBridge/main.h
 	<stdio.h>
 	<stdlib.h>
 	"mythreads/mythread.h"
@@ -128,6 +126,9 @@
 	"pthread.h"
 	<fcntl.h>
 	<sys/mman.h>
+	<SDL2/SDL.h>
+	<SDL2/SDL_image.h>
+	<SDL2/SDL_ttf.h>
 
 1506959160 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_rr.h
 	"main.h"
@@ -135,7 +136,7 @@
 1506959119 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_rr.c
 	"calendarizador_rr.h"
 
-1506959340 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_fcfs.c
+1506976428 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_fcfs.c
 	"calendarizador_fcfs.h"
 
 1506959311 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_fcfs.h
@@ -165,10 +166,10 @@
 1506960086 /home/santiago/Desktop/Animated_ThreadBridge/algoritmos_control.h
 	"main.h"
 
-1506960263 /home/santiago/Desktop/Animated_ThreadBridge/manejo_carros.h
+1506968553 /home/santiago/Desktop/Animated_ThreadBridge/manejo_carros.h
 	"main.h"
 
-1506960320 source:/home/santiago/Desktop/Animated_ThreadBridge/manejo_carros.c
+1506979734 source:/home/santiago/Desktop/Animated_ThreadBridge/manejo_carros.c
 	"manejo_carros.h"
 	"algoritmos_control.h"
 

@@ -12,11 +12,13 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 
+//Using SDL, SDL_image, standard IO, and strings
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #ifndef MAIN_H_INCLUDED
 #define MAIN_H_INCLUDED
-
-
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -55,6 +57,12 @@ pthread_mutex_t lock_agregarse;
 ThreadList threads;
 ThreadListPuente puentes;
 
+ThreadListCarro carros_ui;
+
+SDL_Window* window;
 
 
+//Screen dimension constants
+int SCREEN_WIDTH;
+int SCREEN_HEIGHT;
 #endif // MAIN_H_INCLUDED

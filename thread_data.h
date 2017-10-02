@@ -1,4 +1,6 @@
 #include <pthread.h>
+#include <SDL2/SDL.h>
+
 
 #ifndef _THREAD_DATA_H
 #define _THREAD_DATA_H
@@ -39,6 +41,9 @@ typedef struct thread_carro
 	double velocidad;              // Velocidad del carro
 	int lado_izquierdo;         // Para saber de cual lado es si lado_izquierdo = 1, el carro fue insertado del lado izq si es 0 fue del derecho
     int prioridad;
+
+    SDL_Rect objeto;
+    SDL_Texture* textura;
 
 	struct thread_carro *next;
 	struct thread_carro *prev;

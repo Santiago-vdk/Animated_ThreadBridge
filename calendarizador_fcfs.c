@@ -65,7 +65,7 @@ void *calendarizador_fcfs(void *t)
         {
             printf("No hay hilos para calendarizar \n");
         }
-        usleep(10000); // usleep(100000);
+        usleep(100000); // usleep(100000);
 
     }
 }

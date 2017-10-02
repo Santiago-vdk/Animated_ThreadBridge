@@ -1,5 +1,5 @@
 #include "manejo_carros.h"
-#include "algoritmos_control.h""
+#include "algoritmos_control.h"
 
 
 int *controlador_carros(void *carro)
@@ -25,7 +25,7 @@ int *controlador_carros(void *carro)
                         pthread_mutex_lock(&lock_thread_terminado);
 
                         printf(ANSI_COLOR_YELLOW "Carro %d termino de pasar el puente, no habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
-
+                        eliminar_nodo_carro(carros_ui,data->thread_identificador);
                         eliminar_nodo_thread(threads,data->thread_identificador);           // Elimino el carro de la lista de hilos
                         eliminar_nodo_carro(buscar_nodo_thread(threads,data->puente)->puente->carros_circulando,data->thread_identificador);    // Elimino el carro de la lista de los carros circulando de su debido puente
                         buscar_nodo_thread(threads,data->puente)->puente->ocupancia -= 1;
@@ -43,16 +43,17 @@ int *controlador_carros(void *carro)
                     else
                     {
                         /* printf("Carro %lu moviendose %d \n", data->thread_identificador, distancia_tmp);
-                         usleep(data->velocidad*100000);                                              // Simulo la velocidad
-                         distancia_tmp ++;                                                   // Auento la distancia recorrida
-                         */
+                        usleep(data->velocidad*100000);                                              // Simulo la velocidad
+                        distancia_tmp ++;                                                   // Auento la distancia recorrida
+                        */
 
-                        if(data->puente<2)
+                        if(hardware == 1 && data->puente<2)
                         {
                             principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,1,data->tipo_carro);
                             printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp, data->lado_izquierdo);
                             usleep(data->velocidad*100000);                                             // Simulo la velocidad
                             principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
+
                             distancia_tmp ++;
                         }
                         else
@@ -61,7 +62,7 @@ int *controlador_carros(void *carro)
                             printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp, data->lado_izquierdo);
                             usleep(data->velocidad*100000);                                             // Simulo la velocidad
                             distancia_tmp ++;
-
+                            data->objeto.x += 100;
                         }
                         // Auento la distancia recorrida
 
@@ -77,7 +78,7 @@ int *controlador_carros(void *carro)
 
                         printf(ANSI_COLOR_YELLOW "Carro %d termino de pasar el puente, habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
 
-
+                        eliminar_nodo_carro(carros_ui,data->thread_identificador);
                         eliminar_nodo_thread(threads,data->thread_identificador);           // Elimino el carro de la lista de hilos
                         eliminar_nodo_carro(buscar_nodo_thread(threads,data->puente)->puente->carros_circulando,data->thread_identificador);    // Elimino el carro de la lista de los carros circulando de su debido puente
                         buscar_nodo_thread(threads,data->puente)->puente->ocupancia -= 1;
@@ -98,7 +99,7 @@ int *controlador_carros(void *carro)
                         usleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad*100000);                                             // Utilizo la velocidad del nodo del frente
                         distancia_tmp ++;         */                               // Aumento la distancia avanzada
 
-                        if(data->puente<2)
+                        if(hardware == 1 && data->puente<2)
                         {
 
                             principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,1,data->tipo_carro);
@@ -112,6 +113,7 @@ int *controlador_carros(void *carro)
                             printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp);
                             usleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad*100000);
                             distancia_tmp ++;
+                            data->objeto.x += 100;
 
                         }
                     }
@@ -144,19 +146,29 @@ void *generador_carros(void *t)
     double lambda = 0.5;
     double probabilidad = 0.0;
     double porcentaje_ambulancia = 0.0;
-    while(i<60)
+    while(i<50)
     {
         srand(time(NULL));
         //printf("Generando carro %lu de tipo %d al lado %d del puente %d \n",i, carro->tipo_carro, lado_random, puente_random);
 
-        int puente_random = 0;//rand() % 4;
+        int puente_random = rand() % 4;
         int lado_random = rand() % 2;
 
         Thread_Carro carro = (Thread_Carro) calloc(1, sizeof(struct thread_carro));
         carro -> thread_identificador = i;
         carro -> corriendo = 0;
         carro -> puente = puente_random;
-        carro -> velocidad = rand() / (RAND_MAX + 1.);
+
+        if(gui == 1)
+        {
+            carro -> velocidad = rand()%30;
+
+        }
+        else
+        {
+            carro -> velocidad = rand() / (RAND_MAX + 1.);
+        }
+
 
         switch (puente_random)
         {
@@ -236,6 +248,108 @@ void *generador_carros(void *t)
             }
 
         }
+
+
+        if(gui == 1)        // Se debe inicializar la textura del carro
+        {
+
+           if(carro->tipo_carro == RADIOACTIVO)
+            {
+                if(carro->lado_izquierdo == 1)
+                {
+                    SDL_Surface* image_carro_lado_izquierdo = IMG_Load("carro radioactivo izquierda.png");
+                    SDL_Renderer* renderer_tmp = SDL_GetRenderer(window);
+                    carro->textura = SDL_CreateTextureFromSurface(renderer_tmp, image_carro_lado_izquierdo);
+                    SDL_FreeSurface(image_carro_lado_izquierdo);
+                }
+                else
+                {
+                    SDL_Surface* image_carro_lado_derecha = IMG_Load("carro radioactivo derecha.png");
+                    SDL_Renderer* renderer_tmp = SDL_GetRenderer(window);
+                    carro->textura = SDL_CreateTextureFromSurface(renderer_tmp, image_carro_lado_derecha);
+                    SDL_FreeSurface(image_carro_lado_derecha);
+                }
+
+
+            }
+            else if(carro->tipo_carro == AMBULANCIA)
+            {
+                if(carro->lado_izquierdo == 1)
+                {
+                    SDL_Surface* image_carro_lado_izquierdo = IMG_Load("carro ambulancia izquierda.png");
+                    SDL_Renderer* renderer_tmp = SDL_GetRenderer(window);
+                    carro->textura = SDL_CreateTextureFromSurface(renderer_tmp, image_carro_lado_izquierdo);
+                    SDL_FreeSurface(image_carro_lado_izquierdo);
+                }
+                else
+                {
+                    SDL_Surface* image_carro_lado_derecha = IMG_Load("carro ambulancia derecha.png");
+                    SDL_Renderer* renderer_tmp = SDL_GetRenderer(window);
+                    carro->textura = SDL_CreateTextureFromSurface(renderer_tmp, image_carro_lado_derecha);
+                    SDL_FreeSurface(image_carro_lado_derecha);
+                }
+
+            }
+            else
+            {
+                if(carro->lado_izquierdo == 1)
+                {
+                    SDL_Surface* image_carro_lado_izquierdo = IMG_Load("carro regular izquierda.png");
+                    SDL_Renderer* renderer_tmp = SDL_GetRenderer(window);
+                    carro->textura = SDL_CreateTextureFromSurface(renderer_tmp, image_carro_lado_izquierdo);
+                    SDL_FreeSurface(image_carro_lado_izquierdo);
+                }
+                else
+                {
+                    SDL_Surface* image_carro_lado_derecha = IMG_Load("carro regular derecha.png");
+                    SDL_Renderer* renderer_tmp = SDL_GetRenderer(window);
+                    carro->textura = SDL_CreateTextureFromSurface(renderer_tmp, image_carro_lado_derecha);
+                    SDL_FreeSurface(image_carro_lado_derecha);
+                }
+            }
+
+            if(carro->lado_izquierdo == 1)
+            {
+
+                carro->objeto.x = 0; //Extreme left of the window
+            }
+            else
+            {
+                carro->objeto.x = SCREEN_WIDTH - 38; //Extreme left of the window
+            }
+
+            // Valida si el tipo de carro es ambulacia o radioactivo para disminuir la cantidad de la lista
+            switch(puente_random)
+            {
+            case 0:
+                carro->objeto.x = 0; //Extreme left of the window
+                carro->objeto.y = 165; //Very bottom of the window
+                break;
+            case 1:
+
+                carro->objeto.y = 298; //Very bottom of the window
+                break;
+
+            case 2:
+                carro->objeto.y = 435; //Very bottom of the window
+                break;
+
+            case 3:
+                carro->objeto.y = 580; //Very bottom of the window
+                break;
+            }
+
+
+            carro->objeto.w = 38; //100 pixels width
+            carro->objeto.h = 21; //100 pixels height
+
+
+            agregar_carro(carro,carros_ui);
+
+
+        }
+
+
 
         Thread thread_nuevo = (Thread) calloc(1, sizeof(struct thread));
         thread_nuevo->puente=NULL;
