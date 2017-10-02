@@ -24,10 +24,17 @@ long thread_actual = -1;
 int thread_terminado = 1;
 int calendarizador = -1;
 int hardware = 0;
+
 pthread_t thread_calendarizador;
 pthread_t thread_generador_carros;
 
 pthread_t thread_puente_hardware_0;
+pthread_t thread_puente_hardware_1;
+pthread_t thread_puente_hardware_2;
+
+pthread_t thread_puente_hardware_0_lados;
+pthread_t thread_puente_hardware_1_lados;
+pthread_t thread_puente_hardware_2_lados;
 
 pthread_mutex_t lock_thread_terminado;
 pthread_mutex_t lock_thread_actual;
@@ -1314,7 +1321,7 @@ void *generador_carros(void *t)
     }
 }
 
-pthread_t thread_puente_hardware_0_lados;
+
 
 void * hardware_0_lados()
 {
@@ -1382,9 +1389,13 @@ int main()
         setup_io();
         set_outputRasp();
         pthread_create(&thread_puente_hardware_0, NULL , Estado_P1 , NULL);
+//        pthread_create(&thread_puente_hardware_1, NULL , Estado_P1 , NULL);
+//        pthread_create(&thread_puente_hardware_2, NULL , Estado_P2 , NULL);
+
 
         pthread_create(&thread_puente_hardware_0_lados, NULL , hardware_0_lados , NULL);
-        //principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int centro,int posicionCentro,int actCentro,int tipoCarro)
+//        pthread_create(&thread_puente_hardware_1_lados, NULL , hardware_1_lados , NULL);
+//        pthread_create(&thread_puente_hardware_2_lados, NULL , hardware_2_lados , NULL);
 
     }
 
@@ -1642,7 +1653,8 @@ int main()
     if(hardware==1)
     {
         pthread_join(thread_puente_hardware_0, NULL);
-
+//        pthread_join(thread_puente_hardware_1, NULL);
+//        pthread_join(thread_puente_hardware_2, NULL);
     }
 
     pthread_mutex_destroy(&lock_thread_terminado);
@@ -1655,14 +1667,6 @@ int main()
     return 0;
 
 }
-
-
-
-
-
-
-
-
 
 
 
