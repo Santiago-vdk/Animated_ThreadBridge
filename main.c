@@ -9,19 +9,15 @@
 #include "rasp.h"
 #include "principal.h"
 #include "control_puentes_hardware.h"
+#include <time.h>
 
-
-
-void * threadFunction( void* data )   //Print incoming data
+void * iniciarEjecucion()
 {
-
-
-        ejecutar();         // Inicia ejecucion principal
-
-
-
-
+    ejecutar();
 }
+
+
+
 
 
 int main()
@@ -32,7 +28,7 @@ int main()
     hardware = 0;
     gui = 0;
 
-    carros_ui = calloc(1,sizeof(struct thread_list_carro));
+    //carros_ui = calloc(1,sizeof(struct thread_list_carro));
 
     hardware = getParameterValueConfig("config_global.txt","hardware");
     if(hardware == 1)
@@ -44,13 +40,13 @@ int main()
         setup_io();
         set_outputRasp();
         pthread_create(&thread_puente_hardware_0, NULL, Estado_P1, NULL);
-//        pthread_create(&thread_puente_hardware_1, NULL , Estado_P1 , NULL);
-//        pthread_create(&thread_puente_hardware_2, NULL , Estado_P2 , NULL);
+        pthread_create(&thread_puente_hardware_1, NULL , Estado_P2 , NULL);
+        pthread_create(&thread_puente_hardware_2, NULL , Estado_P3 , NULL);
 
 
         pthread_create(&thread_puente_hardware_0_lados, NULL, hardware_0_lados, NULL);
-//        pthread_create(&thread_puente_hardware_1_lados, NULL , hardware_1_lados , NULL);
-//        pthread_create(&thread_puente_hardware_2_lados, NULL , hardware_2_lados , NULL);
+        pthread_create(&thread_puente_hardware_1_lados, NULL , hardware_1_lados , NULL);
+        pthread_create(&thread_puente_hardware_2_lados, NULL , hardware_2_lados , NULL);
 
     }
 
@@ -64,7 +60,6 @@ int main()
 
         int quit = 0;
 
-
         SDL_Init(SDL_INIT_EVERYTHING);
         //For loading PNG images
         IMG_Init(IMG_INIT_PNG);
@@ -72,20 +67,14 @@ int main()
         SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
         SDL_Event input;
 
- //SDL_Thread* threadID = SDL_CreateThread( threadFunction, "MainThread", NULL);
+        SDL_Thread* threadID2 = SDL_CreateThread( iniciarEjecucion, "MainThread2", NULL);
 
-        pthread_t mainThread;
-        pthread_create(&mainThread, NULL, threadFunction, NULL);
 
         SDL_Texture* textura_fondo = NULL;
 
         SDL_Surface* fondo_temp = IMG_Load("bg.png");
         textura_fondo = SDL_CreateTextureFromSurface(renderer, fondo_temp);
 
-        /*      SDL_Texture* texture2 = NULL;
-              SDL_Surface* image_carro_lado_izquierdo = IMG_Load("carro regular izquierda.png");
-              texture2 = SDL_CreateTextureFromSurface(renderer, image_carro_lado_izquierdo);
-              SDL_FreeSurface(image_carro_lado_izquierdo);*/
 
         //Deleting the temporary surface
         SDL_FreeSurface(fondo_temp);
@@ -95,10 +84,7 @@ int main()
         fondo.y = 0; //Very bottom of the window
         fondo.w = SCREEN_WIDTH; //100 pixels width
         fondo.h = SCREEN_HEIGHT; //100 pixels height
-        //SDL_Thread* pintadoThreadID = SDL_CreateThread( pintarFunction, "PintarThread", NULL);
 
-
-        Thread temporal = threads->head;
         while (!quit)
         {
             while (SDL_PollEvent(&input) > 0)
@@ -110,34 +96,84 @@ int main()
             SDL_RenderClear(renderer);
             SDL_RenderCopy(renderer, textura_fondo, NULL, &fondo);
 
-            if(carros_ui->head != NULL)
+
+            if(threads!= NULL)
             {
-                Thread_Carro carro_tmp = carros_ui->head;
-                for(int i = 0; i < carros_ui->tamanio; i++)
+                Thread tmp = buscar_nodo_thread(threads, thread_actual);
+                if(thread_actual > 3 && tmp != NULL && tmp->carro->pintado == 0)
                 {
 
-
-
-                    SDL_RenderCopy(renderer, carro_tmp->textura, NULL, &carro_tmp->objeto);
-
-                    if(carro_tmp->next != NULL)
+                    if(tmp->carro->tipo_carro == RADIOACTIVO)
                     {
-                        carro_tmp = carro_tmp->next;
+                        if(tmp->carro->lado_izquierdo == 1)
+                        {
+                            SDL_Surface* image_carro_lado_izquierdo = IMG_Load("carro radioactivo izquierda.png");
+                            SDL_Renderer* renderer_tmp = SDL_GetRenderer(window);
+                            tmp->carro->textura = SDL_CreateTextureFromSurface(renderer_tmp, image_carro_lado_izquierdo);
+                            SDL_FreeSurface(image_carro_lado_izquierdo);
+                        }
+                        else
+                        {
+                            SDL_Surface* image_carro_lado_derecha = IMG_Load("carro radioactivo derecha.png");
+                            SDL_Renderer* renderer_tmp = SDL_GetRenderer(window);
+                            tmp->carro->textura = SDL_CreateTextureFromSurface(renderer_tmp, image_carro_lado_derecha);
+                            SDL_FreeSurface(image_carro_lado_derecha);
+                        }
+
+
+                    }
+                    else if(tmp->carro->tipo_carro == AMBULANCIA)
+                    {
+                        if(tmp->carro->lado_izquierdo == 1)
+                        {
+                            SDL_Surface* image_carro_lado_izquierdo = IMG_Load("carro ambulancia izquierda.png");
+                            SDL_Renderer* renderer_tmp = SDL_GetRenderer(window);
+                            tmp->carro->textura = SDL_CreateTextureFromSurface(renderer_tmp, image_carro_lado_izquierdo);
+                            SDL_FreeSurface(image_carro_lado_izquierdo);
+                        }
+                        else
+                        {
+                            SDL_Surface* image_carro_lado_derecha = IMG_Load("carro ambulancia derecha.png");
+                            SDL_Renderer* renderer_tmp = SDL_GetRenderer(window);
+                            tmp->carro->textura = SDL_CreateTextureFromSurface(renderer_tmp, image_carro_lado_derecha);
+                            SDL_FreeSurface(image_carro_lado_derecha);
+                        }
+
                     }
                     else
                     {
-                        break;
+                        if(tmp->carro->lado_izquierdo == 1)
+                        {
+                            SDL_Surface* image_carro_lado_izquierdo = IMG_Load("carro regular izquierda.png");
+                            SDL_Renderer* renderer_tmp = SDL_GetRenderer(window);
+                            tmp->carro->textura = SDL_CreateTextureFromSurface(renderer_tmp, image_carro_lado_izquierdo);
+                            SDL_FreeSurface(image_carro_lado_izquierdo);
+                        }
+                        else
+                        {
+                            SDL_Surface* image_carro_lado_derecha = IMG_Load("carro regular derecha.png");
+                            SDL_Renderer* renderer_tmp = SDL_GetRenderer(window);
+                            tmp->carro->textura = SDL_CreateTextureFromSurface(renderer_tmp, image_carro_lado_derecha);
+                            SDL_FreeSurface(image_carro_lado_derecha);
+                        }
                     }
 
+                    tmp->carro->pintado = 1;
+                }
+
+                if(thread_actual > 3 && tmp != NULL && tmp->carro->pintado == 1)
+                {
+                    printf("aqui\n");
+                    SDL_RenderCopy(renderer, tmp->carro->textura, NULL, &tmp->carro->objeto);
 
                 }
 
-
             }
+
 
             SDL_RenderPresent(renderer);
             //usleep(100000);
-            SDL_Delay( 1);
+            SDL_Delay( 10);
         }
 
         //Deleting the texture

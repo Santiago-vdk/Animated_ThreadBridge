@@ -160,6 +160,7 @@ void *algoritmo_puente_oficial(void *puente)
                 }
             }
         }
+        usleep(100000);
     }
 }
 
@@ -352,7 +353,7 @@ void *algoritmo_puente_semaforo(void *puente)
 
 
         }
-        usleep(1000000);
+        usleep(100000);
     }
 }
 

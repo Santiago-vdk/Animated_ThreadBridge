@@ -7,7 +7,9 @@
 #include "algoritmos_control.h"
 #include "manejo_carros.h"
 
-void ejecutar(){
+
+void ejecutar()
+{
 
     threads = (ThreadList) calloc(1, sizeof(struct thread_list));   // Inicializo una lista con todos los threads puentes y carros
     threads -> tamanio = 0;
@@ -235,7 +237,11 @@ void ejecutar(){
 
 
     // Por ultimo comienzo la ejecucion del hilo y su respectivo join
-    pthread_create(&thread_generador_carros, NULL, generador_carros, NULL);
+
+        pthread_create(&thread_generador_carros, NULL, generador_carros, NULL);
+
+
+
 
 
     if(puente_creado_0->control != JUNGLA)
@@ -257,12 +263,17 @@ void ejecutar(){
 
 
     pthread_join(thread_calendarizador, NULL);
-    pthread_join(thread_generador_carros, NULL);
+
+    if(gui == 0)
+    {
+        pthread_join(thread_generador_carros, NULL);
+
+    }
     if(hardware==1)
     {
         pthread_join(thread_puente_hardware_0, NULL);
-//        pthread_join(thread_puente_hardware_1, NULL);
-//        pthread_join(thread_puente_hardware_2, NULL);
+        pthread_join(thread_puente_hardware_1, NULL);
+        pthread_join(thread_puente_hardware_2, NULL);
     }
 
     pthread_mutex_destroy(&lock_thread_terminado);

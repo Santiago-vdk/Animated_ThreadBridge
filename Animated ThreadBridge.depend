@@ -74,23 +74,27 @@
 	<stdlib.h>
 	<string.h>
 
-1506914466 source:/home/pi/Desktop/Animated_ThreadBridge/main.c
-	<stdio.h>
-	<stdlib.h>
-	"mythreads/mythread.h"
-	"thread_data.h"
+1507072949 source:/home/pi/Desktop/Animated_ThreadBridge/main.c
+	"main.h"
+	"calendarizador_rr.h"
+	"calendarizador_fcfs.h"
+	"calendarizador_sjf.h"
+	"calendarizador_real_time.h"
+	"calendarizador_priority_queue.h"
+	"algoritmos_control.h"
+	"manejo_carros.h"
+	"rasp.h"
+	"principal.h"
+	"control_puentes_hardware.h"
 	<time.h>
-	"puentes.h"
-	<unistd.h>
-	<math.h>
-	"lector_archivos.h"
-	<fcntl.h>
-	<sys/mman.h>
 
 1506906222 /home/pi/Desktop/Animated_ThreadBridge/mythreads/mythread.h
 
-1506905639 /home/pi/Desktop/Animated_ThreadBridge/thread_data.h
+1507059437 /home/pi/Desktop/Animated_ThreadBridge/thread_data.h
 	<pthread.h>
+	<SDL2/SDL.h>
+	<SDL2/SDL_image.h>
+	<SDL2/SDL_ttf.h>
 
 1506905639 /home/pi/Desktop/Animated_ThreadBridge/puentes.h
 	"thread_data.h"
@@ -197,4 +201,92 @@
 
 1506962875 /home/santiago/Desktop/Animated_ThreadBridge/control_puentes_hardware.h
 	"main.h"
+
+1507075138 source:/home/pi/Desktop/Animated_ThreadBridge/algoritmos_control.c
+	"algoritmos_control.h"
+
+1506916880 /home/pi/Desktop/Animated_ThreadBridge/algoritmos_control.h
+	"main.h"
+
+1507069435 /home/pi/Desktop/Animated_ThreadBridge/main.h
+	<stdio.h>
+	<stdlib.h>
+	"mythreads/mythread.h"
+	"thread_data.h"
+	<time.h>
+	"puentes.h"
+	<unistd.h>
+	<math.h>
+	"lector_archivos.h"
+	"pthread.h"
+	<fcntl.h>
+	<sys/mman.h>
+	<SDL2/SDL.h>
+	<SDL2/SDL_image.h>
+	<SDL2/SDL_ttf.h>
+
+1507076589 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_fcfs.c
+	"calendarizador_fcfs.h"
+
+1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_fcfs.h
+	"main.h"
+
+1506916880 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.c
+	"calendarizador_priority_queue.h"
+
+1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.h
+	"main.h"
+
+1506916880 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_real_time.c
+	"calendarizador_real_time.h"
+
+1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_real_time.h
+	"main.h"
+
+1506916880 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_rr.c
+	"calendarizador_rr.h"
+
+1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_rr.h
+	"main.h"
+
+1506916880 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_sjf.c
+	"calendarizador_sjf.h"
+
+1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_sjf.h
+	"main.h"
+
+1507075841 source:/home/pi/Desktop/Animated_ThreadBridge/control_puentes_hardware.c
+	"control_puentes_hardware.h"
+
+1507063504 /home/pi/Desktop/Animated_ThreadBridge/control_puentes_hardware.h
+	"main.h"
+
+1506992575 /home/pi/Desktop/Animated_ThreadBridge/manejo_carros.h
+	"main.h"
+
+1507063259 /home/pi/Desktop/Animated_ThreadBridge/rasp.h
+	"main.h"
+
+1506992481 /home/pi/Desktop/Animated_ThreadBridge/principal.h
+	"main.h"
+
+1507076416 source:/home/pi/Desktop/Animated_ThreadBridge/manejo_carros.c
+	"manejo_carros.h"
+	"algoritmos_control.h"
+	<SDL2/SDL.h>
+	<SDL2/SDL_image.h>
+	<SDL2/SDL_ttf.h>
+
+1507073212 source:/home/pi/Desktop/Animated_ThreadBridge/principal.c
+	"principal.h"
+	"calendarizador_rr.h"
+	"calendarizador_fcfs.h"
+	"calendarizador_sjf.h"
+	"calendarizador_real_time.h"
+	"calendarizador_priority_queue.h"
+	"algoritmos_control.h"
+	"manejo_carros.h"
+
+1507075965 source:/home/pi/Desktop/Animated_ThreadBridge/rasp.c
+	"rasp.h"
 

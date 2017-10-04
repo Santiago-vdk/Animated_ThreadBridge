@@ -7,5 +7,7 @@ void setup_io();
 void set_outputRasp();
 void principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int centro,int posicionCentro,int actCentro,int tipoCarro);
 void *Estado_P1(void *arg);
+void *Estado_P2(void *arg);
+void *Estado_P3(void *arg);
 
 #endif // RASP_H_INCLUDED

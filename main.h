@@ -57,7 +57,7 @@ pthread_mutex_t lock_agregarse;
 ThreadList threads;
 ThreadListPuente puentes;
 
-ThreadListCarro carros_ui;
+
 
 SDL_Window* window;
 
@@ -65,4 +65,8 @@ SDL_Window* window;
 //Screen dimension constants
 int SCREEN_WIDTH;
 int SCREEN_HEIGHT;
+
+
+
+
 #endif // MAIN_H_INCLUDED

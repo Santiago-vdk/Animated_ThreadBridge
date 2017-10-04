@@ -4,5 +4,7 @@
 #define CONTROL_PUENTES_HARDWARE_H_INCLUDED
 
 void * hardware_0_lados();
+void * hardware_1_lados();
+void * hardware_2_lados();
 
 #endif // CONTROL_PUENTES_HARDWARE_H_INCLUDED

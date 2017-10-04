@@ -1,5 +1,7 @@
 #include <pthread.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 
 #ifndef _THREAD_DATA_H
@@ -44,6 +46,8 @@ typedef struct thread_carro
 
     SDL_Rect objeto;
     SDL_Texture* textura;
+
+    int pintado;
 
 	struct thread_carro *next;
 	struct thread_carro *prev;

@@ -33,6 +33,7 @@ volatile unsigned *gpio;
 
 
 
+
 int Izq_1_1 = 0;
 int Izq_1_2 = 0;
 int Der_1_1 = 0;
@@ -41,7 +42,24 @@ int Ctr_1_1 = 0;
 int Ctr_1_2 = 0;
 int Ctr_1_3 = 0;
 int Tip_1_1 = 0;
-
+//Puente 2
+int Izq_2_1 = 0;
+int Izq_2_2 = 0;
+int Der_2_1 = 0;
+int Der_2_2 = 0;
+int Ctr_2_1 = 0;
+int Ctr_2_2 = 0;
+int Ctr_2_3 = 0;
+int Tip_2_1 = 0;
+//Puente 3
+int Izq_3_1 = 0;
+int Izq_3_2 = 0;
+int Der_3_1 = 0;
+int Der_3_2 = 0;
+int Ctr_3_1 = 0;
+int Ctr_3_2 = 0;
+int Ctr_3_3 = 0;
+int Tip_3_1 = 0;
 //
 // Set up a memory regions to access GPIO
 //
@@ -81,12 +99,48 @@ void setup_io()
 void set_outputRasp()
 {
     int g;
-    for (g=1; g<=26; g++)
+    for (g=1; g<=27; g++)
     {
         INP_GPIO(g); // must use INP_GPIO before we can use OUT_GPIO
         OUT_GPIO(g);
     }
 }
+
+void Apagar_P1_Der()
+{
+    Der_1_1 = 0;
+    Der_1_2 = 0;
+}
+void Apagar_P1_Izq()
+{
+    Izq_1_1 = 0;
+    Izq_1_2 = 0;
+}
+
+void Apagar_P2_Der()
+{
+    Der_2_1 = 0;
+    Der_2_2 = 0;
+}
+void Apagar_P2_Izq()
+{
+    Izq_2_1 = 0;
+    Izq_2_2 = 0;
+}
+
+void Apagar_P3_Der()
+{
+    Der_3_1 = 0;
+    Der_3_2 = 0;
+}
+void Apagar_P3_Izq()
+{
+    Izq_3_1 = 0;
+    Izq_3_2 = 0;
+}
+
+
+
 
 void principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int centro,int posicionCentro,int actCentro,int tipoCarro)
 {
@@ -139,6 +193,7 @@ void principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int cen
                     else
                     {
                         Ctr_1_1 = 0;
+                        Tip_1_1=0;
                     }
 
                 }
@@ -151,6 +206,7 @@ void principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int cen
                     else
                     {
                         Ctr_1_2 = 0;
+                        Tip_1_1=0;
                     }
                 }
                 else
@@ -162,11 +218,13 @@ void principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int cen
                     else
                     {
                         Ctr_1_3 = 0;
+                        Tip_1_1=0;
                     }
                 }
             }
             else
             {
+                Tip_1_1=0;
                 Ctr_1_1 = 0;
                 Ctr_1_2 = 0;
                 Ctr_1_3 = 0;
@@ -219,6 +277,7 @@ void principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int cen
                     else
                     {
                         Ctr_1_3 = 0;
+                        Tip_1_1=0;
                     }
 
                 }
@@ -231,6 +290,7 @@ void principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int cen
                     else
                     {
                         Ctr_1_2 = 0;
+                        Tip_1_1=0;
                     }
                 }
                 else
@@ -242,26 +302,366 @@ void principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int cen
                     else
                     {
                         Ctr_1_1 = 0;
+                        Tip_1_1=0;
                     }
                 }
             }
             else
             {
+                Tip_1_1=0;
                 Ctr_1_1 = 0;
                 Ctr_1_2 = 0;
                 Ctr_1_3 = 0;
             }
         }
     }
+    else if(puente==1)
+    {
+        if(ladoIzquierdo==1)
+        {
+            if(posicion==0)
+            {
+                if(actPosicion==1)
+                {
+                    Izq_2_1 = 1;
+                }
+                else
+                {
+                    Izq_2_1 = 0;
+                }
+            }
+            else
+            {
+                if(actPosicion==1)
+                {
+                    Izq_2_2 = 1;
+                }
+                else
+                {
+                    Izq_2_2 = 0;
+                }
+            }
+            if(centro==1)
+            {
+                if(tipoCarro==1)
+                {
+                    Tip_2_1=1;
+                }
+                else if(tipoCarro==2)
+                {
+                    Tip_2_1=2;
+                }
+                else
+                {
+                    Tip_2_1=0;
+                }
+                if(posicionCentro==0)
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_2_1 = 1;
+                    }
+                    else
+                    {
+                        Ctr_2_1 = 0;
+                        Tip_2_1=0;
+                    }
+
+                }
+                else if(posicionCentro==1)
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_2_2 = 1;
+                    }
+                    else
+                    {
+                        Ctr_2_2 = 0;
+                        Tip_2_1=0;
+                    }
+                }
+                else
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_2_3 = 1;
+                    }
+                    else
+                    {
+                        Ctr_2_3 = 0;
+                        Tip_2_1=0;
+                    }
+                }
+            }
+            else
+            {
+                Tip_2_1=0;
+                Ctr_2_1 = 0;
+                Ctr_2_2 = 0;
+                Ctr_2_3 = 0;
+            }
+        }
+        else//-----------------Lado Derecho-----------------------
+        {
+            if(posicion==0)
+            {
+                if(actPosicion==1)
+                {
+                    Der_2_1 = 1;
+                }
+                else
+                {
+                    Der_2_1 = 0;
+                }
+            }
+            else
+            {
+                if(actPosicion==1)
+                {
+                    Der_2_2 = 1;
+                }
+                else
+                {
+                    Der_2_2 = 0;
+                }
+            }
+            if(centro==1)
+            {
+                if(tipoCarro==1)
+                {
+                    Tip_2_1=1;
+                }
+                else if(tipoCarro==2)
+                {
+                    Tip_2_1=2;
+                }
+                else
+                {
+                    Tip_2_1=0;
+                }
+                if(posicionCentro==0)
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_2_3 = 1;
+                    }
+                    else
+                    {
+                        Ctr_2_3 = 0;
+                        Tip_2_1=0;
+                    }
+
+                }
+                else if(posicionCentro==1)
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_2_2 = 1;
+                    }
+                    else
+                    {
+                        Ctr_2_2 = 0;
+                        Tip_2_1=0;
+                    }
+                }
+                else
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_2_1 = 1;
+                    }
+                    else
+                    {
+                        Ctr_2_1 = 0;
+                        Tip_2_1=0;
+                    }
+                }
+            }
+            else
+            {
+                Tip_2_1=0;
+                Ctr_2_1 = 0;
+                Ctr_2_2 = 0;
+                Ctr_2_3 = 0;
+            }
+        }
+    }
     else
     {
-        printf("Aqui van los otrs puentes\n");
+        if(ladoIzquierdo==1)
+        {
+            if(posicion==0)
+            {
+                if(actPosicion==1)
+                {
+                    Izq_3_1 = 1;
+                }
+                else
+                {
+                    Izq_3_1 = 0;
+                }
+            }
+            else
+            {
+                if(actPosicion==1)
+                {
+                    Izq_3_2 = 1;
+                }
+                else
+                {
+                    Izq_3_2 = 0;
+                }
+            }
+            if(centro==1)
+            {
+                if(tipoCarro==1)
+                {
+                    Tip_3_1=1;
+                }
+                else if(tipoCarro==2)
+                {
+                    Tip_3_1=2;
+                }
+                else
+                {
+                    Tip_3_1=0;
+                }
+                if(posicionCentro==0)
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_3_1 = 1;
+                    }
+                    else
+                    {
+                        Ctr_3_1 = 0;
+                        Tip_3_1=0;
+                    }
+
+                }
+                else if(posicionCentro==1)
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_3_2 = 1;
+                    }
+                    else
+                    {
+                        Ctr_3_2 = 0;
+                        Tip_3_1=0;
+                    }
+                }
+                else
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_3_3 = 1;
+                    }
+                    else
+                    {
+                        Ctr_3_3 = 0;
+                        Tip_3_1=0;
+                    }
+                }
+            }
+            else
+            {
+                Tip_3_1=0;
+                Ctr_3_1 = 0;
+                Ctr_3_2 = 0;
+                Ctr_3_3 = 0;
+            }
+        }
+        else//-----------------Lado Derecho-----------------------
+        {
+            if(posicion==0)
+            {
+                if(actPosicion==1)
+                {
+                    Der_3_1 = 1;
+                }
+                else
+                {
+                    Der_3_1 = 0;
+                }
+            }
+            else
+            {
+                if(actPosicion==1)
+                {
+                    Der_3_2 = 1;
+                }
+                else
+                {
+                    Der_3_2 = 0;
+                }
+            }
+            if(centro==1)
+            {
+                if(tipoCarro==1)
+                {
+                    Tip_3_1=1;
+                }
+                else if(tipoCarro==2)
+                {
+                    Tip_3_1=2;
+                }
+                else
+                {
+                    Tip_3_1=0;
+                }
+                if(posicionCentro==0)
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_3_3 = 1;
+                    }
+                    else
+                    {
+                        Ctr_3_3 = 0;
+                        Tip_3_1=0;
+                    }
+
+                }
+                else if(posicionCentro==1)
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_3_2 = 1;
+                    }
+                    else
+                    {
+                        Ctr_3_2 = 0;
+                        Tip_3_1=0;
+                    }
+                }
+                else
+                {
+                    if(actCentro==1)
+                    {
+                        Ctr_3_1 = 1;
+                    }
+                    else
+                    {
+                        Ctr_3_1 = 0;
+                        Tip_3_1=0;
+                    }
+                }
+            }
+            else
+            {
+                Tip_3_1=0;
+                Ctr_3_1 = 0;
+                Ctr_3_2 = 0;
+                Ctr_3_3 = 0;
+            }
+        }
     }
 }
 
 void *Estado_P1(void *arg)
 {
-    int rep = 0;
+    int rep;
     while(1)
     {
         if(Izq_1_1==1)
@@ -272,12 +672,10 @@ void *Estado_P1(void *arg)
         {
             GPIO_CLR = 1<<2;
         }
-
         if(Izq_1_2==1)
         {
             GPIO_SET = 1<<3;
         }
-
         else
         {
             GPIO_CLR = 1<<3;
@@ -290,7 +688,6 @@ void *Estado_P1(void *arg)
         {
             GPIO_CLR = 1<<4;
         }
-
         if(Der_1_2==1)
         {
             GPIO_SET = 1<<5;
@@ -299,7 +696,6 @@ void *Estado_P1(void *arg)
         {
             GPIO_CLR = 1<<5;
         }
-
         if(Ctr_1_1==1)
         {
             GPIO_SET = 1<<6;
@@ -308,7 +704,6 @@ void *Estado_P1(void *arg)
         {
             GPIO_CLR = 1<<6;
         }
-
         if(Ctr_1_2==1)
         {
             GPIO_SET = 1<<7;
@@ -317,7 +712,6 @@ void *Estado_P1(void *arg)
         {
             GPIO_CLR = 1<<7;
         }
-
         if(Ctr_1_3==1)
         {
             GPIO_SET = 1<<8;
@@ -326,8 +720,11 @@ void *Estado_P1(void *arg)
         {
             GPIO_CLR = 1<<8;
         }
-
-        if(Tip_1_1)
+        if(Tip_1_1==0)
+        {
+            GPIO_CLR = 1<<9;
+        }
+        else
         {
             if(Tip_1_1==1)
             {
@@ -335,22 +732,196 @@ void *Estado_P1(void *arg)
             }
             else
             {
-                //    for (rep=0; rep<3; rep++)
-                //{
-                //GPIO_SET = 1<<9;
-                //  usleep(100000);
-                //  GPIO_CLR = 1<<9;
-                //   usleep(100000);
-                // }
-                // rep=0;
+                GPIO_SET = 1<<9;
+                /*for (rep=0; rep<2; rep++)
+                {
+                    GPIO_SET = 1<<9;
+                    sleep(0.001);
+                    GPIO_CLR = 1<<9;
+                    sleep(0.001);
+                }
+                rep=0;*/
             }
+        }
+
+    }
+    return  NULL;
+}
+
+
+
+void *Estado_P2(void *arg)
+{
+    int rep;
+    while(1)
+    {
+        if(Izq_2_1==1)
+        {
+            GPIO_SET = 1<<10;
         }
         else
         {
-            GPIO_CLR = 1<<9;
+            GPIO_CLR = 1<<10;
+        }
+        if(Izq_2_2==1)
+        {
+            GPIO_SET = 1<<11;
+        }
+        else
+        {
+            GPIO_CLR = 1<<11;
+        }
+        if(Der_2_1==1)
+        {
+            GPIO_SET = 1<<12;
+        }
+        else
+        {
+            GPIO_CLR = 1<<12;
+        }
+        if(Der_2_2==1)
+        {
+            GPIO_SET = 1<<13;
+        }
+        else
+        {
+            GPIO_CLR = 1<<13;
+        }
+        if(Ctr_2_1==1)
+        {
+            GPIO_SET = 1<<16;
+        }
+        else
+        {
+            GPIO_CLR = 1<<16;
+        }
+        if(Ctr_2_2==1)
+        {
+            GPIO_SET = 1<<17;
+        }
+        else
+        {
+            GPIO_CLR = 1<<17;
+        }
+        if(Ctr_2_3==1)
+        {
+            GPIO_SET = 1<<18;
+        }
+        else
+        {
+            GPIO_CLR = 1<<18;
+        }
+        if(Tip_2_1==0)
+        {
+            GPIO_CLR = 1<<19;
+        }else{
+            if(Tip_2_1==1)
+            {
+                GPIO_SET = 1<<19;
+            }
+            else
+            {
+                GPIO_SET = 1<<19;
+                /*for (rep=0; rep<2; rep++)
+                {
+                    GPIO_SET = 1<<19;
+                    sleep(0.001);
+                    GPIO_CLR = 1<<19;
+                    sleep(0.001);
+                }
+                rep=0;*/
+            }
+        }
+
+    }
+    return  NULL;
+}
+
+void *Estado_P3(void *arg)
+{
+    int rep;
+    while(1)
+    {
+        if(Izq_3_1==1)
+        {
+            GPIO_SET = 1<<20;
+        }
+        else
+        {
+            GPIO_CLR = 1<<20;
+        }
+        if(Izq_3_2==1)
+        {
+            GPIO_SET = 1<<21;
+        }
+        else
+        {
+            GPIO_CLR = 1<<21;
+        }
+        if(Der_3_1==1)
+        {
+            GPIO_SET = 1<<22;
+        }
+        else
+        {
+            GPIO_CLR = 1<<22;
+        }
+        if(Der_3_2==1)
+        {
+            GPIO_SET = 1<<23;
+        }
+        else
+        {
+            GPIO_CLR = 1<<23;
+        }
+        if(Ctr_3_1==1)
+        {
+            GPIO_SET = 1<<24;
+        }
+        else
+        {
+            GPIO_CLR = 1<<24;
+        }
+        if(Ctr_3_2==1)
+        {
+            GPIO_SET = 1<<25;
+        }
+        else
+        {
+            GPIO_CLR = 1<<25;
+        }
+        if(Ctr_3_3==1)
+        {
+            GPIO_SET = 1<<26;
+        }
+        else
+        {
+            GPIO_CLR = 1<<26;
+        }
+        if(Tip_3_1==0)
+        {
+            GPIO_CLR = 1<<27;
+        }else{
+            if(Tip_3_1==1)
+            {
+                GPIO_SET = 1<<27;
+            }
+            else
+            {
+                GPIO_SET = 1<<27;
+                /*for (rep=0; rep<2; rep++)
+                {
+                    GPIO_SET = 1<<27;
+                    sleep(0.001);
+                    GPIO_CLR = 1<<27;
+                    sleep(0.001);
+                }
+                rep=0;*/
+            }
         }
     }
     return  NULL;
 }
+
 
 
