@@ -6,7 +6,7 @@ void *calendarizador_RoundRobin(void *t)
 
 
     Thread temporal = threads->head;
-    int Quantum = 4;      //7
+    int Quantum = 2;      //7
     int QuantumTmp = 0;
     while(1)
     {
@@ -34,16 +34,28 @@ void *calendarizador_RoundRobin(void *t)
 
                 pthread_mutex_unlock(&lock_thread_terminado);
 
-                while(QuantumTmp > 0)
+                while(QuantumTmp > 0 && thread_terminado == 0)
                 {
                     QuantumTmp--;
-                    usleep(100000);
+
+
+
+                    if(hardware == 1)
+                    {
+                        sleep(1);
+
+                    }
+                    else
+                    {
+                        usleep(100000);
+                    }
                 }
 
                 pthread_mutex_lock(&lock_thread_terminado);
                 thread_terminado = 1;
                 pthread_mutex_unlock(&lock_thread_terminado);
 
+                usleep(10000);
                 if(temporal->next != NULL)
                 {
                     QuantumTmp = Quantum;
@@ -67,8 +79,16 @@ void *calendarizador_RoundRobin(void *t)
         {
             printf("No hay hilos para calendarizar \n");
         }
+        if(hardware == 1)
+        {
+            sleep(1);
 
-        usleep(100000);
+        }
+        else
+        {
+            usleep(100000);
+        }
+
     }
 
 }

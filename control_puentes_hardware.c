@@ -90,6 +90,11 @@ void * hardware_0_lados()
                 {
                     printf(ANSI_COLOR_RED "Error representando HW del puente 0\n" ANSI_COLOR_RESET);
                 }
+            }else
+            {
+                Apagar_P1_Izq();
+                Apagar_P1_Der();
+
             }
 
         }
@@ -186,6 +191,12 @@ void * hardware_1_lados()
                     printf(ANSI_COLOR_RED "Error representando HW del puente 1\n" ANSI_COLOR_RESET);
                 }
             }
+            else
+            {
+                Apagar_P2_Izq();
+                Apagar_P2_Der();
+
+            }
 
         }
         sleep(1);
@@ -279,6 +290,11 @@ void * hardware_2_lados()
                 {
                     printf(ANSI_COLOR_RED "Error representando HW del puente 2\n" ANSI_COLOR_RESET);
                 }
+            }else
+            {
+                Apagar_P3_Izq();
+                Apagar_P3_Der();
+
             }
 
         }

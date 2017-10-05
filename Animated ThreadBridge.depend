@@ -74,7 +74,7 @@
 	<stdlib.h>
 	<string.h>
 
-1507183080 source:/home/pi/Desktop/Animated_ThreadBridge/main.c
+1507191869 source:/home/pi/Desktop/Animated_ThreadBridge/main.c
 	"main.h"
 	"rasp.h"
 	"calendarizador_rr.h"
@@ -90,7 +90,7 @@
 
 1506906222 /home/pi/Desktop/Animated_ThreadBridge/mythreads/mythread.h
 
-1507059437 /home/pi/Desktop/Animated_ThreadBridge/thread_data.h
+1507186313 /home/pi/Desktop/Animated_ThreadBridge/thread_data.h
 	<pthread.h>
 	<SDL2/SDL.h>
 	<SDL2/SDL_image.h>
@@ -112,7 +112,7 @@
 	"puentes.h"
 	"lector_archivos.h"
 
-1507181504 source:/home/pi/Desktop/Animated_ThreadBridge/thread_data.c
+1507184576 source:/home/pi/Desktop/Animated_ThreadBridge/thread_data.c
 	<stdlib.h>
 	<stdio.h>
 	"thread_data.h"
@@ -202,7 +202,7 @@
 1506962875 /home/santiago/Desktop/Animated_ThreadBridge/control_puentes_hardware.h
 	"main.h"
 
-1507182570 source:/home/pi/Desktop/Animated_ThreadBridge/algoritmos_control.c
+1507191498 source:/home/pi/Desktop/Animated_ThreadBridge/algoritmos_control.c
 	"algoritmos_control.h"
 	"rasp.h"
 
@@ -244,7 +244,7 @@
 1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_real_time.h
 	"main.h"
 
-1507146842 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_rr.c
+1507190985 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_rr.c
 	"calendarizador_rr.h"
 
 1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_rr.h
@@ -256,7 +256,7 @@
 1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_sjf.h
 	"main.h"
 
-1507183836 source:/home/pi/Desktop/Animated_ThreadBridge/control_puentes_hardware.c
+1507191760 source:/home/pi/Desktop/Animated_ThreadBridge/control_puentes_hardware.c
 	"control_puentes_hardware.h"
 	"rasp.h"
 
@@ -272,7 +272,7 @@
 1506992481 /home/pi/Desktop/Animated_ThreadBridge/principal.h
 	"main.h"
 
-1507183304 source:/home/pi/Desktop/Animated_ThreadBridge/manejo_carros.c
+1507191579 source:/home/pi/Desktop/Animated_ThreadBridge/manejo_carros.c
 	"manejo_carros.h"
 	"algoritmos_control.h"
 	<SDL2/SDL.h>

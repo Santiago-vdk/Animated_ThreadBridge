@@ -342,7 +342,7 @@ void imprimir(ThreadListCarro pLista){
     while(tmp != NULL) {
         printf("\nCarro: %lu, Tipo: %d, Prioridad: %d, Tiempo Limite: %d\n",tmp->thread_identificador, tmp->tipo_carro, tmp->prioridad, tmp->limite_tiempo);
         tmp = tmp->next;
-        sleep(1);
+        //sleep(1);
     }
     printf("\n----------------------------\n\n");
 }

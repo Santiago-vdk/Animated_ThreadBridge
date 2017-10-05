@@ -76,7 +76,7 @@ void *controlador_carros(void *carro)
                             {
                                 printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
                             }
-                            printf(" %lu moviendose a velocidad %lf, distancia1: %d\n", data->thread_identificador,data->velocidad, distancia_tmp);
+                            printf(" %lu moviendose sobre puente %d a velocidad %d, distancia: %d\n", data->thread_identificador, data->puente,data->velocidad, distancia_tmp);
 
                             sleep(data->velocidad);                                             // Simulo la velocidad
                             principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
@@ -99,9 +99,9 @@ void *controlador_carros(void *carro)
                             {
                                 printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
                             }
-                            printf(" %lu moviendose a velocidad %lf, distancia: %d\n", data->thread_identificador,data->velocidad, distancia_tmp);
+                            printf(" %lu moviendose sobre puente %d a velocidad %d, distancia: %d\n", data->thread_identificador, data->puente,data->velocidad, distancia_tmp);
 
-                            usleep(data->velocidad*100000);                                             // Simulo la velocidad
+                            sleep(data->velocidad);                                             // Simulo la velocidad
                             distancia_tmp ++;
 
                             if(data->lado_izquierdo == 1)
@@ -141,7 +141,7 @@ void *controlador_carros(void *carro)
                             printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
                         }
                         printf(" %lu", data->thread_identificador);
-                        printf(ANSI_COLOR_YELLOW " termino de pasar el puente %lu, habia alguien al frente.\n" ANSI_COLOR_RESET, puente_tmp->thread_identificador);
+                        printf(ANSI_COLOR_YELLOW " termino de pasar el puente %d, habia alguien al frente.\n" ANSI_COLOR_RESET, puente_tmp->thread_identificador);
 
 
                         eliminar_nodo_thread(threads,data->thread_identificador);           // Elimino el carro de la lista de hilos
@@ -178,7 +178,7 @@ void *controlador_carros(void *carro)
                             {
                                 printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
                             }
-                            printf(" %lu moviendose a velocidad %lf, distancia2: %d\n", data->thread_identificador,data->velocidad, distancia_tmp);
+                            printf(" %lu moviendose sobre puente %d a velocidad %d, distancia: %d\n", data->thread_identificador, data->puente,data->velocidad, distancia_tmp);
 
                             sleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad);
                             principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
@@ -199,11 +199,11 @@ void *controlador_carros(void *carro)
                             {
                                 printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
                             }
-                            printf(" %lu moviendose a velocidad %lf, distancia: %d\n", data->thread_identificador,data->velocidad, distancia_tmp);
+                            printf(" %lu moviendose sobre puente %d a velocidad %d, distancia: %d\n", data->thread_identificador, data->puente,data->velocidad, distancia_tmp);
 
 
 
-                            usleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad*100000);
+                            sleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad);
                             distancia_tmp ++;
 
 
@@ -239,7 +239,7 @@ void *controlador_carros(void *carro)
                 {
                     printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
                 }
-                printf(" %lu no puede moverse\n", data->thread_identificador, distancia_tmp);
+                printf(" %lu no puede moverse sobre puente %d\n", data->thread_identificador, distancia_tmp, data->puente);
 
                 thread_terminado = 1;
                 pthread_mutex_unlock(&lock_thread_terminado);
@@ -270,7 +270,15 @@ void *generador_carros(void *t)
         srand(time(NULL));
         //printf("Generando carro %lu de tipo %d al lado %d del puente %d \n",i, carro->tipo_carro, lado_random, puente_random);
 
-        int puente_random = rand() % 4;
+        int puente_random = 0;
+
+        if(hardware == 1){
+        puente_random = 1;//rand() % 3;
+        } else {
+
+        puente_random = rand() % 4;
+        }
+
         int lado_random = rand() % 2;
 
         Thread_Carro carro = (Thread_Carro) calloc(1, sizeof(struct thread_carro));
