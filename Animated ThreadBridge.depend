@@ -256,7 +256,7 @@
 1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_sjf.h
 	"main.h"
 
-1507183270 source:/home/pi/Desktop/Animated_ThreadBridge/control_puentes_hardware.c
+1507183836 source:/home/pi/Desktop/Animated_ThreadBridge/control_puentes_hardware.c
 	"control_puentes_hardware.h"
 	"rasp.h"
 
@@ -272,7 +272,7 @@
 1506992481 /home/pi/Desktop/Animated_ThreadBridge/principal.h
 	"main.h"
 
-1507181387 source:/home/pi/Desktop/Animated_ThreadBridge/manejo_carros.c
+1507183304 source:/home/pi/Desktop/Animated_ThreadBridge/manejo_carros.c
 	"manejo_carros.h"
 	"algoritmos_control.h"
 	<SDL2/SDL.h>

@@ -6,7 +6,7 @@ void *calendarizador_RoundRobin(void *t)
 
 
     Thread temporal = threads->head;
-    int Quantum = 2;      //7
+    int Quantum = 4;      //7
     int QuantumTmp = 0;
     while(1)
     {

@@ -277,7 +277,7 @@ void * hardware_2_lados()
                 }
                 else
                 {
-                    printf(ANSI_COLOR_RED "Error representando HW del puente 1\n" ANSI_COLOR_RESET);
+                    printf(ANSI_COLOR_RED "Error representando HW del puente 2\n" ANSI_COLOR_RESET);
                 }
             }
 
