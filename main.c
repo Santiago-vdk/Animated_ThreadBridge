@@ -11,6 +11,10 @@
 #include "control_puentes_hardware.h"
 #include <time.h>
 
+
+/*
+* Metodo para ejecutar el hilo principal en caso de que GUI sea 1
+*/
 static int iniciarEjecucion(void *ptr)
 {
     ejecutar();
@@ -19,6 +23,9 @@ static int iniciarEjecucion(void *ptr)
 }
 
 
+/*
+* Metodo para rpintar los vehiculos
+*/
 void pintar(Thread_Carro carro)
 {
 
@@ -77,6 +84,9 @@ void pintar(Thread_Carro carro)
 }
 
 
+/*
+* Entrada principal del sistema
+*/
 int main()
 {
     thread_actual = -1;

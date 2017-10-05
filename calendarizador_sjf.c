@@ -1,7 +1,9 @@
 #include "calendarizador_sjf.h"
 
 
-
+/*
+* Algoritmo para el metodo de SJF
+*/
 void *calendarizador_sjf(void *t)
 {
 // Thread thread_corriendo;

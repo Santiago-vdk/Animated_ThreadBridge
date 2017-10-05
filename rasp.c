@@ -31,9 +31,6 @@ volatile unsigned *gpio;
 
 //---------------Variables Hardware----------------------
 
-
-
-
 int Izq_1_1 = 0;
 int Izq_1_2 = 0;
 int Der_1_1 = 0;
@@ -96,6 +93,10 @@ void setup_io()
 
 }
 
+
+/*
+* Metodo para configurar entradas y salidas de la rasp
+*/
 void set_outputRasp()
 {
     int g;
@@ -142,6 +143,9 @@ void Apagar_P3_Izq()
 
 
 
+/*
+* Maquina de estados para el manejo de los LEDS
+*/
 void principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int centro,int posicionCentro,int actCentro,int tipoCarro)
 {
     if(puente==0)
@@ -659,6 +663,9 @@ void principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int cen
     }
 }
 
+/*
+* Hilo para Hardware del puente 0
+*/
 void *Estado_P1(void *arg)
 {
 //    int rep;
@@ -749,7 +756,9 @@ void *Estado_P1(void *arg)
 }
 
 
-
+/*
+* Hilo para Hardware del puente 1
+*/
 void *Estado_P2(void *arg)
 {
 //    int rep;
@@ -836,7 +845,9 @@ void *Estado_P2(void *arg)
     }
     return  NULL;
 }
-
+/*
+* Hilo para Hardware del puente 2
+*/
 void *Estado_P3(void *arg)
 {
 //    int rep;

@@ -4,6 +4,10 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
+
+/*
+* Metodo para controlar los carros, excepto en ley de la jungla
+*/
 void *controlador_carros(void *carro)
 {
     Thread_Carro data = (Thread_Carro) carro;
@@ -456,6 +460,9 @@ void *controlador_carros(void *carro)
 
 
 
+/*
+* Metodo para generar los carros
+*/
 // Utiliza la lista global de los hilos para encontrar el puente en el que tiene que insertar carros
 void *generador_carros(void *t)
 {

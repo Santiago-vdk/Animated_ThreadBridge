@@ -8,6 +8,9 @@
 #include "manejo_carros.h"
 
 
+/*
+* Metodo para instanciar los modulos principales y los puentes
+*/
 void ejecutar()
 {
 

@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+/*
+* Metodo para leer los archivos de configuracion
+*/
 int getParameterValueConfig(char* pNameFile, char* pParameterName)
 {
     FILE * fp;

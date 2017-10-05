@@ -1,6 +1,8 @@
 #include "calendarizador_priority_queue.h"
 
-
+/*
+* Algoritmo para el metodo de Priority Queue
+*/
 void *calendarizador_priority_queue(void *t)
 {
     Thread temporal = threads->head;

@@ -1,5 +1,8 @@
 #include "calendarizador_fcfs.h"
 
+/*
+* Algoritmo para el metodo de FCFS
+*/
 void *calendarizador_fcfs(void *t)
 {
     // Thread thread_corriendo;

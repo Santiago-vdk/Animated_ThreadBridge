@@ -1,6 +1,12 @@
 #include "puentes.h"
 #include "lector_archivos.h"
 
+
+/*
+* Metodos para la configuracion de cada puente
+*/
+
+
 Thread_Puente crear_puente_0()
 {
 

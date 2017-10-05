@@ -1,6 +1,9 @@
 #include "algoritmos_control.h"
 #include "rasp.h"
 
+/*
+* Algoritmo para el metodo de control del transito
+*/
 void *algoritmo_puente_oficial(void *puente)
 {
 
@@ -195,7 +198,9 @@ void *algoritmo_puente_oficial(void *puente)
 }
 
 
-
+/*
+* Algoritmo para el metodo de control del semaforo
+*/
 void *algoritmo_puente_semaforo(void *puente)
 {
     Thread_Puente data = (Thread_Puente) puente;
@@ -389,8 +394,9 @@ void *algoritmo_puente_semaforo(void *puente)
 
 
 
-
-
+/*
+* Algoritmo para el metodo de control de la jungla
+*/
 void *controlador_carros_jungla(void *carro)
 {
     Thread_Carro data = (Thread_Carro) carro;

@@ -1,6 +1,8 @@
 #include "calendarizador_rr.h"
 
-
+/*
+* Algoritmo para el metodo de RR
+*/
 void *calendarizador_RoundRobin(void *t)
 {
 

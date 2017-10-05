@@ -1,7 +1,9 @@
 #include "calendarizador_real_time.h"
 
 
-
+/*
+* Algoritmo para el metodo de Real Time
+*/
 void *calendarizador_real_time(void *t)
 {
     Thread temporal = threads->head;

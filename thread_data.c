@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include "thread_data.h"
 
+/*
+* Metodo para agregar puentes a una lista de puentes
+*/
 void agregar_puente(Thread_Puente node, ThreadListPuente list)
 {
     node->prev = NULL;
@@ -22,7 +25,9 @@ void agregar_puente(Thread_Puente node, ThreadListPuente list)
         list->tamanio += 1;
     }
 }
-
+/*
+* Metodo para agregar carros a una lista de carros
+*/
 void agregar_carro(Thread_Carro node, ThreadListCarro list)
 {
     node->prev = NULL;
@@ -55,7 +60,9 @@ void agregar_carro(Thread_Carro node, ThreadListCarro list)
     }
 
 }
-
+/*
+* Metodo para agregar hilos a una lista de hilos
+*/
 void agregar_thread(Thread node, ThreadList list)
 {
 
@@ -76,7 +83,9 @@ void agregar_thread(Thread node, ThreadList list)
     }
 
 }
-
+/*
+* Metodo para extraer el primer carro
+*/
 Thread_Carro pop_primer_thread_carro(ThreadListCarro list)
 {
     if (list->head != NULL)
@@ -108,7 +117,9 @@ Thread_Carro pop_primer_thread_carro(ThreadListCarro list)
     }
 
 }
-
+/*
+* Metodo para extraer el primer hilo
+*/
 Thread pop_primer_thread(ThreadList list)
 {
     if (list->head != NULL)
@@ -140,8 +151,9 @@ Thread pop_primer_thread(ThreadList list)
     }
 
 }
-
-
+/*
+* Metodo para buscar un hilo en una lista de hilos
+*/
 Thread buscar_nodo_thread(ThreadList list, long thread_identificador)
 {
     if (list->head->thread_identificador == thread_identificador)
@@ -164,7 +176,9 @@ Thread buscar_nodo_thread(ThreadList list, long thread_identificador)
     }
 }
 
-
+/*
+* Metodo para buscar un carro en una lista de carros
+*/
 Thread_Carro buscar_nodo_carro(ThreadListCarro list, long thread_identificador)
 {
     if (list->head->thread_identificador == thread_identificador)
@@ -186,7 +200,9 @@ Thread_Carro buscar_nodo_carro(ThreadListCarro list, long thread_identificador)
         return tmp;
     }
 }
-
+/*
+* Metodo para buscar un puente en una lista de puentes
+*/
 Thread_Puente buscar_nodo_puente(ThreadListPuente list, long thread_identificador)
 {
     if (list->head->thread_identificador == thread_identificador)
@@ -210,7 +226,9 @@ Thread_Puente buscar_nodo_puente(ThreadListPuente list, long thread_identificado
 
 }
 
-/* Removes a thread node from the list */
+/*
+* Metodo para eliminar un hilo de una lista de hilos
+*/
 void eliminar_nodo_thread(ThreadList list, long thread_identificador)
 {
     if (list->head == NULL)
@@ -272,7 +290,9 @@ void eliminar_nodo_thread(ThreadList list, long thread_identificador)
     }
 }
 
-/* Removes a thread node from the list */
+/*
+* Metodo para eliminar un carro de una lista de carros
+*/
 void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador)
 {
     if (list->head == NULL)
@@ -561,7 +581,9 @@ void agregar_thread_prioridad(Thread node, ThreadList list)
 }
 
 
-
+/*
+* Metodo para agregar un hilo basandose en velocidad
+*/
 void agregar_thread_velocidad(Thread node, ThreadList list)
 {
     if (list->head == NULL)
@@ -793,6 +815,7 @@ void agregar_Radioactivo_Tiempo_Real_Lista_General (Thread node, ThreadList list
         }
     }
 }
+
 
 void agregar_Ambulacia_Tiempo_Real_Lista_General(Thread node, ThreadList list)
 {
