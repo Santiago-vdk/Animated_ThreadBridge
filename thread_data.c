@@ -307,7 +307,7 @@ void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador)
                 {
                     if (tmp->next->thread_identificador == thread_identificador)
                     {
-                        Thread_Carro tmp2 = tmp->next;
+//                        Thread_Carro tmp2 = tmp->next;
                         if (tmp->next->next != NULL)
                         {
                             tmp->next = tmp->next->next;

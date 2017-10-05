@@ -42,6 +42,52 @@ void *controlador_carros(void *carro)
                         printf(" %lu", data->thread_identificador);
                         printf(ANSI_COLOR_YELLOW " termino de pasar el puente %lu, no habia nadie en frente\n" ANSI_COLOR_RESET, puente_tmp->thread_identificador);
 
+                        if(gui == 1)
+                        {
+                            if(data->lado_izquierdo == 1)
+                            {
+                                int i = 0;
+                                while(i < 10)
+                                {
+                                    data->objeto.x += 1;
+                                    data->objeto.y += 2;
+                                    usleep(10000);
+                                    i++;
+                                }
+                                i = 0;
+                                while(i<200)
+                                {
+                                    data->objeto.x += 1;
+
+                                    usleep(10000);
+                                    i++;
+                                }
+                            }
+                            else
+                            {
+                                int i = 0;
+                                while(i < 10)
+                                {
+                                    data->objeto.x -= 1;
+                                    data->objeto.y += 2;
+                                    usleep(10000);
+                                    i++;
+                                }
+                                i = 0;
+                                while(i<200)
+                                {
+                                    data->objeto.x -= 1;
+
+                                    usleep(10000);
+                                    i++;
+                                }
+
+                            }
+
+                        }
+
+
+
                         eliminar_nodo_thread(threads,data->thread_identificador);           // Elimino el carro de la lista de hilos
                         eliminar_nodo_carro(buscar_nodo_thread(threads,data->puente)->puente->carros_circulando,data->thread_identificador);    // Elimino el carro de la lista de los carros circulando de su debido puente
                         buscar_nodo_thread(threads,data->puente)->puente->ocupancia -= 1;
@@ -84,8 +130,6 @@ void *controlador_carros(void *carro)
                         }
                         else
                         {
-
-
                             printf("Carro");
                             if(data->tipo_carro == RADIOACTIVO)
                             {
@@ -101,20 +145,59 @@ void *controlador_carros(void *carro)
                             }
                             printf(" %lu moviendose sobre puente %d a velocidad %d, distancia: %d\n", data->thread_identificador, data->puente,data->velocidad, distancia_tmp);
 
-                            sleep(data->velocidad);                                             // Simulo la velocidad
-                            distancia_tmp ++;
-
                             if(data->lado_izquierdo == 1)
                             {
-                                data->objeto.x += 100;
+                                if(distancia_tmp == 0)      // Primera posicion
+                                {
+                                    int i = 0;
+                                    while(i < 10)
+                                    {
+                                        data->objeto.x += 1;
+                                        data->objeto.y += 2;
+                                        usleep(40000);
+                                        i ++;
+                                    }
+                                }
+
+                                int i = 0;
+                                while(i < 115)
+                                {
+                                    data->objeto.x += 1;
+                                    usleep(10000);
+                                    i ++;
+                                }
                             }
                             else if(data->lado_izquierdo == 0)
                             {
-                                data->objeto.x -= 100;
+
+                                if(distancia_tmp == 0)      // Primera posicion
+                                {
+                                    int i = 0;
+                                    while(i < 10)
+                                    {
+                                        data->objeto.x -= 1;
+                                        data->objeto.y += 2;
+                                        usleep(40000);
+                                        i ++;
+                                    }
+                                }
+
+                                int i = 115;
+                                while(i > 0)
+                                {
+                                    data->objeto.x -= 1;
+                                    usleep(10000);
+                                    i --;
+
+                                }
                             }
+                            sleep(data->velocidad);                                             // Simulo la velocidad
+                            distancia_tmp ++;
+
+
 
                         }
-                        // Auento la distancia recorrida
+                        // Aumento la distancia recorrida
 
                     }
                 }
@@ -143,6 +226,49 @@ void *controlador_carros(void *carro)
                         printf(" %lu", data->thread_identificador);
                         printf(ANSI_COLOR_YELLOW " termino de pasar el puente %d, habia alguien al frente.\n" ANSI_COLOR_RESET, puente_tmp->thread_identificador);
 
+                        if(gui == 1)
+                        {
+                            if(data->lado_izquierdo == 1)
+                            {
+
+                                int i = 0;
+                                while(i < 10)
+                                {
+                                    data->objeto.x += 1;
+                                    data->objeto.y += 2;
+                                    usleep(10000);
+                                    i++;
+                                }
+                                i = 0;
+                                while(i<195)
+                                {
+                                    data->objeto.x += 1;
+                                    usleep(10000);
+                                    i++;
+                                }
+
+                            }
+                            else
+                            {
+                                int i = 0;
+                                while(i < 10)
+                                {
+                                    data->objeto.x -= 1;
+                                    data->objeto.y += 2;
+                                    usleep(10000);
+                                    i++;
+                                }
+                                i = 0;
+                                while(i<195)
+                                {
+                                    data->objeto.x -= 1;
+                                    usleep(10000);
+                                    i++;
+                                }
+
+                            }
+
+                        }
 
                         eliminar_nodo_thread(threads,data->thread_identificador);           // Elimino el carro de la lista de hilos
                         eliminar_nodo_carro(buscar_nodo_thread(threads,data->puente)->puente->carros_circulando,data->thread_identificador);    // Elimino el carro de la lista de los carros circulando de su debido puente
@@ -201,20 +327,56 @@ void *controlador_carros(void *carro)
                             }
                             printf(" %lu moviendose sobre puente %d a velocidad %d, distancia: %d\n", data->thread_identificador, data->puente,data->velocidad, distancia_tmp);
 
-
-
-                            sleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad);
-                            distancia_tmp ++;
-
-
                             if(data->lado_izquierdo == 1)
                             {
-                                data->objeto.x += 100;
+                                if(distancia_tmp == 0)      // Primera posicion
+                                {
+                                    int i = 0;
+                                    while(i < 10)
+                                    {
+                                        data->objeto.x += 1;
+                                        data->objeto.y += 2;
+                                        usleep(40000);
+                                        i ++;
+                                    }
+                                }
+
+                                int i = 0;
+                                while(i < 115)
+                                {
+                                    data->objeto.x += 1;
+                                    usleep(10000);
+                                    i ++;
+                                }
                             }
                             else if(data->lado_izquierdo == 0)
                             {
-                                data->objeto.x -= 100;
+
+                                if(distancia_tmp == 0)      // Primera posicion
+                                {
+                                    int i = 0;
+                                    while(i < 10)
+                                    {
+                                        data->objeto.x -= 1;
+                                        data->objeto.y += 2;
+                                        usleep(40000);
+                                        i ++;
+                                    }
+                                }
+
+                                int i = 115;
+                                while(i > 0)
+                                {
+                                    data->objeto.x -= 1;
+                                    usleep(10000);
+                                    i --;
+
+                                }
                             }
+                            sleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad);                                             // Simulo la velocidad
+                            distancia_tmp ++;
+
+
 
                         }
                     }
@@ -260,23 +422,26 @@ void *generador_carros(void *t)
 {
     int i = 4;
     //pthread_t array [10000];
-    double lambda = 0.5;
-    double probabilidad = 0.0;
+    double lambda = 1;
+    float probabilidad = 0.0;
     double porcentaje_ambulancia = 0.0;
     int carros_max = getParameterValueConfigDouble("config_global.txt","carros_max");
-
+    srand(time(NULL));
     while(i < carros_max)
     {
-        srand(time(NULL));
+
         //printf("Generando carro %lu de tipo %d al lado %d del puente %d \n",i, carro->tipo_carro, lado_random, puente_random);
 
         int puente_random = 0;
 
-        if(hardware == 1){
-        puente_random = 1;//rand() % 3;
-        } else {
+        if(hardware == 1)
+        {
+            puente_random = 1;//rand() % 3;
+        }
+        else
+        {
 
-        puente_random = rand() % 4;
+            puente_random = rand() % 4;
         }
 
         int lado_random = rand() % 2;
@@ -288,20 +453,27 @@ void *generador_carros(void *t)
         carro -> pintado = 0;
         if(gui == 1)
         {
-            carro -> velocidad = rand()%30;
+            carro -> velocidad = 0;//rand()%5;
 
         }
         else if(hardware == 1)
         {
             int velocidad = rand()%4;
-            if(velocidad == 0){
+            if(velocidad == 0)
+            {
                 velocidad ++;
             }
             carro -> velocidad = velocidad;
         }
         else
         {
-            carro -> velocidad = rand() / (RAND_MAX + 1.);
+            //carro -> velocidad = rand() / (RAND_MAX + 1.);
+            int velocidad = rand()%2;
+            if(velocidad == 0)
+            {
+                velocidad ++;
+            }
+            carro -> velocidad = velocidad;
         }
 
 
@@ -326,23 +498,23 @@ void *generador_carros(void *t)
         }
 
 
-
-        if(rand() < probabilidad *( (double) RAND_MAX) )
+        //printf("%lf\n", probabilidad);
+        if(rand()%100 > probabilidad *100 )
         {
             carro -> tipo_carro = RADIOACTIVO;
             carro -> prioridad = 0;
-            carro -> vida_carro = rand() % 10;
-            carro -> limite_tiempo = rand() % 20;
+            carro -> vida_carro = rand() % 30;
+            carro -> limite_tiempo = rand() % 40;
         }
 
         else
         {
-            if(rand()%100 < porcentaje_ambulancia*100)
+            if(rand()%100 > porcentaje_ambulancia*100)
             {
                 carro -> tipo_carro = AMBULANCIA;
                 carro -> prioridad = 1;
-                carro -> vida_carro =(int) rand % 60;
-                carro -> limite_tiempo =(int) rand % 80;
+                carro -> vida_carro = rand() % 60;
+                carro -> limite_tiempo = rand() % 80;
             }
             else
             {
@@ -366,7 +538,6 @@ void *generador_carros(void *t)
             else
             {
                 agregar_carro_prioridad(carro, buscar_nodo_thread(threads,puente_random)->puente->carros_izquierda);
-                //printf("prev %p \n",buscar_nodo_thread(threads,puente_random)->puente->carros_izquierda->head->prev);
             }
 
         }
@@ -391,11 +562,11 @@ void *generador_carros(void *t)
             if(carro->lado_izquierdo == 1)
             {
 
-                carro->objeto.x = 0; //Extreme left of the window
+                carro->objeto.x = 180; //Extreme left of the window
             }
             else
             {
-                carro->objeto.x = SCREEN_WIDTH - 38; //Extreme left of the window
+                carro->objeto.x = SCREEN_WIDTH - 225; //Extreme left of the window
             }
 
             // Valida si el tipo de carro es ambulacia o radioactivo para disminuir la cantidad de la lista
@@ -417,6 +588,9 @@ void *generador_carros(void *t)
                 carro->objeto.y = 580; //Very bottom of the window
                 break;
             }
+
+            carro->objeto.h = 21;
+            carro->objeto.w = 38;
 
         }
 
@@ -445,7 +619,7 @@ void *generador_carros(void *t)
         }
         else
         {
-            agregar_thread(thread_nuevo,threads);
+            agregar_thread_prioridad(thread_nuevo,threads);// agregar_thread(thread_nuevo,threads)
         }
 
 
@@ -461,8 +635,17 @@ void *generador_carros(void *t)
 
         //pthread_join(carro_thread, NULL);
 
-        //usleep(60000);//usleep(600000); para regular          usleep(1000000); para semaforo
-        sleep(1);
+        //usleep(60000);//usleep(600000); para regular
+        if(hardware == 1)
+        {
+
+            sleep(1);
+        }
+        else
+        {
+            usleep(10000);// para semaforo
+        }
+
         i++;
     }
 }

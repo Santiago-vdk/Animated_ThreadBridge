@@ -500,7 +500,7 @@ void *controlador_carros_jungla(void *carro)
 
             else if(corriendo == 1)
             {
-            Thread_Puente puente_tmp = buscar_nodo_puente(puentes,data->puente);
+                Thread_Puente puente_tmp = buscar_nodo_puente(puentes,data->puente);
                 if(data->vida_carro == 0)       // El carro muere
                 {
                     pthread_mutex_lock(&lock_thread_terminado);
@@ -546,6 +546,51 @@ void *controlador_carros_jungla(void *carro)
 
                         if(distancia_tmp == puente_tmp->capacidad)          // Ya termino de correrse todos los espacios disponibles
                         {
+
+                            if(gui == 1)
+                            {
+                                if(data->lado_izquierdo == 1)
+                                {
+                                    int i = 0;
+                                    while(i < 10)
+                                    {
+                                        data->objeto.x += 1;
+                                        data->objeto.y += 2;
+                                        usleep(10000);
+                                        i++;
+                                    }
+                                    i = 0;
+                                    while(i<200)
+                                    {
+                                        data->objeto.x += 1;
+
+                                        usleep(10000);
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    int i = 0;
+                                    while(i < 10)
+                                    {
+                                        data->objeto.x -= 1;
+                                        data->objeto.y += 2;
+                                        usleep(10000);
+                                        i++;
+                                    }
+                                    i = 0;
+                                    while(i<200)
+                                    {
+                                        data->objeto.x -= 1;
+
+                                        usleep(10000);
+                                        i++;
+                                    }
+
+                                }
+
+                            }
+
                             pthread_mutex_lock(&lock_thread_terminado);
                             eliminar_nodo_carro(buscar_nodo_puente(puentes,data->puente)->carros_circulando,id);    // Elimino el carro de la lista de los carros circulando de su debido puente
                             eliminar_nodo_thread(threads,id);           // Elimino el carro de la lista de hilos
@@ -618,7 +663,7 @@ void *controlador_carros_jungla(void *carro)
 
                                 if(velocidad_tmp == data->velocidad)
                                 {
-                                    printf("Avanzo\n");
+                                    //printf("Avanzo\n");
                                     principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
                                     distancia_tmp ++;     // Aumento la distancia recorrida
                                     velocidad_tmp = 0;
@@ -650,34 +695,62 @@ void *controlador_carros_jungla(void *carro)
 
 
 
+                                if(data->lado_izquierdo == 1)
+                                {
+                                    if(distancia_tmp == 0)      // Primera posicion
+                                    {
+                                        int i = 0;
+                                        while(i < 10)
+                                        {
+                                            data->objeto.x += 1;
+                                            data->objeto.y += 2;
+                                            usleep(40000);
+                                            i ++;
+                                        }
+                                    }
+
+                                    int i = 0;
+                                    while(i < 115)
+                                    {
+                                        data->objeto.x += 1;
+                                        usleep(10000);
+                                        i ++;
+                                    }
+                                }
+                                else if(data->lado_izquierdo == 0)
+                                {
+
+                                    if(distancia_tmp == 0)      // Primera posicion
+                                    {
+                                        int i = 0;
+                                        while(i < 10)
+                                        {
+                                            data->objeto.x -= 1;
+                                            data->objeto.y += 2;
+                                            usleep(40000);
+                                            i ++;
+                                        }
+                                    }
+
+                                    int i = 115;
+                                    while(i > 0)
+                                    {
+                                        data->objeto.x -= 1;
+                                        usleep(10000);
+                                        i --;
+
+                                    }
+                                }
+                                sleep(data->velocidad);                                             // Simulo la velocidad
+                                distancia_tmp ++;
+
+
+
+
+
                                 // sleep(data->velocidad);                                             // Simulo la velocidad
                                 // distancia_tmp ++;                                                   // Auento la distancia recorrida
 
-
-
-                                while(velocidad_tmp < data->velocidad)
-                                {
-                                    if(thread_actual != data->thread_identificador)     // Nos quitan el CPU
-                                    {
-                                        //printf("out\n");
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        //printf("Espero\n");
-                                        sleep(1);
-                                        velocidad_tmp += 1;
-                                    }
-
-                                }
-
-                                if(velocidad_tmp == data->velocidad)
-                                {
-                                    //printf("avanzo\n");
-                                    distancia_tmp ++;     // Aumento la distancia recorrida
-                                    velocidad_tmp = 0;
-
-                                }
 
 
                             }
@@ -690,6 +763,50 @@ void *controlador_carros_jungla(void *carro)
 
                         if(distancia_tmp == puente_tmp->capacidad)          // Ya termino de correrse todos los espacios disponibles
                         {
+
+                            if(gui == 1)
+                            {
+                                if(data->lado_izquierdo == 1)
+                                {
+                                    int i = 0;
+                                    while(i < 10)
+                                    {
+                                        data->objeto.x += 1;
+                                        data->objeto.y += 2;
+                                        usleep(10000);
+                                        i++;
+                                    }
+                                    i = 0;
+                                    while(i<200)
+                                    {
+                                        data->objeto.x += 1;
+
+                                        usleep(10000);
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    int i = 0;
+                                    while(i < 10)
+                                    {
+                                        data->objeto.x -= 1;
+                                        data->objeto.y += 2;
+                                        usleep(10000);
+                                        i++;
+                                    }
+                                    i = 0;
+                                    while(i<200)
+                                    {
+                                        data->objeto.x -= 1;
+
+                                        usleep(10000);
+                                        i++;
+                                    }
+
+                                }
+
+                            }
 
                             pthread_mutex_lock(&lock_thread_terminado);
                             eliminar_nodo_carro( buscar_nodo_puente(puentes,data->puente)->carros_circulando,id);    // Elimino el carro de la lista de los carros circulando de su debido puente
@@ -748,22 +865,14 @@ void *controlador_carros_jungla(void *carro)
                                 printf(" %lu moviendose sobre puente %d a velocidad %d, distancia1: %d\n", id,puente,data->velocidad, distancia_tmp);
 
 
-//                                sleep(buscar_nodo_carro(puente_tmp->carros_circulando,id)->prev->velocidad);
-//                                principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
-//                                distancia_tmp ++;
-//
-//
-
                                 while(velocidad_tmp < buscar_nodo_carro(puente_tmp->carros_circulando,id)->prev->velocidad)
                                 {
                                     if(thread_actual != data->thread_identificador)     // Nos quitan el CPU
                                     {
-                                        //printf("out\n");
                                         break;
                                     }
                                     else
                                     {
-                                        //printf("Espero\n");
                                         sleep(1);
                                         velocidad_tmp += 1;
                                     }
@@ -772,14 +881,11 @@ void *controlador_carros_jungla(void *carro)
 
                                 if(velocidad_tmp == data->velocidad)
                                 {
-                                    //printf("avanzo\n");
                                     principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
                                     distancia_tmp ++;     // Aumento la distancia recorrida
                                     velocidad_tmp = 0;
 
                                 }
-
-
                             }
                             else
                             {
@@ -803,30 +909,59 @@ void *controlador_carros_jungla(void *carro)
                                 //sleep(buscar_nodo_carro(puente_tmp->carros_circulando,id)->prev->velocidad);
                                 //distancia_tmp ++;
 
-                                while(velocidad_tmp < buscar_nodo_carro(puente_tmp->carros_circulando,id)->prev->velocidad)
+
+                                if(data->lado_izquierdo == 1)
                                 {
-                                    if(thread_actual != data->thread_identificador)     // Nos quitan el CPU
+                                    if(distancia_tmp == 0)      // Primera posicion
                                     {
-                                        //printf("out\n");
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        //printf("Espero\n");
-                                        sleep(1);
-                                        velocidad_tmp += 1;
+                                        int i = 0;
+                                        while(i < 10)
+                                        {
+                                            data->objeto.x += 1;
+                                            data->objeto.y += 2;
+                                            usleep(40000);
+                                            i ++;
+                                        }
                                     }
 
+                                    int i = 0;
+                                    while(i < 115)
+                                    {
+                                        data->objeto.x += 1;
+                                        usleep(10000);
+                                        i ++;
+                                    }
                                 }
-
-                                if(velocidad_tmp == data->velocidad)
+                                else if(data->lado_izquierdo == 0)
                                 {
-                                    //printf("avanzo\n");
-                                    principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
-                                    distancia_tmp ++;     // Aumento la distancia recorrida
-                                    velocidad_tmp = 0;
 
+                                    if(distancia_tmp == 0)      // Primera posicion
+                                    {
+                                        int i = 0;
+                                        while(i < 10)
+                                        {
+                                            data->objeto.x -= 1;
+                                            data->objeto.y += 2;
+                                            usleep(40000);
+                                            i ++;
+                                        }
+                                    }
+
+                                    int i = 115;
+                                    while(i > 0)
+                                    {
+                                        data->objeto.x -= 1;
+                                        usleep(10000);
+                                        i --;
+
+                                    }
                                 }
+                                sleep(velocidad_tmp < buscar_nodo_carro(puente_tmp->carros_circulando,id)->prev->velocidad);                                             // Simulo la velocidad
+                                distancia_tmp ++;
+
+
+
+
 
                             }
                             // Aumento la distancia avanzada

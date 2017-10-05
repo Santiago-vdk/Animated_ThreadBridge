@@ -117,7 +117,7 @@ typedef struct thread
 	long thread_identificador;             // Id para mantener referencia a los hilos
     long calendarizador;              // Tipo de calendarizador en uso
     int prioridad;
-    double velocidad;
+    int velocidad;
     struct thread *next;
     struct thread *prev;
 } *Thread;
