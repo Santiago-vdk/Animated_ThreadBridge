@@ -503,7 +503,26 @@ void *controlador_carros_jungla(void *carro)
                             eliminar_nodo_thread(threads,id);           // Elimino el carro de la lista de hilos
                             buscar_nodo_puente(puentes,data->puente)->ocupancia -= 1;
                             distancia_tmp = 0;
-                            printf(ANSI_COLOR_YELLOW "Carro %lu termino de pasar el puente, no habia alguien en frente %d\n" ANSI_COLOR_RESET, id, puente_tmp->carros_circulando->tamanio);
+                            //printf(ANSI_COLOR_YELLOW "Carro %lu termino de pasar el puente, no habia alguien en frente %d\n" ANSI_COLOR_RESET, id, puente_tmp->carros_circulando->tamanio);
+
+                            printf("Carro");
+                            if(data->tipo_carro == RADIOACTIVO)
+                            {
+                                printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
+                            }
+                            else if(data->tipo_carro == AMBULANCIA)
+                            {
+                                printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
+                            }
+                            else
+                            {
+                                printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
+                            }
+                            printf(" %lu", id);
+                            printf(ANSI_COLOR_YELLOW " termino de pasar el puente %lu, no habia nadie en frente.\n" ANSI_COLOR_RESET, puente_tmp->thread_identificador);
+
+
+
                             thread_terminado = 1;
                             pthread_mutex_unlock(&lock_thread_terminado);
                             pthread_t id = pthread_self();
@@ -514,11 +533,26 @@ void *controlador_carros_jungla(void *carro)
                         else
                         {
 
-                            if(puente < 2)
+                            if(hardware == 1 && data->puente<3)
                             {
                                 principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,1,data->tipo_carro);
-                                printf("Carro %lu moviendose %d\n", id, distancia_tmp);
-                                usleep(data->velocidad*100000);                                             // Simulo la velocidad
+                                printf("Carro");
+                                if(data->tipo_carro == RADIOACTIVO)
+                                {
+                                    printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
+                                }
+                                else if(data->tipo_carro == AMBULANCIA)
+                                {
+                                    printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
+                                }
+                                else
+                                {
+                                    printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
+                                }
+                                printf(" %lu moviendose a velocidad %lf, distancia: %d\n", id,data->velocidad, distancia_tmp);
+
+
+                                sleep(data->velocidad);                                             // Simulo la velocidad
                                 principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
                                 distancia_tmp ++;                                                   // Auento la distancia recorrida
 
@@ -526,7 +560,25 @@ void *controlador_carros_jungla(void *carro)
                             else
                             {
 
-                                printf("Carro %lu moviendose %d\n", id, distancia_tmp);
+                                //printf("Carro %lu moviendose %d\n", id, distancia_tmp);
+
+                                printf("Carro");
+                                if(data->tipo_carro == RADIOACTIVO)
+                                {
+                                    printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
+                                }
+                                else if(data->tipo_carro == AMBULANCIA)
+                                {
+                                    printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
+                                }
+                                else
+                                {
+                                    printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
+                                }
+                                printf(" %lu moviendose a velocidad %lf, distancia: %d\n", id,data->velocidad, distancia_tmp);
+
+
+
                                 usleep(data->velocidad*100000);                                             // Simulo la velocidad
                                 distancia_tmp ++;                                                   // Auento la distancia recorrida
 
@@ -546,7 +598,30 @@ void *controlador_carros_jungla(void *carro)
                             eliminar_nodo_carro( buscar_nodo_puente(puentes,data->puente)->carros_circulando,id);    // Elimino el carro de la lista de los carros circulando de su debido puente
                             eliminar_nodo_thread(threads,id);           // Elimino el carro de la lista de hilos
                             buscar_nodo_puente(puentes,data->puente)->ocupancia -= 1;
-                            printf(ANSI_COLOR_YELLOW "Carro %lu termino de pasar el puente, habia alguien en frente %d\n" ANSI_COLOR_RESET, id, puente_tmp->carros_circulando->tamanio);
+
+
+                            //printf(ANSI_COLOR_YELLOW "Carro %lu termino de pasar el puente, habia alguien en frente %d\n" ANSI_COLOR_RESET, id, puente_tmp->carros_circulando->tamanio);
+
+
+                            printf("Carro");
+                            if(data->tipo_carro == RADIOACTIVO)
+                            {
+                                printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
+                            }
+                            else if(data->tipo_carro == AMBULANCIA)
+                            {
+                                printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
+                            }
+                            else
+                            {
+                                printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
+                            }
+                            printf(" %lu", id);
+                            printf(ANSI_COLOR_YELLOW " termino de pasar el puente %lu, habia alguien al frente.\n" ANSI_COLOR_RESET, puente_tmp->thread_identificador);
+
+
+
+
                             thread_terminado = 1;
                             pthread_mutex_unlock(&lock_thread_terminado);
                             pthread_t id = pthread_self();
@@ -557,18 +632,48 @@ void *controlador_carros_jungla(void *carro)
                         }
                         else
                         {
-                            if(puente<2)
+                            if(hardware == 1 && data->puente<3)
                             {
                                 principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,1,data->tipo_carro);
-                                printf("Carro %lu moviendose %d\n", id, distancia_tmp);
-                                usleep(buscar_nodo_carro(puente_tmp->carros_circulando,id)->prev->velocidad*100000);
+                                printf("Carro");
+                                if(data->tipo_carro == RADIOACTIVO)
+                                {
+                                    printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
+                                }
+                                else if(data->tipo_carro == AMBULANCIA)
+                                {
+                                    printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
+                                }
+                                else
+                                {
+                                    printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
+                                }
+                                printf(" %lu moviendose a velocidad %lf, distancia1: %d\n", id,data->velocidad, distancia_tmp);
+
+
+                                sleep(buscar_nodo_carro(puente_tmp->carros_circulando,id)->prev->velocidad);
                                 principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
                                 distancia_tmp ++;
                             }
                             else
                             {
 
-                                printf("Carro %lu moviendose %d\n", id, distancia_tmp);
+                                printf("Carro");
+                                if(data->tipo_carro == RADIOACTIVO)
+                                {
+                                    printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
+                                }
+                                else if(data->tipo_carro == AMBULANCIA)
+                                {
+                                    printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
+                                }
+                                else
+                                {
+                                    printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
+                                }
+                                printf(" %lu moviendose a velocidad %lf, distancia1: %d\n", id,data->velocidad, distancia_tmp);
+
+
                                 usleep(buscar_nodo_carro(puente_tmp->carros_circulando,id)->prev->velocidad*100000);
 
                                 distancia_tmp ++;

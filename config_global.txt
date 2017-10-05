@@ -1,3 +1,4 @@
 calendarizador:1
 hardware:1
 interfaz:0
+carros_max:9999

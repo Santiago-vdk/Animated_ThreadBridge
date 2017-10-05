@@ -41,6 +41,7 @@ int main()
         // Set up gpi pointer for direct register access
         setup_io();
         set_outputRasp();
+
         pthread_create(&thread_puente_hardware_0, NULL, Estado_P1, NULL);
         pthread_create(&thread_puente_hardware_1, NULL , Estado_P2 , NULL);
         pthread_create(&thread_puente_hardware_2, NULL , Estado_P3 , NULL);

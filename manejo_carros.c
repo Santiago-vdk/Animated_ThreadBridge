@@ -76,16 +76,31 @@ void *controlador_carros(void *carro)
                             {
                                 printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
                             }
-                            printf(" %lu moviendose, distancia: %d\n", data->thread_identificador, distancia_tmp);
+                            printf(" %lu moviendose a velocidad %lf, distancia1: %d\n", data->thread_identificador,data->velocidad, distancia_tmp);
 
-                            usleep(data->velocidad*100000);                                             // Simulo la velocidad
+                            sleep(data->velocidad);                                             // Simulo la velocidad
                             principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
                             distancia_tmp ++;
                         }
                         else
                         {
 
-                            printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp);
+
+                            printf("Carro");
+                            if(data->tipo_carro == RADIOACTIVO)
+                            {
+                                printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
+                            }
+                            else if(data->tipo_carro == AMBULANCIA)
+                            {
+                                printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
+                            }
+                            else
+                            {
+                                printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
+                            }
+                            printf(" %lu moviendose a velocidad %lf, distancia: %d\n", data->thread_identificador,data->velocidad, distancia_tmp);
+
                             usleep(data->velocidad*100000);                                             // Simulo la velocidad
                             distancia_tmp ++;
 
@@ -145,9 +160,6 @@ void *controlador_carros(void *carro)
                     }
                     else
                     {
-                        /*printf("Carro %lu moviendose %d \n", data->thread_identificador, distancia_tmp);
-                        usleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad*100000);                                             // Utilizo la velocidad del nodo del frente
-                        distancia_tmp ++;         */                               // Aumento la distancia avanzada
 
                         if(hardware == 1 && data->puente<3)
                         {
@@ -166,15 +178,31 @@ void *controlador_carros(void *carro)
                             {
                                 printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
                             }
-                            printf(" %lu moviendose, distancia: %d\n", data->thread_identificador, distancia_tmp);
+                            printf(" %lu moviendose a velocidad %lf, distancia2: %d\n", data->thread_identificador,data->velocidad, distancia_tmp);
 
-                            usleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad*100000);
+                            sleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad);
                             principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
                             distancia_tmp ++;
                         }
                         else
                         {
-                            printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp);
+                            printf("Carro");
+                            if(data->tipo_carro == RADIOACTIVO)
+                            {
+                                printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
+                            }
+                            else if(data->tipo_carro == AMBULANCIA)
+                            {
+                                printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
+                            }
+                            else
+                            {
+                                printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
+                            }
+                            printf(" %lu moviendose a velocidad %lf, distancia: %d\n", data->thread_identificador,data->velocidad, distancia_tmp);
+
+
+
                             usleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad*100000);
                             distancia_tmp ++;
 
@@ -197,7 +225,22 @@ void *controlador_carros(void *carro)
             {
 
                 pthread_mutex_lock(&lock_thread_terminado);
-                printf("Carro %lu no puede moverse\n", data->thread_identificador);
+
+                printf("Carro");
+                if(data->tipo_carro == RADIOACTIVO)
+                {
+                    printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
+                }
+                else if(data->tipo_carro == AMBULANCIA)
+                {
+                    printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
+                }
+                else
+                {
+                    printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
+                }
+                printf(" %lu no puede moverse\n", data->thread_identificador, distancia_tmp);
+
                 thread_terminado = 1;
                 pthread_mutex_unlock(&lock_thread_terminado);
 
@@ -220,7 +263,9 @@ void *generador_carros(void *t)
     double lambda = 0.5;
     double probabilidad = 0.0;
     double porcentaje_ambulancia = 0.0;
-    while(i < 15)
+    int carros_max = getParameterValueConfigDouble("config_global.txt","carros_max");
+
+    while(i < carros_max)
     {
         srand(time(NULL));
         //printf("Generando carro %lu de tipo %d al lado %d del puente %d \n",i, carro->tipo_carro, lado_random, puente_random);
@@ -240,7 +285,11 @@ void *generador_carros(void *t)
         }
         else if(hardware == 1)
         {
-            carro -> velocidad = rand()%3;
+            int velocidad = rand()%4;
+            if(velocidad == 0){
+                velocidad ++;
+            }
+            carro -> velocidad = velocidad;
         }
         else
         {
