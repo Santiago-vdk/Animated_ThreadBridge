@@ -112,7 +112,7 @@
 	"puentes.h"
 	"lector_archivos.h"
 
-1507157095 source:/home/pi/Desktop/Animated_ThreadBridge/thread_data.c
+1507178865 source:/home/pi/Desktop/Animated_ThreadBridge/thread_data.c
 	<stdlib.h>
 	<stdio.h>
 	"thread_data.h"
@@ -232,7 +232,7 @@
 1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_fcfs.h
 	"main.h"
 
-1507156111 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.c
+1507178793 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.c
 	"calendarizador_priority_queue.h"
 
 1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.h
@@ -272,14 +272,14 @@
 1506992481 /home/pi/Desktop/Animated_ThreadBridge/principal.h
 	"main.h"
 
-1507156368 source:/home/pi/Desktop/Animated_ThreadBridge/manejo_carros.c
+1507178839 source:/home/pi/Desktop/Animated_ThreadBridge/manejo_carros.c
 	"manejo_carros.h"
 	"algoritmos_control.h"
 	<SDL2/SDL.h>
 	<SDL2/SDL_image.h>
 	<SDL2/SDL_ttf.h>
 
-1507156328 source:/home/pi/Desktop/Animated_ThreadBridge/principal.c
+1507178823 source:/home/pi/Desktop/Animated_ThreadBridge/principal.c
 	"principal.h"
 	"calendarizador_rr.h"
 	"calendarizador_fcfs.h"

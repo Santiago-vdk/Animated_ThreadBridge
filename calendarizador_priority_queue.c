@@ -30,14 +30,14 @@ void *calendarizador_priority_queue(void *t)
                 }
                 else
                 {
-                    //printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo puente %lu\n" ANSI_COLOR_RESET, thread_actual);
-                    //printf("\n\nNumero Puente > %d",temporal->puente->puente_id);
-                    //printf("\n\nLazo Izquierdo");
-                    imprimir(temporal->puente->carros_izquierda);
-                    //printf("\n\nLazo Derecho");
-                    imprimir(temporal->puente->carros_derecha);
-                    //printf("\n\nPuente");
-                    imprimir(temporal->puente->carros_circulando);
+                    printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo puente %lu\n" ANSI_COLOR_RESET, thread_actual);
+//                    printf("\n\nNumero Puente > %d",temporal->puente->puente_id);
+//                    printf("\n\nLazo Izquierdo");
+//                    imprimir(temporal->puente->carros_izquierda);
+//                    printf("\n\nLazo Derecho");
+//                    imprimir(temporal->puente->carros_derecha);
+//                    printf("\n\nPuente");
+//                    imprimir(temporal->puente->carros_circulando);
                 }
                 pthread_mutex_unlock(&lock_thread_terminado);
 

@@ -865,12 +865,12 @@ void agregar_thread_Tiempo_Real(Thread node, ThreadList list)
 
     if(node->thread_identificador < 4)
     {
-        printf("\n\n//// INSERTANTO PUENTE \\\\");
+//        printf("\n\n//// INSERTANTO PUENTE \\\\");
         agregar_Puente_Tiempo_Real(node, list);
     }
     else
     {
-        printf("\n\n//// INSERTANTO CARRO \\\\");
+//        printf("\n\n//// INSERTANTO CARRO \\\\");
         Thread_Carro carro = node->carro;      // asigna nodo para manejarlo como carro
 
         //printf("\nINSERTAR CARRO\n");
@@ -879,17 +879,17 @@ void agregar_thread_Tiempo_Real(Thread node, ThreadList list)
         switch(carro->tipo_carro)
         {
         case 1  :
-            printf("\nINSERTAR AMBULACIA\n");
+//            printf("\nINSERTAR AMBULACIA\n");
             agregar_Ambulacia_Tiempo_Real_Lista_General(node,list);
             break;
 
         case 2  :
-            printf("\nINSERTAR RADIOACTIVO\n");
+//            printf("\nINSERTAR RADIOACTIVO\n");
             agregar_Radioactivo_Tiempo_Real_Lista_General(node,list);
             break;
 
         default:
-            printf("\nINSERTAR CARRO\n");
+//            printf("\nINSERTAR CARRO\n");
             agregar_Carro_Tiempo_Real_Lista_General(node,list);
             break;
         }
