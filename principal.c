@@ -264,11 +264,10 @@ void ejecutar()
 
     pthread_join(thread_calendarizador, NULL);
 
-    if(gui == 0)
-    {
+
         pthread_join(thread_generador_carros, NULL);
 
-    }
+
     if(hardware==1)
     {
         pthread_join(thread_puente_hardware_0, NULL);

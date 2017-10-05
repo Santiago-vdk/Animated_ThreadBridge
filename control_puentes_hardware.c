@@ -1,6 +1,93 @@
 #include "control_puentes_hardware.h"
 #include "rasp.h"
 
+void * software_0_lados()
+{
+
+//    while(1)
+//    {
+//
+//        if(threads != NULL)
+//        {
+//            if(threads->tamanio > 0)
+//            {
+//                //printf("head %p \n", buscar_nodo_thread(threads,0)->puente->carros_izquierda->head);
+//                if(buscar_nodo_thread(threads,0) != NULL)
+//                {
+//                    if(buscar_nodo_thread(threads,0)->puente->carros_izquierda->tamanio>0)
+//                    {
+//
+//                        Thread_Carro primer_carro = buscar_nodo_thread(threads,0)->puente->carros_izquierda->head;
+//                        primer_carro->objeto.x = 180;
+//
+//                        if(primer_carro->next != NULL)
+//                        {
+//                            Thread_Carro segundo_carro = primer_carro->next;
+//                            segundo_carro->objeto.x = 125;
+//
+//                            if(segundo_carro->next != NULL)
+//                            {
+//                                Thread_Carro tercer_carro = segundo_carro->next;
+//                                tercer_carro->objeto.x = 70;
+//                            }
+//                        }
+//
+//
+//                    }
+//
+//                  /*  if(buscar_nodo_thread(threads,0)->puente->carros_derecha->tamanio>0)
+//                    {
+//                        Thread_Carro primer_carro_derecha =buscar_nodo_thread(threads,0)->puente->carros_derecha->head;
+//                        primer_carro_derecha->objeto.x = SCREEN_WIDTH - 225;
+//
+//                        if(primer_carro_derecha->next != NULL)
+//                        {
+//                            Thread_Carro segundo_carro_derecha = primer_carro_derecha->next;
+//                            segundo_carro_derecha->objeto.x =  SCREEN_WIDTH - 190;
+//                        }
+//
+//
+//                    }*/
+//                }
+//                /*    else if(buscar_nodo_puente(puentes,0) != NULL)
+//                    {
+//                        if(buscar_nodo_puente(puentes,0)->carros_izquierda->tamanio>0)
+//                        {
+//                            Thread_Carro primer_carro = buscar_nodo_puente(puentes,0)->carros_izquierda->head;
+//
+//
+//
+//                            if(primer_carro->next != NULL)
+//                            {
+//                                Thread_Carro segundo_carro = primer_carro->next;
+//
+//                            }
+//
+//                        }
+//
+//
+//                        if(buscar_nodo_puente(puentes,0)->carros_derecha->tamanio>0)
+//                        {
+//                            Thread_Carro primer_carro_derecha = buscar_nodo_puente(puentes,0)->carros_derecha->head;
+//
+//
+//                            if(primer_carro_derecha->next != NULL)
+//                            {
+//                                Thread_Carro segundo_carro_derecha = primer_carro_derecha->next;
+//
+//                            }
+//                        }
+//
+//
+//                    }*/
+//
+//            }
+//
+//        }
+//        usleep(10000);
+//    }
+
+}
 
 void * hardware_0_lados()
 {
@@ -90,7 +177,8 @@ void * hardware_0_lados()
                 {
                     printf(ANSI_COLOR_RED "Error representando HW del puente 0\n" ANSI_COLOR_RESET);
                 }
-            }else
+            }
+            else
             {
                 Apagar_P1_Izq();
                 Apagar_P1_Der();
@@ -290,7 +378,8 @@ void * hardware_2_lados()
                 {
                     printf(ANSI_COLOR_RED "Error representando HW del puente 2\n" ANSI_COLOR_RESET);
                 }
-            }else
+            }
+            else
             {
                 Apagar_P3_Izq();
                 Apagar_P3_Der();

@@ -1,4 +1,4 @@
-calendarizador:1
+calendarizador:0
 hardware:0
 interfaz:1
-carros_max:25
+carros_max:20

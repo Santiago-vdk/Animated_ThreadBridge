@@ -536,8 +536,6 @@ void *generador_carros(void *t)
             break;
         }
 
-
-        //printf("%lf\n", probabilidad);
         if(rand()%100 > probabilidad *100 )
         {
             carro -> tipo_carro = RADIOACTIVO;
@@ -600,11 +598,12 @@ void *generador_carros(void *t)
 
             if(carro->lado_izquierdo == 1)
             {
-
-                carro->objeto.x = 180; //Extreme left of the window
+                carro->objeto.x = 180; //Extremo derecho de la ventana
+                //carro->objeto.x = -38;
             }
             else
             {
+                //carro->objeto.x = SCREEN_WIDTH; //Extreme left of the window
                 carro->objeto.x = SCREEN_WIDTH - 225; //Extreme left of the window
             }
 

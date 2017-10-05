@@ -45,6 +45,8 @@ pthread_t thread_puente_hardware_0_lados;
 pthread_t thread_puente_hardware_1_lados;
 pthread_t thread_puente_hardware_2_lados;
 
+pthread_t thread_puente_software_0_lados;
+
 pthread_mutex_t lock_thread_terminado;
 pthread_mutex_t lock_thread_actual;
 pthread_mutex_t lock_contador_tmp;

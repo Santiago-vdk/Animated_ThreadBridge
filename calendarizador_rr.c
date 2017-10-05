@@ -84,7 +84,10 @@ void *calendarizador_RoundRobin(void *t)
             sleep(1);
 
         }
-        else
+        else if(gui == 1)
+        {
+            sleep(1);
+        }else
         {
             usleep(100000);
         }

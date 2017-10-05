@@ -42,6 +42,17 @@ void *algoritmo_puente_oficial(void *puente)
                 {
                     if((data->carros_izquierda->tamanio > 0) && (data->ocupancia < data->capacidad))
                     {
+                        if(data->carros_circulando->tamanio > 0 && data->carros_circulando->head->lado_izquierdo == 0)  // Se niega el acceso, es preventivo
+                        {
+                            printf(ANSI_COLOR_RED "Puente yendo en direccion contraria para insertar\n" ANSI_COLOR_RESET);
+
+                            pthread_mutex_lock(&lock_thread_terminado);
+                            thread_terminado = 1;
+                            pthread_mutex_unlock(&lock_thread_terminado);
+
+                            break;
+
+                        }
 
                         Thread_Carro tmp = pop_primer_thread_carro(data->carros_izquierda); // Extraigo la cabeza de la lista del lado izquierdo y reordeno
                         agregar_carro(tmp,data->carros_circulando);     // Paso el thread a los que estan circulando
@@ -116,6 +127,25 @@ void *algoritmo_puente_oficial(void *puente)
                     {
                         if((data->carros_derecha->tamanio > 0) && (data->ocupancia < data->capacidad))
                         {
+
+
+
+
+
+                            if(data->carros_circulando->tamanio > 0 && data->carros_circulando->head->lado_izquierdo == 1)  // Se niega el acceso, es preventivo
+                            {
+                                printf(ANSI_COLOR_RED "Puente yendo en direccion contraria para insertar\n" ANSI_COLOR_RESET);
+
+                                pthread_mutex_lock(&lock_thread_terminado);
+                                thread_terminado = 1;
+                                pthread_mutex_unlock(&lock_thread_terminado);
+
+                                break;
+
+                            }
+
+
+
 
                             Thread_Carro tmp = pop_primer_thread_carro(data->carros_derecha); // Extraigo la cabeza de la lista del lado izquierdo y reordeno
                             agregar_carro(tmp,data->carros_circulando);     // Paso el thread a los que estan circulando

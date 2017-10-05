@@ -112,7 +112,7 @@ int main()
     if(gui == 1)
     {
         printf("Ejecutando GUI\n");
-
+        //pthread_create(&thread_puente_software_0_lados, NULL, software_0_lados, NULL);
         SCREEN_WIDTH = 802;
         SCREEN_HEIGHT = 680;
 
@@ -121,13 +121,12 @@ int main()
         SDL_Init(SDL_INIT_EVERYTHING);
         //For loading PNG images
         IMG_Init(IMG_INIT_PNG);
-        window = SDL_CreateWindow("Animated RKT Bridge", SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        window = SDL_CreateWindow("Animated Thread Bridge", SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
         SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
         SDL_Event input;
 
 //        SDL_Thread* threadID2 =
         SDL_CreateThread( iniciarEjecucion, "iniciarEjecucion",(void *)NULL);
-
 
         SDL_Texture* textura_fondo = NULL;
 
@@ -144,20 +143,6 @@ int main()
         fondo.w = SCREEN_WIDTH; //100 pixels width
         fondo.h = SCREEN_HEIGHT; //100 pixels height
 
-
-        /*    SDL_Surface* image_carro_lado_izquierdo = IMG_Load("carro_radioactivo_izquierda.png");
-            printf("%p\n",image_carro_lado_izquierdo);
-            SDL_Texture* text = SDL_CreateTextureFromSurface(renderer, image_carro_lado_izquierdo);
-
-
-            SDL_Rect obje;
-            obje.x = 0; //Extreme left of the window
-            obje.y = 0; //Very bottom of the window
-            obje.w = SCREEN_WIDTH; //100 pixels width
-            obje.h = SCREEN_HEIGHT; //100 pixels height
-
-                                printf("Pinto %p\n",text);*/
-
         while (!quit)
         {
             while (SDL_PollEvent(&input) > 0)
@@ -169,36 +154,6 @@ int main()
             SDL_RenderClear(renderer);
             SDL_RenderCopy(renderer, textura_fondo, NULL, &fondo);
 
-//            SDL_RenderCopy(renderer, text, NULL, &obje);
-
-//            Thread_Carro carro = (Thread_Carro) calloc(1, sizeof(struct thread_carro));
-//
-//            SDL_Rect rec;
-//            rec.x = 0; //Extreme left of the window
-//            rec.y = 0; //Very bottom of the window
-//            rec.w = 38; //100 pixels width
-//            rec.h = 21; //100 pixels height
-//
-//            carro->objeto = rec;
-//
-//            SDL_Surface* image_carro_lado_derecha = IMG_Load("carro_regular_derecha.png");
-//            carro->textura = SDL_CreateTextureFromSurface(renderer, image_carro_lado_derecha);
-//            SDL_FreeSurface(image_carro_lado_derecha);
-//
-//            SDL_RenderCopy(renderer, carro->textura, NULL, &carro->objeto);
-
-//            if(threads!= NULL)
-//            {
-//                Thread tmp = buscar_nodo_thread(threads, thread_actual);
-//                if(thread_actual > 3 && tmp != NULL && tmp->carro->pintado == 0)
-//                {
-//
-//
-//                }
-//            }
-
-
-
             Thread temporal = threads->head;
             while(1)
             {
@@ -206,24 +161,25 @@ int main()
                 {
                     if(threads->head != NULL)
                     {
+                        //printf("Aqui %lu\n", temporal->thread_identificador);
                         if(temporal->thread_identificador>3)
                         {
 
                             if(temporal->carro->pintado == 0){
+
                                 pintar(temporal->carro);
                             } else {
                                 SDL_RenderCopy(renderer, temporal->carro->textura, NULL, &temporal->carro->objeto);
                             }
-
-
                         }
-                        else
+                      /*  else
                         {
                             break;
-                        }
+                        }*/
 
                         if(temporal->next != NULL)
                         {
+                            //printf("next \n");
                             temporal = temporal->next;      // Obtengo el siguiente
                         }
                         else
@@ -242,23 +198,6 @@ int main()
                     break;
                 }
             }
-
-
-
-
-
-
-
-            /* if(thread_actual > 3 && tmp != NULL && tmp->carro->pintado == 1)
-             {
-                 //printf("Aqui %p %p\n",tmp->carro->textura, &tmp->carro->objeto);
-                 SDL_RenderCopy(renderer, tmp->carro->textura, NULL, &tmp->carro->objeto);
-             }*/
-
-
-
-
-
 
             SDL_RenderPresent(renderer);
             //usleep(100000);
