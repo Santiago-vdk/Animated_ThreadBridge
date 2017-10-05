@@ -19,29 +19,47 @@ void *controlador_carros(void *carro)
             {
                 Thread_Puente puente_tmp = buscar_nodo_thread(threads,data->puente)->puente;
 
+                if(data->vida_carro == 0)       // El carro muere
+                {
+
+
+                    eliminar_nodo_thread(threads,data->thread_identificador);           // Elimino el carro de la lista de hilos
+                    eliminar_nodo_carro(buscar_nodo_thread(threads,data->puente)->puente->carros_circulando,data->thread_identificador);    // Elimino el carro de la lista de los carros circulando de su debido puente
+                    buscar_nodo_thread(threads,data->puente)->puente->ocupancia -= 1;
+                    distancia_tmp = 0;
+                    //printf(ANSI_COLOR_YELLOW "Carro %lu termino de pasar el puente, no habia alguien en frente %d\n" ANSI_COLOR_RESET, id, puente_tmp->carros_circulando->tamanio);
+
+                    printf("Carro");
+                    if(data->tipo_carro == RADIOACTIVO)
+                    {
+                        printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
+                    }
+                    else if(data->tipo_carro == AMBULANCIA)
+                    {
+                        printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
+                    }
+                    else
+                    {
+                        printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
+                    }
+                    printf(" %lu", data->thread_identificador);
+                    printf(ANSI_COLOR_YELLOW " murio pasando el puente %lu.\n" ANSI_COLOR_RESET, puente_tmp->thread_identificador);
+
+
+
+                    thread_terminado = 1;
+                    pthread_mutex_unlock(&lock_thread_terminado);
+                    pthread_t id = pthread_self();
+                    pthread_detach(id);
+                    break;
+                }
+
+
+
                 if(puente_tmp->carros_circulando->head->thread_identificador == data->thread_identificador)    // Si no hay carros al frente
                 {
                     if(distancia_tmp == puente_tmp->capacidad)          // Ya termino de correrse todos los espacios disponibles
                     {
-
-                        pthread_mutex_lock(&lock_thread_terminado);
-
-                        printf("Carro");
-                        if(data->tipo_carro == RADIOACTIVO)
-                        {
-                            printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
-                        }
-                        else if(data->tipo_carro == AMBULANCIA)
-                        {
-                            printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
-                        }
-                        else
-                        {
-                            printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
-                        }
-                        printf(" %lu", data->thread_identificador);
-                        printf(ANSI_COLOR_YELLOW " termino de pasar el puente %lu, no habia nadie en frente\n" ANSI_COLOR_RESET, puente_tmp->thread_identificador);
-
                         if(gui == 1)
                         {
                             if(data->lado_izquierdo == 1)
@@ -85,6 +103,26 @@ void *controlador_carros(void *carro)
                             }
 
                         }
+
+                        pthread_mutex_lock(&lock_thread_terminado);
+
+                        printf("Carro");
+                        if(data->tipo_carro == RADIOACTIVO)
+                        {
+                            printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
+                        }
+                        else if(data->tipo_carro == AMBULANCIA)
+                        {
+                            printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
+                        }
+                        else
+                        {
+                            printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
+                        }
+                        printf(" %lu", data->thread_identificador);
+                        printf(ANSI_COLOR_YELLOW " termino de pasar el puente %lu, no habia nadie en frente\n" ANSI_COLOR_RESET, puente_tmp->thread_identificador);
+
+
 
 
 
@@ -206,26 +244,6 @@ void *controlador_carros(void *carro)
 
                     if(distancia_tmp == puente_tmp->capacidad)          // Ya termino de correrse todos los espacios disponibles
                     {
-
-                        pthread_mutex_lock(&lock_thread_terminado);
-
-                        //printf(ANSI_COLOR_YELLOW "Carro %lu termino de pasar el puente, habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
-                        printf("Carro");
-                        if(data->tipo_carro == RADIOACTIVO)
-                        {
-                            printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
-                        }
-                        else if(data->tipo_carro == AMBULANCIA)
-                        {
-                            printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
-                        }
-                        else
-                        {
-                            printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
-                        }
-                        printf(" %lu", data->thread_identificador);
-                        printf(ANSI_COLOR_YELLOW " termino de pasar el puente %d, habia alguien al frente.\n" ANSI_COLOR_RESET, puente_tmp->thread_identificador);
-
                         if(gui == 1)
                         {
                             if(data->lado_izquierdo == 1)
@@ -269,6 +287,27 @@ void *controlador_carros(void *carro)
                             }
 
                         }
+
+                        pthread_mutex_lock(&lock_thread_terminado);
+
+                        //printf(ANSI_COLOR_YELLOW "Carro %lu termino de pasar el puente, habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
+                        printf("Carro");
+                        if(data->tipo_carro == RADIOACTIVO)
+                        {
+                            printf(ANSI_COLOR_GREEN " Radioactivo" ANSI_COLOR_RESET);
+                        }
+                        else if(data->tipo_carro == AMBULANCIA)
+                        {
+                            printf(ANSI_COLOR_RED " Ambulancia" ANSI_COLOR_RESET);
+                        }
+                        else
+                        {
+                            printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
+                        }
+                        printf(" %lu", data->thread_identificador);
+                        printf(ANSI_COLOR_YELLOW " termino de pasar el puente %d, habia alguien al frente.\n" ANSI_COLOR_RESET, puente_tmp->thread_identificador);
+
+
 
                         eliminar_nodo_thread(threads,data->thread_identificador);           // Elimino el carro de la lista de hilos
                         eliminar_nodo_carro(buscar_nodo_thread(threads,data->puente)->puente->carros_circulando,data->thread_identificador);    // Elimino el carro de la lista de los carros circulando de su debido puente
@@ -402,7 +441,7 @@ void *controlador_carros(void *carro)
                     printf(ANSI_COLOR_CYAN " Regular" ANSI_COLOR_RESET);
                 }
                 printf(" %lu no puede moverse sobre puente %d\n", data->thread_identificador, distancia_tmp, data->puente);
-
+                data->vida_carro -= 1;
                 thread_terminado = 1;
                 pthread_mutex_unlock(&lock_thread_terminado);
 
@@ -436,7 +475,7 @@ void *generador_carros(void *t)
 
         if(hardware == 1)
         {
-            puente_random = 1;//rand() % 3;
+            puente_random = rand() % 3;
         }
         else
         {
@@ -453,7 +492,7 @@ void *generador_carros(void *t)
         carro -> pintado = 0;
         if(gui == 1)
         {
-            carro -> velocidad = 0;//rand()%5;
+            carro -> velocidad = rand()%4;
 
         }
         else if(hardware == 1)

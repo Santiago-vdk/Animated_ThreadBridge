@@ -167,7 +167,7 @@
 1506959756 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.h
 	"main.h"
 
-1507237555 source:/home/santiago/Desktop/Animated_ThreadBridge/algoritmos_control.c
+1507238266 source:/home/santiago/Desktop/Animated_ThreadBridge/algoritmos_control.c
 	"algoritmos_control.h"
 	"rasp.h"
 
@@ -177,7 +177,7 @@
 1507222850 /home/santiago/Desktop/Animated_ThreadBridge/manejo_carros.h
 	"main.h"
 
-1507237610 source:/home/santiago/Desktop/Animated_ThreadBridge/manejo_carros.c
+1507239008 source:/home/santiago/Desktop/Animated_ThreadBridge/manejo_carros.c
 	"manejo_carros.h"
 	"algoritmos_control.h"
 	<SDL2/SDL.h>
