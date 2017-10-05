@@ -25,7 +25,7 @@ void *calendarizador_sjf(void *t)
                 printf("\n");
                 if(thread_actual>3)
                 {
-                    printf("\nComenzando a ejecutar hilo %d", thread_actual);
+                    printf("\nComenzando a ejecutar hilo %lu", thread_actual);
                     printf(ANSI_COLOR_RED " CARRO" ANSI_COLOR_RESET);
                     printf(" con velocidad");
                     printf(ANSI_COLOR_RED " %lf\n" ANSI_COLOR_RESET, buscar_nodo_thread(threads,thread_actual)->velocidad);
@@ -33,7 +33,7 @@ void *calendarizador_sjf(void *t)
                 }
                 else
                 {
-                    printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo puente %d con velocidad %lf\n" ANSI_COLOR_RESET, thread_actual, buscar_nodo_thread(threads,thread_actual)->velocidad);
+                    printf(ANSI_COLOR_RED "\nComenzando a ejecutar hilo puente %lu con velocidad %lf\n" ANSI_COLOR_RESET, thread_actual, buscar_nodo_thread(threads,thread_actual)->velocidad);
                 }
                 pthread_mutex_unlock(&lock_thread_terminado);
 

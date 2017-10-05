@@ -88,116 +88,116 @@ void ejecutar()
 
 
     /* PUENTE 1 */
-    Thread_Puente puente_creado_1 = crear_puente_1();
-    pthread_t thread_puente_1;           // Creo la instancia del thread del puente
-
-    if(puente_creado_1->control == JUNGLA)
-    {
-        agregar_puente(puente_creado_1, puentes);
-
-    }
-    else
-    {
-        Thread thread_nuevo_1 = (Thread) calloc(1, sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
-        thread_nuevo_1 ->puente=puente_creado_1;
-        thread_nuevo_1 ->carro=NULL;
-        thread_nuevo_1->prioridad=-1;                   // Solo me interesa en este caso el thread de carro
-        thread_nuevo_1->velocidad=0;
-        thread_nuevo_1 ->calendarizador=calendarizador;
-        thread_nuevo_1 ->thread_identificador=1;
-        agregar_thread(thread_nuevo_1,threads);            // Agrego el thread puente a la lista de threads
-
-
-
-        switch (puente_creado_1->control)
-        {
-        case OFICIAL:
-            pthread_create(&thread_puente_1, NULL, algoritmo_puente_oficial, (void *) puente_creado_1);
-            break;
-        case SEMAFORO:
-            pthread_create(&thread_puente_1, NULL, algoritmo_puente_semaforo, (void *) puente_creado_1);
-            break;
-        default:
-            pthread_create(&thread_puente_1, NULL, algoritmo_puente_oficial, (void *) puente_creado_1);
-            break;
-        }
-
-    }
-
-
-    /* PUENTE 2 */
-    Thread_Puente puente_creado_2 = crear_puente_2();
-    pthread_t thread_puente_2;           // Creo la instancia del thread del puente
-
-    if(puente_creado_2->control == JUNGLA)
-    {
-        agregar_puente(puente_creado_2, puentes);
-
-    }
-    else
-    {
-
-        Thread thread_nuevo_2 = (Thread) calloc(1, sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
-        thread_nuevo_2->puente=puente_creado_2;
-        thread_nuevo_2->carro=NULL;
-        thread_nuevo_2->prioridad=-1;                  // Solo me interesa en este caso el thread de carro
-        thread_nuevo_2->velocidad=0;
-        thread_nuevo_2->calendarizador=calendarizador;
-        thread_nuevo_2->thread_identificador=2;
-        agregar_thread(thread_nuevo_2,threads);           // Agrego el thread puente a la lista de threads
-
-
-        switch (puente_creado_2->control)
-        {
-        case OFICIAL:
-            pthread_create(&thread_puente_2, NULL, algoritmo_puente_oficial, (void *) puente_creado_2);
-            break;
-        case SEMAFORO:
-            pthread_create(&thread_puente_2, NULL, algoritmo_puente_semaforo, (void *) puente_creado_2);
-            break;
-        default:
-            pthread_create(&thread_puente_2, NULL, algoritmo_puente_oficial, (void *) puente_creado_2);
-            break;
-        }
-
-    }
-
-
-    /* PUENTE 3 */
-    Thread_Puente puente_creado_3 = crear_puente_3();
-    pthread_t thread_puente_3;
-
-    if(puente_creado_3->control == JUNGLA)
-    {
-        agregar_puente(puente_creado_3, puentes);
-    }
-    else
-    {
-        Thread thread_nuevo_3 = (Thread) calloc(1,sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
-        thread_nuevo_3->puente=puente_creado_3;
-        thread_nuevo_3->carro=NULL;
-        thread_nuevo_3->prioridad=-1;                   // Solo me interesa en este caso el thread de carro
-        thread_nuevo_3->velocidad=0;
-        thread_nuevo_3->calendarizador=calendarizador;
-        thread_nuevo_3->thread_identificador=3;
-        agregar_thread(thread_nuevo_3,threads);           // Agrego el thread puente a la lista de threads
-
-
-        // Creo la instancia del thread del puente
-        switch (puente_creado_3->control)
-        {
-        case OFICIAL:
-            pthread_create(&thread_puente_3, NULL, algoritmo_puente_oficial, (void *) puente_creado_3);
-            break;
-        case SEMAFORO:
-            pthread_create(&thread_puente_3, NULL, algoritmo_puente_semaforo, (void *) puente_creado_3);
-            break;
-        default:
-            pthread_create(&thread_puente_3, NULL, algoritmo_puente_oficial, (void *) puente_creado_3);
-            break;
-        }
-
-    }
+//    Thread_Puente puente_creado_1 = crear_puente_1();
+//    pthread_t thread_puente_1;           // Creo la instancia del thread del puente
+//
+//    if(puente_creado_1->control == JUNGLA)
+//    {
+//        agregar_puente(puente_creado_1, puentes);
+//
+//    }
+//    else
+//    {
+//        Thread thread_nuevo_1 = (Thread) calloc(1, sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
+//        thread_nuevo_1 ->puente=puente_creado_1;
+//        thread_nuevo_1 ->carro=NULL;
+//        thread_nuevo_1->prioridad=-1;                   // Solo me interesa en este caso el thread de carro
+//        thread_nuevo_1->velocidad=0;
+//        thread_nuevo_1 ->calendarizador=calendarizador;
+//        thread_nuevo_1 ->thread_identificador=1;
+//        agregar_thread(thread_nuevo_1,threads);            // Agrego el thread puente a la lista de threads
+//
+//
+//
+//        switch (puente_creado_1->control)
+//        {
+//        case OFICIAL:
+//            pthread_create(&thread_puente_1, NULL, algoritmo_puente_oficial, (void *) puente_creado_1);
+//            break;
+//        case SEMAFORO:
+//            pthread_create(&thread_puente_1, NULL, algoritmo_puente_semaforo, (void *) puente_creado_1);
+//            break;
+//        default:
+//            pthread_create(&thread_puente_1, NULL, algoritmo_puente_oficial, (void *) puente_creado_1);
+//            break;
+//        }
+//
+//    }
+//
+//
+//    /* PUENTE 2 */
+//    Thread_Puente puente_creado_2 = crear_puente_2();
+//    pthread_t thread_puente_2;           // Creo la instancia del thread del puente
+//
+//    if(puente_creado_2->control == JUNGLA)
+//    {
+//        agregar_puente(puente_creado_2, puentes);
+//
+//    }
+//    else
+//    {
+//
+//        Thread thread_nuevo_2 = (Thread) calloc(1, sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
+//        thread_nuevo_2->puente=puente_creado_2;
+//        thread_nuevo_2->carro=NULL;
+//        thread_nuevo_2->prioridad=-1;                  // Solo me interesa en este caso el thread de carro
+//        thread_nuevo_2->velocidad=0;
+//        thread_nuevo_2->calendarizador=calendarizador;
+//        thread_nuevo_2->thread_identificador=2;
+//        agregar_thread(thread_nuevo_2,threads);           // Agrego el thread puente a la lista de threads
+//
+//
+//        switch (puente_creado_2->control)
+//        {
+//        case OFICIAL:
+//            pthread_create(&thread_puente_2, NULL, algoritmo_puente_oficial, (void *) puente_creado_2);
+//            break;
+//        case SEMAFORO:
+//            pthread_create(&thread_puente_2, NULL, algoritmo_puente_semaforo, (void *) puente_creado_2);
+//            break;
+//        default:
+//            pthread_create(&thread_puente_2, NULL, algoritmo_puente_oficial, (void *) puente_creado_2);
+//            break;
+//        }
+//
+//    }
+//
+//
+//    /* PUENTE 3 */
+//    Thread_Puente puente_creado_3 = crear_puente_3();
+//    pthread_t thread_puente_3;
+//
+//    if(puente_creado_3->control == JUNGLA)
+//    {
+//        agregar_puente(puente_creado_3, puentes);
+//    }
+//    else
+//    {
+//        Thread thread_nuevo_3 = (Thread) calloc(1,sizeof(struct thread));   // Creo un nodo thread el cual puede ser carro o puente
+//        thread_nuevo_3->puente=puente_creado_3;
+//        thread_nuevo_3->carro=NULL;
+//        thread_nuevo_3->prioridad=-1;                   // Solo me interesa en este caso el thread de carro
+//        thread_nuevo_3->velocidad=0;
+//        thread_nuevo_3->calendarizador=calendarizador;
+//        thread_nuevo_3->thread_identificador=3;
+//        agregar_thread(thread_nuevo_3,threads);           // Agrego el thread puente a la lista de threads
+//
+//
+//        // Creo la instancia del thread del puente
+//        switch (puente_creado_3->control)
+//        {
+//        case OFICIAL:
+//            pthread_create(&thread_puente_3, NULL, algoritmo_puente_oficial, (void *) puente_creado_3);
+//            break;
+//        case SEMAFORO:
+//            pthread_create(&thread_puente_3, NULL, algoritmo_puente_semaforo, (void *) puente_creado_3);
+//            break;
+//        default:
+//            pthread_create(&thread_puente_3, NULL, algoritmo_puente_oficial, (void *) puente_creado_3);
+//            break;
+//        }
+//
+//    }
 
 
     if (pthread_mutex_init(&lock_thread_terminado, NULL) != 0)
@@ -248,18 +248,18 @@ void ejecutar()
     {
         pthread_join(thread_puente_0, NULL);
     }
-    if(puente_creado_1->control != JUNGLA)
-    {
-        pthread_join(thread_puente_1, NULL);
-    }
-    if(puente_creado_2->control != JUNGLA)
-    {
-        pthread_join(thread_puente_2, NULL);
-    }
-    if(puente_creado_3->control != JUNGLA)
-    {
-        pthread_join(thread_puente_3, NULL);
-    }
+//    if(puente_creado_1->control != JUNGLA)
+//    {
+//        pthread_join(thread_puente_1, NULL);
+//    }
+//    if(puente_creado_2->control != JUNGLA)
+//    {
+//        pthread_join(thread_puente_2, NULL);
+//    }
+//    if(puente_creado_3->control != JUNGLA)
+//    {
+//        pthread_join(thread_puente_3, NULL);
+//    }
 
 
     pthread_join(thread_calendarizador, NULL);

@@ -1,5 +1,5 @@
 #include "control_puentes_hardware.h"
-
+#include "rasp.h"
 
 
 void * hardware_0_lados()
@@ -25,8 +25,10 @@ void * hardware_0_lados()
                             principal(0,segundo_carro->lado_izquierdo,0,1,0,0,0,segundo_carro->tipo_carro);
                         }
 
-                    } else {
-                    Apagar_P1_Izq();
+                    }
+                    else
+                    {
+                        Apagar_P1_Izq();
                     }
 
                     if(buscar_nodo_thread(threads,0)->puente->carros_derecha->tamanio>0)
@@ -39,9 +41,11 @@ void * hardware_0_lados()
                             Thread_Carro segundo_carro_derecha = primer_carro_derecha->next;
                             principal(0,segundo_carro_derecha->lado_izquierdo,1,1,0,0,0,segundo_carro_derecha->tipo_carro);
                         }
-                    } else {
+                    }
+                    else
+                    {
 
-                    Apagar_P1_Der();
+                        Apagar_P1_Der();
                     }
                 }
             }
@@ -74,7 +78,9 @@ void * hardware_1_lados()
                             principal(1,segundo_carro->lado_izquierdo,0,1,0,0,0,segundo_carro->tipo_carro);
                         }
 
-                    } else {
+                    }
+                    else
+                    {
                         Apagar_P2_Izq();
                     }
 
@@ -88,9 +94,11 @@ void * hardware_1_lados()
                             Thread_Carro segundo_carro_derecha = primer_carro_derecha->next;
                             principal(1,segundo_carro_derecha->lado_izquierdo,1,1,0,0,0,segundo_carro_derecha->tipo_carro);
                         }
-                    } else {
+                    }
+                    else
+                    {
 
-                    Apagar_P2_Der();
+                        Apagar_P2_Der();
                     }
                 }
             }
@@ -122,9 +130,11 @@ void * hardware_2_lados()
                             Thread_Carro segundo_carro = primer_carro->next;
                             principal(2,segundo_carro->lado_izquierdo,0,1,0,0,0,segundo_carro->tipo_carro);
                         }
-                    } else {
+                    }
+                    else
+                    {
 
-                    Apagar_P3_Izq();
+                        Apagar_P3_Izq();
                     }
                     if(buscar_nodo_thread(threads,2)->puente->carros_derecha->tamanio>0)
                     {
@@ -137,8 +147,10 @@ void * hardware_2_lados()
                             principal(2,segundo_carro_derecha->lado_izquierdo,1,1,0,0,0,segundo_carro_derecha->tipo_carro);
                         }
 
-                    } else {
-                    Apagar_P3_Der();
+                    }
+                    else
+                    {
+                        Apagar_P3_Der();
                     }
                 }
             }

@@ -4,7 +4,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-int *controlador_carros(void *carro)
+void *controlador_carros(void *carro)
 {
     Thread_Carro data = (Thread_Carro) carro;
 
@@ -26,7 +26,7 @@ int *controlador_carros(void *carro)
 
                         pthread_mutex_lock(&lock_thread_terminado);
 
-                        printf(ANSI_COLOR_YELLOW "Carro %d termino de pasar el puente, no habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
+                        printf(ANSI_COLOR_YELLOW "Carro %lu termino de pasar el puente, no habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
                         //eliminar_nodo_carro(carros_ui,data->thread_identificador);
                         eliminar_nodo_thread(threads,data->thread_identificador);           // Elimino el carro de la lista de hilos
                         eliminar_nodo_carro(buscar_nodo_thread(threads,data->puente)->puente->carros_circulando,data->thread_identificador);    // Elimino el carro de la lista de los carros circulando de su debido puente
@@ -39,7 +39,7 @@ int *controlador_carros(void *carro)
 
                         pthread_t id = pthread_self();
                         pthread_detach(id);
-                        return 0;
+                        //return 0;
 
                     }
                     else
@@ -52,17 +52,15 @@ int *controlador_carros(void *carro)
                         if(hardware == 1 && data->puente<3)
                         {
                             principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,1,data->tipo_carro);
-                            printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp, data->lado_izquierdo);
+                            printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp);
                             usleep(data->velocidad*100000);                                             // Simulo la velocidad
-                            //sleep(1);
                             principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
-                            //sleep(1);
                             distancia_tmp ++;
                         }
                         else
                         {
 
-                            printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp, data->lado_izquierdo);
+                            printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp);
                             usleep(data->velocidad*100000);                                             // Simulo la velocidad
                             distancia_tmp ++;
 
@@ -88,7 +86,7 @@ int *controlador_carros(void *carro)
 
                         pthread_mutex_lock(&lock_thread_terminado);
 
-                        printf(ANSI_COLOR_YELLOW "Carro %d termino de pasar el puente, habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
+                        printf(ANSI_COLOR_YELLOW "Carro %lu termino de pasar el puente, habia alguien en frente %d\n" ANSI_COLOR_RESET, data->thread_identificador, puente_tmp->carros_circulando->tamanio);
 
                         //eliminar_nodo_carro(carros_ui,data->thread_identificador);
                         eliminar_nodo_thread(threads,data->thread_identificador);           // Elimino el carro de la lista de hilos
@@ -102,7 +100,7 @@ int *controlador_carros(void *carro)
 
                         pthread_t id = pthread_self();
                         pthread_detach(id);
-                        return 0;
+                        //return 0;
 
                     }
                     else
@@ -116,10 +114,8 @@ int *controlador_carros(void *carro)
 
                             principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,1,data->tipo_carro);
                             printf("Carro %lu moviendose %d\n", data->thread_identificador, distancia_tmp);
-                            //sleep(1);
                             usleep(buscar_nodo_carro(puente_tmp->carros_circulando,data->thread_identificador)->prev->velocidad*100000);
                             principal(data->puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
-                            //sleep(1);
                             distancia_tmp ++;
                         }
                         else
@@ -155,7 +151,7 @@ int *controlador_carros(void *carro)
 
         }
 
-       // usleep(10000);
+        usleep(10000);
     }
 }
 
@@ -175,7 +171,7 @@ void *generador_carros(void *t)
         srand(time(NULL));
         //printf("Generando carro %lu de tipo %d al lado %d del puente %d \n",i, carro->tipo_carro, lado_random, puente_random);
 
-        int puente_random = rand() % 3;
+        int puente_random = 0;//rand() % 4;
         int lado_random = rand() % 2;
 
         Thread_Carro carro = (Thread_Carro) calloc(1, sizeof(struct thread_carro));

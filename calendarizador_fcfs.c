@@ -23,13 +23,13 @@ void *calendarizador_fcfs(void *t)
                 printf("\n");
                 if(thread_actual>3)
                 {
-                    printf("\nComenzando a ejecutar hilo %d", thread_actual);
+                    printf("\nComenzando a ejecutar hilo %lu", thread_actual);
                     printf(ANSI_COLOR_RED " CARRO\n" ANSI_COLOR_RESET);
 
                 }
                 else
                 {
-                    printf( "\nComenzando a ejecutar hilo PUENTE %d\n", thread_actual);
+                    printf( "\nComenzando a ejecutar hilo PUENTE %lu\n", thread_actual);
 
                 }
                 pthread_mutex_unlock(&lock_thread_terminado);

@@ -307,7 +307,7 @@ void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador)
                 {
                     if (tmp->next->thread_identificador == thread_identificador)
                     {
-                        Thread_Carro tmp2 = tmp->next;
+//                        Thread_Carro tmp2 = tmp->next;
                         if (tmp->next->next != NULL)
                         {
                             tmp->next = tmp->next->next;
@@ -333,6 +333,21 @@ void eliminar_nodo_carro(ThreadListCarro list, long thread_identificador)
 }
 
 /**
+ * Imprime cada uno de los nodos
+ **/
+void imprimir(ThreadListCarro pLista){
+    printf("\n-------- LISTA CARRO -------\n");
+    Thread_Carro tmp = pLista->head;
+
+    while(tmp != NULL) {
+        printf("\nCarro: %lu, Tipo: %d, Prioridad: %d, Tiempo Limite: %d\n",tmp->thread_identificador, tmp->tipo_carro, tmp->prioridad, tmp->limite_tiempo);
+        tmp = tmp->next;
+        sleep(1);
+    }
+    printf("\n----------------------------\n\n");
+}
+
+/**
  * Aumenta en una unidad la prioridad de cada elemento de la lista.
  */
 void Envejecer(ThreadListCarro list)
@@ -341,8 +356,10 @@ void Envejecer(ThreadListCarro list)
     int largo = list->tamanio;
     for (int indice = 0; indice < largo; indice++)
     {
-        tmp->prioridad -= 1;
-        tmp = tmp->next;
+        if(tmp->prioridad > 0){
+            tmp->prioridad -= 1;
+            tmp = tmp->next;
+        }
     }
 }
 
@@ -353,8 +370,10 @@ void Envejecer_Threads(ThreadList list)
     int largo = list->tamanio;
     for (int indice = 0; indice < largo; indice++)
     {
-        tmp->prioridad -= 1;
-        tmp = tmp->next;
+        if(tmp->prioridad > 0){
+            tmp->prioridad -= 1;
+            tmp = tmp->next;
+        }
     }
 }
 
@@ -392,12 +411,13 @@ Thread_Carro popCar(ThreadListCarro list)
     return tmp;
 }
 
+
 /**
  * Agrega el elemento a la lista
  */
 void agregar_carro_prioridad(Thread_Carro node, ThreadListCarro list)
 {
-    Envejecer(list);
+    //Envejecer(list);
     //printf("\n\n\n*** Insertando nodo: %d *** tam %d",node->thread_identificador,list->tamanio);
     if (list->head == NULL)
     {
@@ -476,7 +496,7 @@ void agregar_carro_prioridad(Thread_Carro node, ThreadListCarro list)
 
 void agregar_thread_prioridad(Thread node, ThreadList list)
 {
-    Envejecer_Threads(list);
+    //Envejecer_Threads(list);
     //printf("\n\n\n*** Insertando nodo: %d *** tam %d",node->thread_identificador,list->tamanio);
     if (list->head == NULL)
     {
@@ -845,12 +865,12 @@ void agregar_thread_Tiempo_Real(Thread node, ThreadList list)
 
     if(node->thread_identificador < 4)
     {
-        //printf("\n\n//// INSERTANTO PUENTE \\\\");
+        printf("\n\n//// INSERTANTO PUENTE \\\\");
         agregar_Puente_Tiempo_Real(node, list);
     }
     else
     {
-        //printf("\n\n//// INSERTANTO CARRO \\\\");
+        printf("\n\n//// INSERTANTO CARRO \\\\");
         Thread_Carro carro = node->carro;      // asigna nodo para manejarlo como carro
 
         //printf("\nINSERTAR CARRO\n");
@@ -859,17 +879,17 @@ void agregar_thread_Tiempo_Real(Thread node, ThreadList list)
         switch(carro->tipo_carro)
         {
         case 1  :
-            //printf("\nINSERTAR AMBULACIA\n");
+            printf("\nINSERTAR AMBULACIA\n");
             agregar_Ambulacia_Tiempo_Real_Lista_General(node,list);
             break;
 
         case 2  :
-            //printf("\nINSERTAR RADIOACTIVO\n");
+            printf("\nINSERTAR RADIOACTIVO\n");
             agregar_Radioactivo_Tiempo_Real_Lista_General(node,list);
             break;
 
         default:
-            //printf("\nINSERTAR CARRO\n");
+            printf("\nINSERTAR CARRO\n");
             agregar_Carro_Tiempo_Real_Lista_General(node,list);
             break;
         }

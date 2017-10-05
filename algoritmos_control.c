@@ -1,5 +1,5 @@
 #include "algoritmos_control.h"
-
+#include "rasp.h"
 
 void *algoritmo_puente_oficial(void *puente)
 {
@@ -388,15 +388,15 @@ void *controlador_carros_jungla(void *carro)
 
                             if(data->tipo_carro == RADIOACTIVO)
                             {
-                                printf(ANSI_COLOR_GREEN "Agregando carro RADIOACTIVO %lu a circulacion sobre puente %lu\n" ANSI_COLOR_RESET, id, puente);
+                                printf(ANSI_COLOR_GREEN "Agregando carro RADIOACTIVO %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id, puente);
                             }
                             else if(data->tipo_carro == AMBULANCIA)
                             {
-                                printf(ANSI_COLOR_RED "Agregando carro AMBULANCIA %lu a circulacion sobre puente %lu\n" ANSI_COLOR_RESET, id, puente);
+                                printf(ANSI_COLOR_RED "Agregando carro AMBULANCIA %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id, puente);
                             }
                             else
                             {
-                                printf(ANSI_COLOR_CYAN "Agregando carro REGULAR %lu a circulacion sobre puente %lu\n" ANSI_COLOR_RESET, id, puente);
+                                printf(ANSI_COLOR_CYAN "Agregando carro REGULAR %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id, puente);
                             }
 
 
@@ -411,15 +411,15 @@ void *controlador_carros_jungla(void *carro)
 
                             if(data->tipo_carro == RADIOACTIVO)
                             {
-                                printf(ANSI_COLOR_GREEN "Agregando carro RADIOACTIVO %lu a circulacion sobre puente %lu\n" ANSI_COLOR_RESET, id, puente);
+                                printf(ANSI_COLOR_GREEN "Agregando carro RADIOACTIVO %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id, puente);
                             }
                             else if(data->tipo_carro == AMBULANCIA)
                             {
-                                printf(ANSI_COLOR_RED "Agregando carro AMBULANCIA %lu a circulacion sobre puente %lu\n" ANSI_COLOR_RESET, id, puente);
+                                printf(ANSI_COLOR_RED "Agregando carro AMBULANCIA %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id, puente);
                             }
                             else
                             {
-                                printf(ANSI_COLOR_CYAN "Agregando carro REGULAR %lu a circulacion sobre puente %lu\n" ANSI_COLOR_RESET, id, puente);
+                                printf(ANSI_COLOR_CYAN "Agregando carro REGULAR %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id, puente);
                             }
 
                             corriendo = 1; // Poner a caminar el carro
@@ -441,15 +441,15 @@ void *controlador_carros_jungla(void *carro)
 
                             if(data->tipo_carro == RADIOACTIVO)
                             {
-                                printf(ANSI_COLOR_GREEN "Agregando carro RADIOACTIVO %lu a circulacion sobre puente %lu\n" ANSI_COLOR_RESET, id, puente);
+                                printf(ANSI_COLOR_GREEN "Agregando carro RADIOACTIVO %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id, puente);
                             }
                             else if(data->tipo_carro == AMBULANCIA)
                             {
-                                printf(ANSI_COLOR_RED "Agregando carro AMBULANCIA %lu a circulacion sobre puente %lu\n" ANSI_COLOR_RESET, id, puente);
+                                printf(ANSI_COLOR_RED "Agregando carro AMBULANCIA %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id, puente);
                             }
                             else
                             {
-                                printf(ANSI_COLOR_CYAN "Agregando carro REGULAR %lu a circulacion sobre puente %lu\n" ANSI_COLOR_RESET, id, puente);
+                                printf(ANSI_COLOR_CYAN "Agregando carro REGULAR %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id, puente);
                             }
 
                             corriendo = 1; // Poner a caminar el carro
@@ -463,15 +463,15 @@ void *controlador_carros_jungla(void *carro)
 
                             if(data->tipo_carro == RADIOACTIVO)
                             {
-                                printf(ANSI_COLOR_GREEN "Agregando carro RADIOACTIVO %lu a circulacion sobre puente %lu\n" ANSI_COLOR_RESET, id, puente);
+                                printf(ANSI_COLOR_GREEN "Agregando carro RADIOACTIVO %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id, puente);
                             }
                             else if(data->tipo_carro == AMBULANCIA)
                             {
-                                printf(ANSI_COLOR_RED "Agregando carro AMBULANCIA %lu a circulacion sobre puente %lu\n" ANSI_COLOR_RESET, id, puente);
+                                printf(ANSI_COLOR_RED "Agregando carro AMBULANCIA %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id, puente);
                             }
                             else
                             {
-                                printf(ANSI_COLOR_CYAN "Agregando carro REGULAR %lu a circulacion sobre puente %lu\n" ANSI_COLOR_RESET, id, puente);
+                                printf(ANSI_COLOR_CYAN "Agregando carro REGULAR %lu a circulacion sobre puente %d\n" ANSI_COLOR_RESET, id, puente);
                             }
 
 
@@ -503,7 +503,7 @@ void *controlador_carros_jungla(void *carro)
                             eliminar_nodo_thread(threads,id);           // Elimino el carro de la lista de hilos
                             buscar_nodo_puente(puentes,data->puente)->ocupancia -= 1;
                             distancia_tmp = 0;
-                            printf(ANSI_COLOR_YELLOW "Carro %d termino de pasar el puente, no habia alguien en frente %d\n" ANSI_COLOR_RESET, id, puente_tmp->carros_circulando->tamanio);
+                            printf(ANSI_COLOR_YELLOW "Carro %lu termino de pasar el puente, no habia alguien en frente %d\n" ANSI_COLOR_RESET, id, puente_tmp->carros_circulando->tamanio);
                             thread_terminado = 1;
                             pthread_mutex_unlock(&lock_thread_terminado);
                             pthread_t id = pthread_self();
@@ -517,7 +517,7 @@ void *controlador_carros_jungla(void *carro)
                             if(puente < 2)
                             {
                                 principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,1,data->tipo_carro);
-                                printf("Carro %lu moviendose %d\n", id, distancia_tmp, data->lado_izquierdo);
+                                printf("Carro %lu moviendose %d\n", id, distancia_tmp);
                                 usleep(data->velocidad*100000);                                             // Simulo la velocidad
                                 principal(puente,data->lado_izquierdo,0,0,1,distancia_tmp,0,data->tipo_carro);
                                 distancia_tmp ++;                                                   // Auento la distancia recorrida
@@ -526,7 +526,7 @@ void *controlador_carros_jungla(void *carro)
                             else
                             {
 
-                                printf("Carro %lu moviendose %d\n", id, distancia_tmp, data->lado_izquierdo);
+                                printf("Carro %lu moviendose %d\n", id, distancia_tmp);
                                 usleep(data->velocidad*100000);                                             // Simulo la velocidad
                                 distancia_tmp ++;                                                   // Auento la distancia recorrida
 
@@ -546,7 +546,7 @@ void *controlador_carros_jungla(void *carro)
                             eliminar_nodo_carro( buscar_nodo_puente(puentes,data->puente)->carros_circulando,id);    // Elimino el carro de la lista de los carros circulando de su debido puente
                             eliminar_nodo_thread(threads,id);           // Elimino el carro de la lista de hilos
                             buscar_nodo_puente(puentes,data->puente)->ocupancia -= 1;
-                            printf(ANSI_COLOR_YELLOW "Carro %d termino de pasar el puente, habia alguien en frente %d\n" ANSI_COLOR_RESET, id, puente_tmp->carros_circulando->tamanio);
+                            printf(ANSI_COLOR_YELLOW "Carro %lu termino de pasar el puente, habia alguien en frente %d\n" ANSI_COLOR_RESET, id, puente_tmp->carros_circulando->tamanio);
                             thread_terminado = 1;
                             pthread_mutex_unlock(&lock_thread_terminado);
                             pthread_t id = pthread_self();

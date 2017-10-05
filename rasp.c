@@ -661,7 +661,7 @@ void principal(int puente,int ladoIzquierdo,int posicion,int actPosicion,int cen
 
 void *Estado_P1(void *arg)
 {
-    int rep;
+//    int rep;
     while(1)
     {
         if(Izq_1_1==1)
@@ -752,7 +752,7 @@ void *Estado_P1(void *arg)
 
 void *Estado_P2(void *arg)
 {
-    int rep;
+//    int rep;
     while(1)
     {
         if(Izq_2_1==1)
@@ -839,7 +839,7 @@ void *Estado_P2(void *arg)
 
 void *Estado_P3(void *arg)
 {
-    int rep;
+//    int rep;
     while(1)
     {
         if(Izq_3_1==1)

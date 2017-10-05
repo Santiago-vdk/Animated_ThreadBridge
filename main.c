@@ -1,4 +1,5 @@
 #include "main.h"
+#include "rasp.h"
 #include "calendarizador_rr.h"
 #include "calendarizador_fcfs.h"
 #include "calendarizador_sjf.h"
@@ -6,14 +7,15 @@
 #include "calendarizador_priority_queue.h"
 #include "algoritmos_control.h"
 #include "manejo_carros.h"
-#include "rasp.h"
 #include "principal.h"
 #include "control_puentes_hardware.h"
 #include <time.h>
 
-void * iniciarEjecucion()
+static int iniciarEjecucion(void *ptr)
 {
     ejecutar();
+
+    return 0;
 }
 
 
@@ -34,7 +36,7 @@ int main()
     if(hardware == 1)
     {
         printf("Hardware ENABLED\n");
-        int g,rep;
+//        int g,rep;
 
         // Set up gpi pointer for direct register access
         setup_io();
@@ -67,7 +69,8 @@ int main()
         SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
         SDL_Event input;
 
-        SDL_Thread* threadID2 = SDL_CreateThread( iniciarEjecucion, "MainThread2", NULL);
+//        SDL_Thread* threadID2 =
+        SDL_CreateThread( iniciarEjecucion, "iniciarEjecucion",(void *)NULL);
 
 
         SDL_Texture* textura_fondo = NULL;
