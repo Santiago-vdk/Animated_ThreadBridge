@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1507245240 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
+1507246659 source:/home/santiago/Desktop/Animated_ThreadBridge/main.c
 	"main.h"
 	"rasp.h"
 	"calendarizador_rr.h"
@@ -21,7 +21,7 @@
 	<SDL2/SDL_image.h>
 	<SDL2/SDL_ttf.h>
 
-1507223088 source:/home/santiago/Desktop/Animated_ThreadBridge/thread_data.c
+1507247026 source:/home/santiago/Desktop/Animated_ThreadBridge/thread_data.c
 	<stdlib.h>
 	<stdio.h>
 	"thread_data.h"
@@ -47,7 +47,7 @@
 	"thread_data.h"
 	"globales.h"
 
-1506958638 source:/home/santiago/Desktop/Animated_ThreadBridge/lector_archivos.c
+1507246618 source:/home/santiago/Desktop/Animated_ThreadBridge/lector_archivos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -57,7 +57,7 @@
 	<stdlib.h>
 	<string.h>
 
-1506958638 source:/home/santiago/Desktop/Animated_ThreadBridge/puentes.c
+1507247028 source:/home/santiago/Desktop/Animated_ThreadBridge/puentes.c
 	"puentes.h"
 	"lector_archivos.h"
 
@@ -140,34 +140,34 @@
 1506959160 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_rr.h
 	"main.h"
 
-1507243540 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_rr.c
+1507246550 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_rr.c
 	"calendarizador_rr.h"
 
-1507227634 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_fcfs.c
+1507247028 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_fcfs.c
 	"calendarizador_fcfs.h"
 
 1506959311 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_fcfs.h
 	"main.h"
 
-1507222850 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_sjf.c
+1507246555 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_sjf.c
 	"calendarizador_sjf.h"
 
 1506959474 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_sjf.h
 	"main.h"
 
-1507222850 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_real_time.c
+1507246543 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_real_time.c
 	"calendarizador_real_time.h"
 
 1506959597 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_real_time.h
 	"main.h"
 
-1507222850 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.c
+1507246538 source:/home/santiago/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.c
 	"calendarizador_priority_queue.h"
 
 1506959756 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.h
 	"main.h"
 
-1507246003 source:/home/santiago/Desktop/Animated_ThreadBridge/algoritmos_control.c
+1507246515 source:/home/santiago/Desktop/Animated_ThreadBridge/algoritmos_control.c
 	"algoritmos_control.h"
 	"rasp.h"
 
@@ -177,20 +177,20 @@
 1507222850 /home/santiago/Desktop/Animated_ThreadBridge/manejo_carros.h
 	"main.h"
 
-1507244650 source:/home/santiago/Desktop/Animated_ThreadBridge/manejo_carros.c
+1507314110 source:/home/santiago/Desktop/Animated_ThreadBridge/manejo_carros.c
 	"manejo_carros.h"
 	"algoritmos_control.h"
 	<SDL2/SDL.h>
 	<SDL2/SDL_image.h>
 	<SDL2/SDL_ttf.h>
 
-1507222850 source:/home/santiago/Desktop/Animated_ThreadBridge/rasp.c
+1507246843 source:/home/santiago/Desktop/Animated_ThreadBridge/rasp.c
 	"rasp.h"
 
 1507222850 /home/santiago/Desktop/Animated_ThreadBridge/rasp.h
 	"main.h"
 
-1507243438 source:/home/santiago/Desktop/Animated_ThreadBridge/principal.c
+1507246734 source:/home/santiago/Desktop/Animated_ThreadBridge/principal.c
 	"principal.h"
 	"calendarizador_rr.h"
 	"calendarizador_fcfs.h"
@@ -203,7 +203,7 @@
 1506961291 /home/santiago/Desktop/Animated_ThreadBridge/principal.h
 	"main.h"
 
-1507243169 source:/home/santiago/Desktop/Animated_ThreadBridge/control_puentes_hardware.c
+1507246601 source:/home/santiago/Desktop/Animated_ThreadBridge/control_puentes_hardware.c
 	"control_puentes_hardware.h"
 	"rasp.h"
 
