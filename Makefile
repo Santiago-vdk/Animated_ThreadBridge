@@ -5,6 +5,10 @@ all:	\
 	thread_data.c thread_data.h \
 	lector_archivos.c lector_archivos.h \
 	\
+	arduino.c arduino.h \
+	firmata.c firmata.h \
+	serial.c serial.h \
+	\
 	calendarizador_fcfs.c calendarizador_fcfs.h \
 	calendarizador_priority_queue.c calendarizador_priority_queue.h \
 	calendarizador_real_time.c calendarizador_real_time.h \
@@ -23,6 +27,10 @@ all:	\
 	gcc -o build/thread_data.o -c thread_data.c -std=c99
 	gcc -o build/lector_archivos.o -c lector_archivos.c 
 
+	gcc -o build/arduino.o -c arduino.c 
+	gcc -o build/firmata.o -c firmata.c 
+	gcc -o build/serial.o -c serial.c 
+
 	gcc -o build/calendarizador_fcfs.o -c calendarizador_fcfs.c 
 	gcc -o build/calendarizador_priority_queue.o -c calendarizador_priority_queue.c 
 	gcc -o build/calendarizador_real_time.o -c calendarizador_real_time.c 
@@ -39,6 +47,9 @@ all:	\
 		build/rasp.o \
 		build/thread_data.o \
 		build/lector_archivos.o \
+		build/arduino.o \
+		build/firmata.o \
+		build/serial.o \
 		build/calendarizador_fcfs.o \
 		build/calendarizador_priority_queue.o \
 		build/calendarizador_real_time.o \

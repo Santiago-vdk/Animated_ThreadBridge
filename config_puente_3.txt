@@ -2,6 +2,6 @@ distribucion_exponencial:0.5
 probabilidad_ambulancia:0.38
 capacidad:3
 valor_k:5
-metodo_control:0
+metodo_control:1
 tiempo_semaforo_izquierda:1
 tiempo_semaforo_derecha:1

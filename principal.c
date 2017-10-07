@@ -202,6 +202,18 @@ void ejecutar()
 
     }
 
+    if(hardware == 1){
+        // Configuracion inicial puentes
+        semaforo(0,1,1);
+        semaforo(1,1,1);
+        semaforo(2,1,1);
+
+        semaforo(0,0,0);
+        semaforo(1,0,0);
+        semaforo(2,0,0);
+
+    }
+
 
     if (pthread_mutex_init(&lock_thread_terminado, NULL) != 0)
     {

@@ -10,6 +10,7 @@
 #include "principal.h"
 #include "control_puentes_hardware.h"
 #include <time.h>
+#include "arduino.h"
 
 
 /*
@@ -107,6 +108,8 @@ int main()
         setup_io();
         set_outputRasp();
 
+        setup_arduino();
+
         pthread_create(&thread_puente_hardware_0, NULL, Estado_P1, NULL);
         pthread_create(&thread_puente_hardware_1, NULL, Estado_P2, NULL);
         pthread_create(&thread_puente_hardware_2, NULL, Estado_P3, NULL);
@@ -115,6 +118,12 @@ int main()
         pthread_create(&thread_puente_hardware_0_lados, NULL, hardware_0_lados, NULL);
         pthread_create(&thread_puente_hardware_1_lados, NULL, hardware_1_lados, NULL);
         pthread_create(&thread_puente_hardware_2_lados, NULL, hardware_2_lados, NULL);
+
+        pthread_create(&ptSemaforo_P1, NULL , Estado_Semaforo_P1 , NULL);
+        pthread_create(&ptSemaforo_P2, NULL , Estado_Semaforo_P2 , NULL);
+        pthread_create(&ptSemaforo_P3, NULL , Estado_Semaforo_P3 , NULL);
+
+        sleep(3);
 
     }
 

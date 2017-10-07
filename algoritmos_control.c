@@ -293,6 +293,14 @@ void *algoritmo_puente_semaforo(void *puente)
                 printf(ANSI_COLOR_GREEN " verde" ANSI_COLOR_RESET);
                 printf(" en PUENTE %d \n", data->puente_id);
 
+
+
+                if(hardware == 1 && data->thread_identificador > 3){
+                    semaforo(data->thread_identificador,1,0);
+                    semaforo(data->thread_identificador,0,1);
+                }
+
+
                 data->semaforo_izquierda = 0; //izquierda a rojo
                 //pthread_mutex_unlock(&lock_comenzar_espera);
             }
@@ -375,6 +383,10 @@ void *algoritmo_puente_semaforo(void *puente)
                 printf(ANSI_COLOR_GREEN " verde" ANSI_COLOR_RESET);
                 printf(" en PUENTE %d \n", data->puente_id);
 
+                if(hardware == 1){
+                    semaforo(data->thread_identificador,1,1);
+                    semaforo(data->thread_identificador,0,1);
+                }
 
                 data->semaforo_izquierda = 1; //izquierda a rojo
                 //pthread_mutex_unlock(&lock_comenzar_espera);

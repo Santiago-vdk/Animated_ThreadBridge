@@ -44,6 +44,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="algoritmos_control.h" />
+		<Unit filename="arduino.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="arduino.h" />
 		<Unit filename="calendarizador_fcfs.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -68,6 +72,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="control_puentes_hardware.h" />
+		<Unit filename="firmata.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="firmata.h" />
 		<Unit filename="lector_archivos.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -96,6 +104,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="rasp.h" />
+		<Unit filename="serial.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="serial.h" />
 		<Unit filename="thread_data.c">
 			<Option compilerVar="CC" />
 		</Unit>
