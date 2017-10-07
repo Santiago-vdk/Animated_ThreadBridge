@@ -670,7 +670,7 @@ void agregar_Puente_Tiempo_Real(Thread node, ThreadList list)
  */
 void agregar_Carro_Tiempo_Real_Lista_General(Thread node, ThreadList list)
 {
-    //printf("\n++ Insertando Carro ++");
+     //printf("\n++ Insertando Carro ++");
 
     //printf("Tam %d\n",list->tamanio);
     //printf("\nHILO : %lu",list->head->puente->puente_id);
@@ -747,13 +747,13 @@ void agregar_Carro_Tiempo_Real_Lista_General(Thread node, ThreadList list)
  */
 void agregar_Radioactivo_Tiempo_Real_Lista_General (Thread node, ThreadList list)
 {
-    //printf("\n++ Insertando Radioactivo ++");
+   //printf("\n++ Insertando Radioactivo ++");
     if (list->head == NULL)
     {
         //printf("\nINSERTO PRIMER ELEMENTO");
         list->head = node;
         list->tail = node;
-        //sleep(1);
+        //sleep(5);
     }
     else
     {
@@ -768,18 +768,25 @@ void agregar_Radioactivo_Tiempo_Real_Lista_General (Thread node, ThreadList list
                 Thread_Carro carroNuevo = node->carro;
                 //printf("\n** (TMP) Codigo: %d, Tipo Carro: %d, Velocidad: %d Tiempo: %d**\n", carroLista->thread_identificador, carroLista->tipo_carro,carroLista->velocidad, carroLista->limite_tiempo);
                 //printf("\n** (NODE) Codigo: %d, Tipo Carro: %d, Velocidad: %d Tiempo: %d**\n", carroNuevo->thread_identificador, carroNuevo->tipo_carro, carroNuevo->velocidad, carroNuevo->limite_tiempo);
-                //sleep(1);
+                //sleep(10);
 
                 int esTipoMayor      = (carroNuevo->tipo_carro    >   carroLista->tipo_carro)    ? 1 : 0;
                 int esTipoIgual      = (carroNuevo->tipo_carro    ==  carroLista->tipo_carro)    ? 1 : 0;
                 int esTiempoMenor    = (carroNuevo->limite_tiempo <   carroLista->limite_tiempo) ? 1 : 0;
                 int esTiempoIgual    = (carroNuevo->limite_tiempo ==  carroLista->limite_tiempo) ? 1 : 0;
                 int esVelocidadMayor = (carroNuevo->velocidad     >   carroLista->velocidad)     ? 1 : 0;
+                //printf("\nMi Tipo es Mayor: %d",esTipoMayor);
+                //printf("\nMi Tipo es Igual: %d",esTipoIgual);
+                //printf("\nMi Tiempo es Menor: %d",esTiempoMenor);
+                //printf("\nMi Tiempo es Igual: %d",esTiempoIgual);
+                //printf("\nMi Velocidad es Mayor: %d",esVelocidadMayor);
 
+
+                //sleep(15);
                 //Prioridad es mayor al nodo en evaluacion
-                if ( esTipoMayor == 1 || ( esTipoIgual == 1 && ( esTiempoMenor == 1 || ( esTiempoIgual == 1 && esVelocidadMayor == 1 ) ) ) )
+                if ( esTipoMayor == 1 || (esTipoIgual == 1 && (esTiempoMenor == 1 || (esTiempoIgual == 1 && esVelocidadMayor == 1) )  ) )
                 {
-                    //printf("\n-- INGRESANDO --");
+                    //printf("\n\n-- INGRESANDO --");
                     //Nodo es la cabeza
                     if(tmp->thread_identificador ==  list->head->thread_identificador)
                     {
@@ -868,7 +875,6 @@ void agregar_Ambulacia_Tiempo_Real_Lista_General(Thread node, ThreadList list)
                 }
             }
             tmp = tmp->next;
-            //sleep(1);
         }
 
         //printf("\nFlag: %d",flag);

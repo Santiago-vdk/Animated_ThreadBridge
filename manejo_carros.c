@@ -543,6 +543,11 @@ void *generador_carros(void *t)
             break;
         }
 
+//        carro -> tipo_carro = AMBULANCIA;
+//        carro -> prioridad = 2;
+//        carro -> vida_carro = 1000;
+//        carro -> limite_tiempo = 1000;
+
         if(rand()%100 > probabilidad *100 )
         {
             carro -> tipo_carro = RADIOACTIVO;
