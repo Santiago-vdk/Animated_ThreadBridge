@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "mythreads/mythread.h"
+#include "mythread.h"
 #include "thread_data.h"
 #include <time.h>
 #include "puentes.h"

@@ -508,7 +508,7 @@ void *controlador_carros_jungla(void *carro)
                             puente_temporal->ocupancia +=  1;         // Solo se aumenta la ocupancia, que el carro salga del puente es su responsabilidad
 
                         }
-                        else if(puente_temporal->carros_circulando->head->lado_izquierdo == 1 && (int)puente_temporal->carros_circulando < (int)puente_temporal->capacidad)
+                        else if(puente_temporal->carros_circulando->head->lado_izquierdo == 1 && puente_temporal->carros_circulando < puente_temporal->capacidad)
                         {
                             agregar_carro(data,puente_temporal->carros_circulando);     // Paso el thread a los que estan circulando
                             eliminar_nodo_carro(puente_temporal->carros_derecha, id);

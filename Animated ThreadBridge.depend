@@ -27,9 +27,9 @@
 	<stdio.h>
 	"thread_data.h"
 
-1506958638 /home/santiago/Desktop/Animated_ThreadBridge/mythreads/mythread.h
+1507779883 /home/santiago/Desktop/Animated_ThreadBridge/mythreads/mythread.h
 
-1506958638 source:/home/santiago/Desktop/Animated_ThreadBridge/mythreads/mythread.c
+1507779955 source:/home/santiago/Desktop/Animated_ThreadBridge/mythreads/mythread.c
 	<pthread.h>
 	"mythread.h"
 
@@ -122,10 +122,10 @@
 	<stdio.h>
 	"thread_data.h"
 
-1507241049 /home/santiago/Desktop/Animated_ThreadBridge/main.h
+1507780629 /home/santiago/Desktop/Animated_ThreadBridge/main.h
 	<stdio.h>
 	<stdlib.h>
-	"mythreads/mythread.h"
+	"mythread.h"
 	"thread_data.h"
 	<time.h>
 	"puentes.h"
@@ -169,7 +169,7 @@
 1506959756 /home/santiago/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.h
 	"main.h"
 
-1507765435 source:/home/santiago/Desktop/Animated_ThreadBridge/algoritmos_control.c
+1507779427 source:/home/santiago/Desktop/Animated_ThreadBridge/algoritmos_control.c
 	"algoritmos_control.h"
 	"rasp.h"
 
@@ -551,4 +551,6 @@
 	<sys/stat.h>
 	<sys/ioctl.h>
 	<linux/serial.h>
+
+1507779883 /home/santiago/Desktop/Animated_ThreadBridge/mythread.h
 
