@@ -220,7 +220,6 @@ void *algoritmo_puente_semaforo(void *puente)
                     pthread_mutex_lock(&lock_thread_terminado);
                     thread_terminado = 1;
                     pthread_mutex_unlock(&lock_thread_terminado);
-                    break;
                 }
             }
 
