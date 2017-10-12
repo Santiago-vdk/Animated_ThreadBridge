@@ -1,3 +1,5 @@
+DIRS=build
+
 all:	\
 	main.c main.h \
 	principal.c principal.h \
@@ -44,7 +46,7 @@ all:	\
 
 	gcc -o build/manejo_carros.o -c manejo_carros.c 
 	
-	gcc -o build/mythread.o -c mythread.c 
+	gcc -o build/mythread.o -c mythread.c -w
 
 	gcc -o Animated_ThreadBridge build/main.o build/principal.o \
 		build/rasp.o \
@@ -86,6 +88,6 @@ rasp: \
 	gcc -Wall -o build/rasp.o -c rasp.c 
 
 		
-
+$(shell mkdir -p $(DIRS))
 
 
