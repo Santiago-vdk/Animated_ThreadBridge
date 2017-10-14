@@ -20,8 +20,7 @@ all:	\
 	algoritmos_control.c algoritmos_control.h \
 	control_puentes_hardware.c control_puentes_hardware.c \
 	puentes.c puentes.h \
-	manejo_carros.c manejo_carros.h \
-	mythread.c mythread.h 
+	manejo_carros.c manejo_carros.h 
 	
 
 	gcc -o build/main.o -c main.c 
@@ -45,8 +44,6 @@ all:	\
 	gcc -o build/puentes.o -c puentes.c 
 
 	gcc -o build/manejo_carros.o -c manejo_carros.c 
-	
-	gcc -o build/mythread.o -c mythread.c -w
 
 	gcc -o Animated_ThreadBridge build/main.o build/principal.o \
 		build/rasp.o \
@@ -63,7 +60,6 @@ all:	\
 		build/algoritmos_control.o \
 		build/control_puentes_hardware.o \
 		build/puentes.o \
-		build/mythread.o \
 		build/manejo_carros.o  -pthread -lSDL2 -lSDL2_image -lSDL2_ttf -lm
 	
 

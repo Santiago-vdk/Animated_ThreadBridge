@@ -73,12 +73,12 @@
 	<time.h>
 	"puentes.h"
 
-1507335870 source:/home/pi/Desktop/Animated_ThreadBridge/lector_archivos.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/lector_archivos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1507339575 source:/home/pi/Desktop/Animated_ThreadBridge/main.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/main.c
 	"main.h"
 	"rasp.h"
 	"calendarizador_rr.h"
@@ -95,16 +95,16 @@
 
 1506906222 /home/pi/Desktop/Animated_ThreadBridge/mythreads/mythread.h
 
-1507335870 /home/pi/Desktop/Animated_ThreadBridge/thread_data.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/thread_data.h
 	<pthread.h>
 	<SDL2/SDL.h>
 	<SDL2/SDL_image.h>
 	<SDL2/SDL_ttf.h>
 
-1506905639 /home/pi/Desktop/Animated_ThreadBridge/puentes.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/puentes.h
 	"thread_data.h"
 
-1506905639 /home/pi/Desktop/Animated_ThreadBridge/lector_archivos.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/lector_archivos.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -113,11 +113,11 @@
 	<pthread.h>
 	"mythread.h"
 
-1507335870 source:/home/pi/Desktop/Animated_ThreadBridge/puentes.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/puentes.c
 	"puentes.h"
 	"lector_archivos.h"
 
-1507335870 source:/home/pi/Desktop/Animated_ThreadBridge/thread_data.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/thread_data.c
 	<stdlib.h>
 	<stdio.h>
 	"thread_data.h"
@@ -212,17 +212,16 @@
 1507241357 /home/santiago/Desktop/Animated_ThreadBridge/control_puentes_hardware.h
 	"main.h"
 
-1507339418 source:/home/pi/Desktop/Animated_ThreadBridge/algoritmos_control.c
+1507949289 source:/home/pi/Desktop/Animated_ThreadBridge/algoritmos_control.c
 	"algoritmos_control.h"
 	"rasp.h"
 
-1506916880 /home/pi/Desktop/Animated_ThreadBridge/algoritmos_control.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/algoritmos_control.h
 	"main.h"
 
-1507335870 /home/pi/Desktop/Animated_ThreadBridge/main.h
+1507945935 /home/pi/Desktop/Animated_ThreadBridge/main.h
 	<stdio.h>
 	<stdlib.h>
-	"mythreads/mythread.h"
 	"thread_data.h"
 	<time.h>
 	"puentes.h"
@@ -236,60 +235,60 @@
 	<SDL2/SDL_image.h>
 	<SDL2/SDL_ttf.h>
 
-1507335870 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_fcfs.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_fcfs.c
 	"calendarizador_fcfs.h"
 
-1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_fcfs.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_fcfs.h
 	"main.h"
 
-1507335870 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.c
 	"calendarizador_priority_queue.h"
 
-1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_priority_queue.h
 	"main.h"
 
-1507335870 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_real_time.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_real_time.c
 	"calendarizador_real_time.h"
 
-1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_real_time.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_real_time.h
 	"main.h"
 
-1507335870 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_rr.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_rr.c
 	"calendarizador_rr.h"
 
-1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_rr.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_rr.h
 	"main.h"
 
-1507335870 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_sjf.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/calendarizador_sjf.c
 	"calendarizador_sjf.h"
 
-1506916880 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_sjf.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/calendarizador_sjf.h
 	"main.h"
 
-1507335870 source:/home/pi/Desktop/Animated_ThreadBridge/control_puentes_hardware.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/control_puentes_hardware.c
 	"control_puentes_hardware.h"
 	"rasp.h"
 
-1507335870 /home/pi/Desktop/Animated_ThreadBridge/control_puentes_hardware.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/control_puentes_hardware.h
 	"main.h"
 
-1507148958 /home/pi/Desktop/Animated_ThreadBridge/manejo_carros.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/manejo_carros.h
 	"main.h"
 
-1507063259 /home/pi/Desktop/Animated_ThreadBridge/rasp.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/rasp.h
 	"main.h"
 
-1506992481 /home/pi/Desktop/Animated_ThreadBridge/principal.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/principal.h
 	"main.h"
 
-1507335870 source:/home/pi/Desktop/Animated_ThreadBridge/manejo_carros.c
+1507949389 source:/home/pi/Desktop/Animated_ThreadBridge/manejo_carros.c
 	"manejo_carros.h"
 	"algoritmos_control.h"
 	<SDL2/SDL.h>
 	<SDL2/SDL_image.h>
 	<SDL2/SDL_ttf.h>
 
-1507339391 source:/home/pi/Desktop/Animated_ThreadBridge/principal.c
+1507948081 source:/home/pi/Desktop/Animated_ThreadBridge/principal.c
 	"principal.h"
 	"calendarizador_rr.h"
 	"calendarizador_fcfs.h"
@@ -299,31 +298,31 @@
 	"algoritmos_control.h"
 	"manejo_carros.h"
 
-1507335870 source:/home/pi/Desktop/Animated_ThreadBridge/rasp.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/rasp.c
 	"rasp.h"
 
-1507337889 source:/home/pi/Desktop/Animated_ThreadBridge/arduino.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/arduino.c
 	"arduino.h"
 	"firmata.h"
 
-1507337606 /home/pi/Desktop/Animated_ThreadBridge/arduino.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/arduino.h
 	"main.h"
 
-1442857040 /home/pi/Desktop/Animated_ThreadBridge/firmata.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/firmata.h
 	"serial.h"
 
-1442857040 /home/pi/Desktop/Animated_ThreadBridge/serial.h
+1507945872 /home/pi/Desktop/Animated_ThreadBridge/serial.h
 	<stdint.h>
 	<termios.h>
 
-1507337667 source:/home/pi/Desktop/Animated_ThreadBridge/firmata.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/firmata.c
 	"serial.h"
 	"firmata.h"
 	<string.h>
 	<stdlib.h>
 	<stdio.h>
 
-1442857040 source:/home/pi/Desktop/Animated_ThreadBridge/serial.c
+1507945872 source:/home/pi/Desktop/Animated_ThreadBridge/serial.c
 	"serial.h"
 	<string.h>
 	<stdlib.h>

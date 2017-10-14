@@ -226,6 +226,13 @@ void *algoritmo_puente_semaforo(void *puente)
 
             if(data->semaforo_izquierda == 1)        // el izquierdo esta encendido en verde
             {
+
+            if(hardware == 1 && data->thread_identificador > 3){
+                    semaforo(data->thread_identificador,1,1);
+                    semaforo(data->thread_identificador,0,0);
+                    //semaforo(data->thread_identificador,1,1);
+                }
+
                 data->temporizando = 1;     // Se auto indica que esta esperando
                 espera_tmp = data->temporizado_parcial;
 
@@ -278,8 +285,9 @@ void *algoritmo_puente_semaforo(void *puente)
                         data->temporizado_parcial = espera_tmp;
                         pthread_mutex_lock(&lock_thread_terminado);
                         thread_terminado = 1;
-                        break;
+
                         pthread_mutex_unlock(&lock_thread_terminado);
+                        break;
                     }
 
                 }
@@ -295,8 +303,10 @@ void *algoritmo_puente_semaforo(void *puente)
 
 
                 if(hardware == 1 && data->thread_identificador > 3){
+                    //semaforo(data->thread_identificador,0,0);
+
                     semaforo(data->thread_identificador,1,0);
-                    semaforo(data->thread_identificador,0,1);
+                   semaforo(data->thread_identificador,0,1);
                 }
 
 
@@ -306,6 +316,12 @@ void *algoritmo_puente_semaforo(void *puente)
 
             if(data->semaforo_izquierda == 0)
             {
+
+                if(hardware == 1){
+                    semaforo(data->thread_identificador,0,1);
+                    semaforo(data->thread_identificador,1,0);
+                    //semaforo(data->thread_identificador,1,0);
+                }
 
                 //pthread_mutex_lock(&lock_comenzar_espera);
                 data->temporizando = 1;     // Se auto indica que esta esperando
@@ -383,8 +399,10 @@ void *algoritmo_puente_semaforo(void *puente)
                 printf(" en PUENTE %d \n", data->puente_id);
 
                 if(hardware == 1){
+                    //semaforo(data->thread_identificador,0,1);
+
+                    semaforo(data->thread_identificador,0,0);
                     semaforo(data->thread_identificador,1,1);
-                    semaforo(data->thread_identificador,0,1);
                 }
 
                 data->semaforo_izquierda = 1; //izquierda a rojo
@@ -399,7 +417,7 @@ void *algoritmo_puente_semaforo(void *puente)
 
 
         }
-        usleep(100000);
+        //usleep(100000);
     }
 }
 

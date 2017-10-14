@@ -90,8 +90,11 @@
 		<Unit filename="manejo_carros.h" />
 		<Unit filename="mythreads/mythread.c">
 			<Option compilerVar="CC" />
+			<Option target="Release" />
 		</Unit>
-		<Unit filename="mythreads/mythread.h" />
+		<Unit filename="mythreads/mythread.h">
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="principal.c">
 			<Option compilerVar="CC" />
 		</Unit>
